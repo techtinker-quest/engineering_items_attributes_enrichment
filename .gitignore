@@ -1,0 +1,10 @@
+# Ignore environments, data, and logs
+.venv/
+__pycache__/
+data/
+logs/
+*.log
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+.env
