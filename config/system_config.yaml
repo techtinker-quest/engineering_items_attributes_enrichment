@@ -1,0 +1,221 @@
+# config/system_config.yaml
+# Updated configuration with standardized model naming
+
+system:
+  name: "Engineering Drawing Intelligence System"
+  version: "1.0.0"
+  environment: "production"  # development, staging, production
+  
+paths:
+  data_dir: "/data"
+  models_dir: "/models"
+  output_dir: "/output"
+  temp_dir: "/tmp/drawing_processing"
+  
+database:
+  path: "/data/drawings.db"
+  backup_enabled: true
+  backup_frequency_hours: 24
+  
+pdf_processing:
+  dpi: 300
+  max_file_size_mb: 50
+  max_pages: 20
+  
+image_preprocessing:
+  ocr_preset:
+    adaptive_threshold_block_size: 11
+    median_blur_kernel: 3
+    apply_clahe: true
+  detection_preset:
+    adaptive_threshold_block_size: 15
+    median_blur_kernel: 5
+    apply_clahe: false
+  skew_correction:
+    enabled: true
+    threshold_degrees: 0.5
+    
+ocr:
+  primary_engine: "paddleocr"
+  fallback_engine: "easyocr"
+  confidence_threshold: 0.85
+  languages: ["en", "de", "it", "fr"]
+  layout_analysis: true
+  
+entity_extraction:
+  use_regex: true
+  use_spacy: true
+  confidence_threshold: 0.80
+  normalize_units: true
+  oem_dictionary_path: "/config/oem_names.txt"
+  
+shape_detection:
+  model_path: "/models/yolov8s_engineering_v1.0/weights/best.pt"
+  confidence_threshold: 0.45
+  nms_threshold: 0.45
+  device: "cuda"  # cuda, cpu, mps
+  batch_size: 8
+  
+quality_scoring:
+  review_threshold: 0.75
+  
+  # Two different scoring systems for different purposes
+  routing_weights:
+    # Used by routing engine for LLM trigger decisions
+    ocr_quality: 0.20
+    entity_completeness: 0.35      # Highest weight - most critical
+    shape_detection_quality: 0.25
+    critical_field_presence: 0.15
+    data_consistency: 0.05
+  
+  final_quality_weights:
+    # Used for final quality reporting (simpler system)
+    text_blocks: 0.30
+    detections: 0.40               # Shape detection most important
+    entities: 0.30
+  
+  flag_missing_critical_entities: true
+  critical_entities: ["PART_NUMBER"]
+  
+llm_integration:
+  enabled: true
+  sampling_strategy: "confidence_based"
+  default_sampling_rate: 0.08
+  
+  # Use canonical model names from ModelRegistry
+  # These reference models defined in models/model_registry.py
+  use_cases:
+    drawing_assessment:
+      enabled: true
+      sampling_rate: 0.10
+      preferred_model: "claude-3-haiku"      # Canonical name
+      tier_1_fallback: "claude-3-haiku"      # Already cheapest
+      tier_0_fallback: "claude-3-haiku"
+      max_tokens: 1000
+      temperature: 0.0
+      prompt_version: "v1.2"
+      
+    ocr_verification:
+      enabled: true
+      confidence_threshold: 0.85
+      sampling_rate: 0.08
+      preferred_model: "claude-3-sonnet"     # Canonical name
+      tier_1_fallback: "claude-3-sonnet"
+      tier_0_fallback: "claude-3-haiku"      # Step down to cheapest
+      max_tokens: 2000
+      temperature: 0.0
+      prompt_version: "v1.1"
+      
+    entity_extraction:
+      enabled: true
+      confidence_threshold: 0.80
+      entity_types: ["PART_NUMBER", "MATERIAL", "THREAD_SPEC"]
+      preferred_model: "gpt-4-turbo"         # Canonical name
+      tier_1_fallback: "gpt-4-turbo"
+      tier_0_fallback: "gpt-4o-mini"         # Step down to cheapest
+      max_tokens: 4000
+      temperature: 0.0
+      prompt_version: "v1.0"
+      response_format: "json"                # Force JSON output
+      
+    shape_validation:
+      enabled: false
+      preferred_model: "gpt-4o"              # Canonical name
+      tier_1_fallback: "gpt-4o"
+      tier_0_fallback: "gpt-4o-mini"
+      max_tokens: 1500
+      temperature: 0.0
+      prompt_version: "v1.0"
+      
+    complex_reasoning:
+      enabled: true
+      preferred_model: "claude-3-opus"       # Canonical name
+      tier_1_fallback: "claude-3.5-sonnet"   # Step down
+      tier_0_fallback: "claude-3-haiku"      # Step down further
+      max_tokens: 8000
+      temperature: 0.0
+      prompt_version: "v1.0"
+  
+  # Budget controls with automatic step-down
+  cost_controls:
+    daily_budget_usd: 50.00
+    per_drawing_limit_usd: 0.30
+    alert_threshold_pct: 0.80              # Step down at 80% budget
+    auto_disable_on_exceed: true
+    alert_email: "admin@company.com"
+    
+    # Pricing verification settings
+    pricing_update_check_days: 30          # Alert if pricing data older than this
+    pricing_last_verified: "2025-11-01"    # Update when prices verified
+  
+  # API provider settings
+  providers:
+    anthropic:
+      api_key_env: "ANTHROPIC_API_KEY"
+      timeout_seconds: 30
+      max_retries: 3
+      retry_backoff: [1, 2, 4]             # Exponential backoff (seconds)
+    openai:
+      api_key_env: "OPENAI_API_KEY"
+      timeout_seconds: 30
+      max_retries: 3
+      retry_backoff: [1, 2, 4]
+    google:
+      api_key_env: "GOOGLE_API_KEY"
+      timeout_seconds: 30
+      max_retries: 3
+      retry_backoff: [1, 2, 4]
+  
+  # Routing thresholds
+  confidence_thresholds:
+    ocr_trigger: 0.85
+    entity_trigger: 0.80
+    overall_pipeline_trigger: 0.75
+    
+    # CRITICAL: PART_NUMBER handling
+    # If PART_NUMBER missing and confidence > threshold, force LLM
+    part_number_missing_force_llm: true
+    part_number_min_confidence: 0.70
+
+batch_processing:
+  parallel_workers: 4
+  
+  # Two types of checkpointing:
+  checkpointing:
+    # Intra-drawing: Save after each major stage within a drawing
+    intra_drawing_enabled: true
+    save_after_stages:
+      - "pdf_processing"
+      - "ocr_extraction"
+      - "entity_extraction"
+      - "shape_detection"
+    
+    # Batch-level: Save every N drawings in batch processing
+    batch_checkpoint_frequency: 10  # Save state every N drawings
+    batch_checkpoint_dir: "/tmp/checkpoints"
+  
+  continue_on_error: true
+  max_retries_per_drawing: 2
+  
+export:
+  json_format: "pretty"  # pretty, compact
+  csv_delimiter: ","
+  include_intermediate_results: false
+  
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_dir: "/logs"
+  rotate_size_mb: 100
+  rotate_count: 10
+  log_to_console: true
+  
+monitoring:
+  enable_metrics: true
+  metrics_export_interval_seconds: 60
+  performance_profiling: false
+
+# Model registry validation
+# System will validate these models exist in ModelRegistry on startup
+model_validation:
+  validate_on_startup: true
+  fail_on_missing_models: true
