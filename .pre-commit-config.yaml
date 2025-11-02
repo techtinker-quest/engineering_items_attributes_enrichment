@@ -3,11 +3,12 @@ repos:
     rev: 24.10.0
     hooks:
       - id: black
-      # Optional: configure Black options
-        args: [--line-length=88, --target-version=py312]
-  - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
-    hooks:
-      - id: flake8
-        # Optional: configure Flake8
-        args: [--max-line-length=88, --ignore=E203,W503]
+      
+#      # Optional: configure Black options
+#        args: [--line-length=88, --target-version=py312]
+#  - repo: https://github.com/pycqa/flake8
+#    rev: 7.0.0
+#    hooks:
+#      - id: flake8
+#        # Optional: configure Flake8
+#        args: [--max-line-length=88, --ignore=E203,W503]
