@@ -1,0 +1,699 @@
+Folder,File Name,Class Name,Method Name,Method Arguments,Method Return,Method Responsibility
+tests/,conftest.py,MockLLMGateway,verify_ocr,"self, image_crop, ocr_text, drawing_id, region_type",None (Inferred/Missing),N/A (Missing Docstring)
+tests/,conftest.py,MockLLMGateway,extract_entities_llm,"self, text, context, entity_types, drawing_id",None (Inferred/Missing),N/A (Missing Docstring)
+src\drawing_intelligence\cli/,config_validator.py,ValidationResult,__post_init__,self,None (Inferred/Missing),Initialize empty lists if None.
+src\drawing_intelligence\cli/,config_validator.py,ConfigValidator,__init__,"self, config",None (Inferred/Missing),Initialize configuration validator.
+src\drawing_intelligence\cli/,config_validator.py,ConfigValidator,validate_all,self,ValidationResult,Validate all configuration sections.
+src\drawing_intelligence\cli/,config_validator.py,ConfigValidator,validate_paths,self,List[str],Validate all path configurations.
+src\drawing_intelligence\cli/,config_validator.py,ConfigValidator,validate_llm_config,self,"tuple[List[str], List[str]]",Validate LLM configuration and API keys.
+src\drawing_intelligence\cli/,config_validator.py,ConfigValidator,validate_model_files,self,"tuple[List[str], List[str]]",Validate YOLO model files exist.
+src\drawing_intelligence\cli/,config_validator.py,ConfigValidator,validate_database,self,"tuple[List[str], List[str]]",Validate database configuration.
+src\drawing_intelligence\cli/,config_validator.py,ConfigValidator,_validate_api_key_format,"self, provider: str, api_key: str","tuple[bool, str]",Validate API key format for provider.
+src\drawing_intelligence\cli/,config_validator.py,ConfigValidator,print_validation_report,"self, result: ValidationResult",None,Print formatted validation report to console.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,__init__,"self, db_path: str, schema_path: Optional[str]",None (Inferred/Missing),Initialize database manager.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,_connect,self,None,Establish database connection.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,initialize_database,self,None,Create tables and indexes if they don't exist.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,store_drawing,"self, processing_result: Any",str,Store complete drawing result in database.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,store_text_blocks,"self, drawing_id: str, text_blocks: List[Any]",None,Store OCR text blocks for a drawing.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,store_entities,"self, drawing_id: str, entities: List[Any]",None,Store extracted entities for a drawing.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,store_detections,"self, drawing_id: str, detections: List[Any]",None,Store shape detections for a drawing.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,store_associations,"self, drawing_id: str, associations: List[Any]",None,Store text-shape associations for a drawing.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,store_hierarchy,"self, drawing_id: str, hierarchy: Any",None,Store component hierarchy for a drawing.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,store_llm_usage,"self, drawing_id: str, provider: str, model: str, tokens: Any, cost: float, use_case: str",None,Store LLM usage record.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,store_audit_entry,"self, drawing_id: str, stage: str, status: str, duration: float, error_message: Optional[str]",None,Store processing audit entry.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,get_drawing_by_id,"self, drawing_id: str","Optional[Dict[str, Any]]",Get drawing record by ID.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,query_drawings,"self, filters: QueryFilters","List[Dict[str, Any]]",Query drawings with filters.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,get_drawings_for_review,"self, limit: int","List[Dict[str, Any]]",Get drawings flagged for review.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,update_drawing_status,"self, drawing_id: str, status: str",None,Update drawing processing status.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,delete_drawing,"self, drawing_id: str",None,Delete drawing and all related data.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,get_llm_usage,"self, start_date: datetime, end_date: datetime","List[Dict[str, Any]]",Get LLM usage records for date range.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,get_database_stats,self,"Dict[str, Any]",Get database statistics.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,backup_database,"self, backup_path: str",bool,Create database backup.
+src\drawing_intelligence\database/,database_manager.py,DatabaseManager,close,self,None,Close database connection.
+src\drawing_intelligence\database/,query_filters.py,QueryFilters,__post_init__,self,None (Inferred/Missing),Validate filter values.
+src\drawing_intelligence\export/,csv_exporter.py,CSVExporter,__init__,"self, config",None (Inferred/Missing),Initialize CSV exporter.
+src\drawing_intelligence\export/,csv_exporter.py,CSVExporter,export_summary,"self, drawing_records: List[DrawingRecord], output_path: str",None,Export summary CSV (one row per drawing).
+src\drawing_intelligence\export/,csv_exporter.py,CSVExporter,export_entities,"self, drawing_records: List[DrawingRecord], output_path: str",None,Export entities CSV (one row per entity).
+src\drawing_intelligence\export/,csv_exporter.py,CSVExporter,export_detections,"self, drawing_records: List[DrawingRecord], output_path: str",None,Export detections CSV (one row per detection).
+src\drawing_intelligence\export/,csv_exporter.py,CSVExporter,export_associations,"self, drawing_records: List[DrawingRecord], output_path: str",None,Export associations CSV.
+src\drawing_intelligence\export/,csv_exporter.py,CSVExporter,flatten_drawing_data,"self, drawing_record: DrawingRecord","Dict[str, Any]",Flatten drawing data to single-level dict for CSV.
+src\drawing_intelligence\export/,csv_exporter.py,CSVExporter,_write_csv,"self, data: List[Dict], output_path: str, headers: List[str]",None,Write list of dicts to CSV file.
+src\drawing_intelligence\export/,export_manager.py,ExportConfig,__post_init__,self,None (Inferred/Missing),Validate configuration.
+src\drawing_intelligence\export/,export_manager.py,ExportManager,__init__,"self, db: DatabaseManager, config: Optional[ExportConfig]",None (Inferred/Missing),Initialize export manager.
+src\drawing_intelligence\export/,export_manager.py,ExportManager,export_drawing_json,"self, drawing_id: str, output_path: str",str,Export single drawing to JSON.
+src\drawing_intelligence\export/,export_manager.py,ExportManager,export_drawing_csv,"self, drawing_id: str, output_dir: str",List[str],Export single drawing to multiple CSV files.
+src\drawing_intelligence\export/,export_manager.py,ExportManager,export_batch_json,"self, drawing_ids: List[str], output_path: str",str,Export multiple drawings to single JSON file.
+src\drawing_intelligence\export/,export_manager.py,ExportManager,export_batch_csv,"self, drawing_ids: List[str], output_dir: str",List[str],Export batch to CSV files.
+src\drawing_intelligence\export/,export_manager.py,ExportManager,generate_batch_report,"self, batch_id: str, output_path: str, format: str",str,Generate comprehensive batch report.
+src\drawing_intelligence\export/,export_manager.py,ExportManager,export_cost_report,"self, start_date: datetime, end_date: datetime, output_path: str, format: str",str,Generate cost report.
+src\drawing_intelligence\export/,export_manager.py,ExportManager,export_drawing_report,"self, drawing_id: str, output_path: str, format: str",str,Generate detailed drawing report.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,__init__,"self, config",None (Inferred/Missing),Initialize JSON exporter.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,export_single,"self, drawing_record: DrawingRecord, output_path: str",None,Export single drawing to JSON file.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,export_batch,"self, drawing_records: List[DrawingRecord], output_path: str",None,Export multiple drawings to single JSON file.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,format_drawing_result,"self, drawing_record: DrawingRecord","Dict[str, Any]",Convert DrawingRecord to JSON-serializable dict.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,_serialize_text_block,"self, text_block","Dict[str, Any]",Serialize text block.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,_serialize_entity,"self, entity: Entity","Dict[str, Any]",Serialize entity.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,_serialize_detection,"self, detection: Detection","Dict[str, Any]",Serialize detection.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,_serialize_association,"self, association: Association","Dict[str, Any]",Serialize association.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,_serialize_hierarchy,"self, hierarchy: ComponentHierarchy","Dict[str, Any]",Serialize component hierarchy.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,_serialize_review_flag,"self, flag: ReviewFlag","Dict[str, Any]",Serialize review flag.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,_serialize_bbox,"self, bbox: BoundingBox","Dict[str, Any]",Serialize bounding box.
+src\drawing_intelligence\export/,json_exporter.py,JSONExporter,validate_schema,"self, json_data: Dict","Tuple[bool, List[str]]",Validate JSON against schema.
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,__init__,"self, template_dir: str",None (Inferred/Missing),Initialize report generator.
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,generate_batch_report,"self, batch_result, drawing_records: List, output_path: str, format: str",None,Generate comprehensive batch processing report.
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,generate_cost_report,"self, cost_report, output_path: str, format: str",None,Generate cost analysis report with charts.
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,generate_drawing_report,"self, drawing_record, output_path: str, format: str",None,Generate single drawing detailed report.
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,_render_template,"self, template_name: str, context: Dict",str,Render Jinja2 template with context.
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,_generate_confidence_chart,"self, confidences: List[float]",str,Generate confidence distribution chart.
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,_generate_status_chart,"self, batch_result",str,Generate batch status pie chart.
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,_generate_cost_chart,"self, cost_data: Dict[str, float], title: str",str,Generate cost breakdown chart.
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,_generate_daily_trend_chart,"self, daily_costs: List",str,Generate daily cost trend chart.
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,_convert_html_to_pdf,"self, html_content: str, pdf_path: str",None,Convert HTML report to PDF (if weasyprint available).
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,_generate_simple_batch_report,"self, batch_result, output_path: str",None (Inferred/Missing),Generate simple text-based batch report (fallback).
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,_generate_simple_cost_report,"self, cost_report, output_path: str",None (Inferred/Missing),Generate simple text-based cost report (fallback).
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,_generate_simple_drawing_report,"self, drawing_record, output_path: str",None (Inferred/Missing),Generate simple text-based drawing report (fallback).
+src\drawing_intelligence\export/,report_generator.py,ReportGenerator,_generate_fallback_html,"self, context: Dict",str,Generate simple fallback HTML when template fails.
+src\drawing_intelligence\llm/,budget_controller.py,BudgetController,get_model_for_use_case,"self, use_case: UseCaseType, override_model: Optional[str]","Tuple[ModelSpec, str]","Get the appropriate model for a use case, considering budget constraints."
+src\drawing_intelligence\llm/,budget_controller.py,BudgetController,pre_call_check,"self, estimated_input_tokens: int, estimated_output_tokens: int, image_count: int, use_case: UseCaseType, drawing_id: str","Tuple[bool, str, Optional[ModelSpec]]",Pre-flight check before making LLM call.
+src\drawing_intelligence\llm/,budget_controller.py,BudgetController,track_call,"self, provider: str, model_id: str, input_tokens: int, output_tokens: int, image_count: int, drawing_id: str, use_case: UseCaseType",float,Track an LLM call and return actual cost.
+src\drawing_intelligence\llm/,budget_controller.py,BudgetController,_step_down_tier,self,None (Inferred/Missing),Step down to next cheaper tier
+src\drawing_intelligence\llm/,budget_controller.py,BudgetController,_get_daily_spend,self,float,Get today's total LLM spend
+src\drawing_intelligence\llm/,budget_controller.py,BudgetController,_get_drawing_spend,"self, drawing_id: str",float,Get total spend for a specific drawing
+src\drawing_intelligence\llm/,budget_controller.py,BudgetController,_get_budget_used_pct,self,float,Get percentage of daily budget used
+src\drawing_intelligence\llm/,budget_controller.py,BudgetController,reset_drawing_tracker,self,None (Inferred/Missing),Reset per-drawing spend tracker (call when starting new drawing)
+src\drawing_intelligence\llm/,budget_controller.py,BudgetController,get_usage_summary,self,Dict,Get current usage summary
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,__init__,"self, db_manager",None (Inferred/Missing),Initialize cost tracker.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,track_call,"self, provider: str, model: str, tokens: 'TokenUsage', cost: float, drawing_id: str, use_case: str",None,Track an LLM API call.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,get_daily_cost,"self, date: Optional[datetime]",float,Get total cost for a specific day.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,get_cost_by_use_case,"self, start_date: datetime, end_date: datetime","Dict[str, float]",Get costs broken down by use case.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,get_cost_by_provider,"self, start_date: datetime, end_date: datetime","Dict[str, float]",Get costs broken down by provider.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,get_cost_by_model,"self, start_date: datetime, end_date: datetime","Dict[str, float]",Get costs broken down by model.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,get_cost_by_drawing,"self, drawing_id: str",float,Get total LLM cost for a specific drawing.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,generate_cost_report,"self, period: str, start_date: datetime, end_date: datetime",CostReport,Generate comprehensive cost report.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,_calculate_daily_costs,"self, usage_records: list, start_date: datetime, end_date: datetime",list,Calculate daily cost breakdown.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,_calculate_token_summary,"self, usage_records: list",TokenUsageSummary,Calculate token usage statistics.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,_empty_cost_report,"self, period: str, start_date: datetime, end_date: datetime",CostReport,Create empty cost report.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,export_cost_data,"self, start_date: datetime, end_date: datetime, output_path: str, format: str",None,Export cost data to file.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,_export_csv,"self, usage_records: list, output_path: str",None (Inferred/Missing),Export to CSV format.
+src\drawing_intelligence\llm/,cost_tracker.py,CostTracker,_export_json,"self, usage_records: list, output_path: str",None (Inferred/Missing),Export to JSON format.
+src\drawing_intelligence\llm/,llm_gateway.py,LLMGateway,__init__,"self, config: LLMConfig, budget_controller: BudgetController, cost_tracker: Optional[CostTracker], prompt_library: Optional[PromptLibrary]",None (Inferred/Missing),Initialize LLM gateway.
+src\drawing_intelligence\llm/,llm_gateway.py,LLMGateway,_initialize_providers,self,None (Inferred/Missing),Initialize configured LLM providers.
+src\drawing_intelligence\llm/,llm_gateway.py,LLMGateway,_create_provider,"self, name: str, api_key: str, config: Dict",Optional[LLMProvider],Create provider instance.
+src\drawing_intelligence\llm/,llm_gateway.py,LLMGateway,call_llm,"self, prompt: str, image: Optional[np.ndarray], use_case: UseCaseType, drawing_id: str, override_model: Optional[str]",LLMResponse,Call LLM with automatic provider/model selection.
+src\drawing_intelligence\llm/,llm_gateway.py,LLMGateway,assess_drawing_quality,"self, image: np.ndarray, drawing_id: str, file_name: str",DrawingAssessment,Use case: Evaluate drawing quality for routing.
+src\drawing_intelligence\llm/,llm_gateway.py,LLMGateway,verify_ocr,"self, image_crop: np.ndarray, ocr_text: str, drawing_id: str, region_type: str",OCRVerification,Use case: Verify/correct OCR text.
+src\drawing_intelligence\llm/,llm_gateway.py,LLMGateway,extract_entities_llm,"self, text: str, context: str, entity_types: List[str], drawing_id: str",List[Entity],Use case: Extract entities using LLM.
+src\drawing_intelligence\llm/,llm_gateway.py,LLMGateway,_get_provider,"self, provider_name: str",Optional[LLMProvider],Get provider by name.
+src\drawing_intelligence\llm/,llm_gateway.py,LLMGateway,_prepare_image,"self, image: np.ndarray",bytes,Convert numpy image to bytes for API.
+src\drawing_intelligence\llm/,prompt_library.py,PromptLibrary,__init__,"self, prompts_dir: str",None (Inferred/Missing),Initialize prompt library.
+src\drawing_intelligence\llm/,prompt_library.py,PromptLibrary,get_prompt,"self, use_case: str, version: str",PromptTemplate,Get prompt template for use case.
+src\drawing_intelligence\llm/,prompt_library.py,PromptLibrary,render_prompt,"self, template: PromptTemplate, context: Dict[str, Any]",str,Render template with variables.
+src\drawing_intelligence\llm/,prompt_library.py,PromptLibrary,list_available_prompts,self,"Dict[str, List[str]]",List all prompts by use case.
+src\drawing_intelligence\llm/,prompt_library.py,PromptLibrary,add_prompt,"self, prompt: PromptTemplate",None (Inferred/Missing),Add a custom prompt to the library.
+src\drawing_intelligence\llm/,prompt_library.py,PromptLibrary,_load_builtin_prompts,self,None (Inferred/Missing),Load built-in prompt templates.
+src\drawing_intelligence\llm/,prompt_library.py,PromptLibrary,_load_prompts_from_dir,self,None (Inferred/Missing),Load custom prompts from directory.
+src\drawing_intelligence\models/,data_structures.py,OCRResult,full_text,self,str,Get all text content concatenated.
+src\drawing_intelligence\models/,data_structures.py,ProcessingResult,get_entities_by_type,"self, entity_type: EntityType",List[Entity],Get all entities of a specific type.
+src\drawing_intelligence\models/,data_structures.py,ProcessingResult,get_shape_classes,self,List[str],Get list of detected shape classes.
+src\drawing_intelligence\models/,data_structures.py,ProcessingResult,needs_human_review,self,bool,Check if drawing needs human review.
+src\drawing_intelligence\models/,data_structures.py,ProcessingResult,get_llm_total_cost,self,float,Calculate total LLM cost for this drawing.
+src\drawing_intelligence\models/,data_structures.py,ConfidenceScores,overall_weighted,self,float,Calculate weighted overall score for routing decisions.
+src\drawing_intelligence\models/,model_registry.py,ModelSpec,calculate_cost,"self, input_tokens: int, output_tokens: int, image_count: int",float,Calculate total cost for this model
+src\drawing_intelligence\models/,model_registry.py,ModelRegistry,get_model,"cls, name: str",ModelSpec,Get model by canonical name or full model_id
+src\drawing_intelligence\models/,model_registry.py,ModelRegistry,get_models_by_tier,"cls, tier: ModelTier, supports_vision: Optional[bool]",list[ModelSpec],"Get all models in a specific tier, optionally filtered by vision support"
+src\drawing_intelligence\models/,model_registry.py,ModelRegistry,validate_model_exists,"cls, name: str",bool,Check if a model exists in the registry
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,IntraDrawingCheckpoint,to_dict,self,Dict,N/A (Missing Docstring)
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,IntraDrawingCheckpoint,from_dict,"cls, data: Dict",'IntraDrawingCheckpoint',N/A (Missing Docstring)
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,BatchCheckpoint,to_dict,self,Dict,N/A (Missing Docstring)
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,BatchCheckpoint,from_dict,"cls, data: Dict",'BatchCheckpoint',N/A (Missing Docstring)
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,CheckpointManager,save_intra_drawing_checkpoint,"self, drawing_id: str, source_file: str, current_stage: ProcessingStage, completed_stages: List[ProcessingStage], intermediate_results: Dict[str, Any]",str,Save checkpoint after completing a stage within a drawing.
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,CheckpointManager,load_intra_drawing_checkpoint,"self, drawing_id: str",Optional[IntraDrawingCheckpoint],Load the most recent checkpoint for a drawing.
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,CheckpointManager,delete_intra_drawing_checkpoints,"self, drawing_id: str",None (Inferred/Missing),Delete all checkpoints for a drawing (after successful completion)
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,CheckpointManager,save_batch_checkpoint,"self, batch_id: str, total_drawings: int, completed_drawing_ids: List[str], failed_drawing_ids: List[str], pending_drawing_ids: List[str], current_drawing_id: Optional[str], total_llm_cost: float, average_processing_time: float",str,Save batch processing state every N drawings.
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,CheckpointManager,load_batch_checkpoint,"self, batch_id: str",Optional[BatchCheckpoint],Load the most recent batch checkpoint.
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,CheckpointManager,delete_batch_checkpoints,"self, batch_id: str",None (Inferred/Missing),Delete all checkpoints for a batch (after completion)
+src\drawing_intelligence\orchestration/,checkpoint_manager.py,CheckpointManager,list_available_checkpoints,self,"Dict[str, List[str]]",List all available checkpoints
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,__init__,"self, config: Config, db: DatabaseManager, checkpoint_manager: CheckpointManager, routing_engine: RoutingEngine",None (Inferred/Missing),Initialize pipeline orchestrator.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,_initialize_processors,self,None (Inferred/Missing),Initialize all processing components.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,process_drawing,"self, pdf_path: str, force_llm: bool",ProcessingResult,Process a single drawing through the complete pipeline.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,process_batch,"self, pdf_paths: List[str], batch_id: Optional[str], parallel_workers: int",BatchResult,Process multiple drawings with parallelization and checkpointing.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,resume_batch,"self, batch_id: str",BatchResult,Resume a previously interrupted batch from checkpoint.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,_process_stage,"self, stage: ProcessingStage, input_data: Any, state: WorkflowState",StageResult,Execute a single processing stage.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,_apply_llm_enhancement,"self, state: WorkflowState, route: ProcessingRoute",None (Inferred/Missing),Apply LLM enhancement based on routing decision.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,_should_retry,"self, error: Exception, attempt: int, max_retries: int",bool,Determine if a failed stage should be retried.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,_handle_stage_error,"self, stage: ProcessingStage, error: Exception, state: WorkflowState",None (Inferred/Missing),Log and handle stage errors.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,_create_processing_result,"self, state: WorkflowState",ProcessingResult,Create ProcessingResult from workflow state.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,_create_mock_drawing,"self, drawing_id: str, pdf_path: str",None (Inferred/Missing),Create mock drawing for routing.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,_create_initial_result,"self, state: WorkflowState",None (Inferred/Missing),Create initial result for routing.
+src\drawing_intelligence\orchestration/,pipeline_orchestrator.py,PipelineOrchestrator,_process_drawing_safe,"self, pdf_path: str, batch_id: str",ProcessingResult,Process drawing with error handling for batch processing.
+src\drawing_intelligence\orchestration/,routing_engine.py,ConfidenceScores,overall_weighted,self,float,Calculate weighted overall score for routing decisions
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,determine_route,"self, drawing, initial_result: ProcessingResult",ProcessingRoute,Evaluate processing result and determine optimal routing.
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,_check_part_number,"self, entities: List[Entity]",dict,Check PART_NUMBER presence and confidence.
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,_assess_entity_completeness,"self, entities: List[Entity]",float,Entity-specific confidence assessment.
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,_assess_ocr_quality,"self, result: ProcessingResult",float,Assess OCR quality based on average confidence and text block count
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,_assess_shape_quality,"self, detections: List[Detection]",float,Assess shape detection quality
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,_validate_data_consistency,"self, result: ProcessingResult",float,Cross-validate data consistency.
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,_apply_routing_rules,"self, scores: ConfidenceScores, overall_score: float, drawing",ProcessingRoute,Decision tree based on multiple confidence dimensions.
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,_identify_weakest_stage,"self, scores: ConfidenceScores",ProcessingStage,Identify which stage would benefit most from LLM enhancement
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,_budget_available,self,bool,Check if budget allows LLM calls
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,_sampling_criteria_met,"self, drawing",bool,Check if drawing meets sampling criteria
+src\drawing_intelligence\orchestration/,routing_engine.py,RoutingEngine,_estimate_cost,"self, stages: List[ProcessingStage]",float,Estimate cost for given LLM stages
+src\drawing_intelligence\orchestration/,routing_engine.py,MockBudget,get_usage_summary,self,None (Inferred/Missing),N/A (Missing Docstring)
+src\drawing_intelligence\orchestration/,workflow_state.py,WorkflowState,update_stage,"self, stage: str",None,Update the current processing stage.
+src\drawing_intelligence\orchestration/,workflow_state.py,WorkflowState,save_checkpoint,"self, data: Dict[str, any]",None,Save checkpoint data for the current stage.
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,__init__,"self, config: AssociationConfig",None (Inferred/Missing),Initialize data associator.
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,associate_text_to_shapes,"self, text_blocks: List[TextBlock], detections: List[Detection]",List[Association],Link text blocks to nearest shapes based on proximity.
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,_find_nearest_shape,"self, text_block: TextBlock, detections: List[Detection]","Tuple[Detection, float]",Find the nearest shape to a text block.
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,_classify_text_type,"self, content: str",str,"Classify text as dimension, label, or note."
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,_get_distance_threshold,"self, text_type: str",int,Get distance threshold based on text type.
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,_check_obstacles,"self, text_block: TextBlock, target_shape: Detection, all_shapes: List[Detection]",bool,Check if other shapes obstruct the text-shape association.
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,_calculate_association_confidence,"self, distance: float, threshold: float, text_type: str",float,Calculate confidence score for association.
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,identify_multi_view_groups,"self, detections: List[Detection]",List[ViewGroup],Group shapes representing different views of same component.
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,_find_aligned_shapes,"self, shapes: List[Detection]",List[List[Detection]],Find shapes that are spatially aligned.
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,_infer_view_types,"self, shapes: List[Detection]",List[str],"Infer view types (front, side, top) based on positions."
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,_select_primary_shape,"self, shapes: List[Detection]",str,Select primary shape from group (largest/clearest).
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,link_dimensions_to_features,"self, dimensions: List, shapes: List[Detection]",List[DimensionLink],Link dimension entities to shape features.
+src\drawing_intelligence\processing/,data_associator.py,DataAssociator,_infer_feature_type,"self, dimension",str,Infer feature type from dimension entity.
+src\drawing_intelligence\processing/,data_validator.py,DataValidator,__init__,"self, config: Optional[ValidationConfig]",None (Inferred/Missing),Initialize data validator.
+src\drawing_intelligence\processing/,data_validator.py,DataValidator,validate_associations,"self, ocr_result: OCRResult, detections: List[Detection], entities: List[Entity], associations: List[Association]",ValidationReport,Cross-validate all extraction layers.
+src\drawing_intelligence\processing/,data_validator.py,DataValidator,_check_orphaned_entities,"self, entities: List[Entity], text_blocks: List",List[ValidationIssue],Find entities without source text blocks.
+src\drawing_intelligence\processing/,data_validator.py,DataValidator,_check_unassociated_text,"self, text_blocks: List, detections: List[Detection], associations: List[Association]",List[ValidationIssue],Find dimensions near shapes that aren't linked.
+src\drawing_intelligence\processing/,data_validator.py,DataValidator,_check_entity_shape_consistency,"self, associations: List[Association], entities: List[Entity], detections: List[Detection]",List[ValidationIssue],Check if dimension entities match associated shapes.
+src\drawing_intelligence\processing/,data_validator.py,DataValidator,_check_critical_fields,"self, entities: List[Entity]",List[ValidationIssue],Check for presence of critical fields.
+src\drawing_intelligence\processing/,data_validator.py,DataValidator,_looks_like_dimension,"self, content: str",bool,Pattern check to identify dimensional text.
+src\drawing_intelligence\processing/,data_validator.py,DataValidator,_dimension_compatible_with_shape,"self, dimension_entities: List[Entity], shape: Detection",bool,Check if dimension type matches shape type.
+src\drawing_intelligence\processing/,data_validator.py,DataValidator,_calculate_confidence_penalty,"self, issues: List[ValidationIssue]",float,Calculate confidence reduction based on issues.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,__init__,"self, config: EntityConfig, llm_gateway: Optional[Any]",None (Inferred/Missing),Initialize entity extractor.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,extract_entities,"self, ocr_result: OCRResult",EntityExtractionResult,Extract all entities from OCR text using multi-layer approach.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_extract_with_regex,"self, ocr_result: OCRResult",List[Entity],Layer 1: Fast regex-based extraction.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_extract_with_spacy,"self, ocr_result: OCRResult",List[Entity],Layer 2: spaCy-based extraction with EntityRuler.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_extract_with_llm,"self, text: str, failed_types: List[EntityType]",List[Entity],Layer 3: LLM-based extraction for failed cases.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,extract_title_block,"self, ocr_result: OCRResult",Optional[TitleBlock],Extract structured title block data.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_create_entity,"self, entity_type: EntityType, value: str, original_text: str, confidence: float, method: str, text_block: TextBlock, normalized: Optional[Dict]",Entity,Create Entity object with proper normalization.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_normalize_entity,"self, entity_type: EntityType, value: str","Dict[str, Any]",Normalize entity value to standard format.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_load_patterns,self,"Dict[str, str]",Load regex patterns from file or use defaults.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_load_oem_dictionary,self,set,Load OEM names from dictionary file.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_deduplicate_entities,"self, new_entities: List[Entity], existing_entities: List[Entity]",List[Entity],Remove entities that are duplicates of existing ones.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_identify_missing_critical,"self, entities: List[Entity]",List[EntityType],Identify critical entity types that are missing.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_find_text_block_for_text,"self, text: str, text_blocks: List[TextBlock]",Optional[TextBlock],Find which text block contains the given text.
+src\drawing_intelligence\processing/,entity_extractor.py,EntityExtractor,_calculate_statistics,"self, entities: List[Entity], extraction_methods: Dict[str, int]",ExtractionStats,Calculate extraction statistics.
+src\drawing_intelligence\processing/,hierarchy_builder.py,HierarchyBuilder,__init__,self,None (Inferred/Missing),Initialize hierarchy builder.
+src\drawing_intelligence\processing/,hierarchy_builder.py,HierarchyBuilder,build_hierarchy,"self, detections: List[Detection], associations: List[Association]",ComponentHierarchy,Build component hierarchy from detections.
+src\drawing_intelligence\processing/,hierarchy_builder.py,HierarchyBuilder,_find_root_component,"self, detections: List[Detection], associations: List[Association]",Detection,Find root component (largest or most associated).
+src\drawing_intelligence\processing/,hierarchy_builder.py,HierarchyBuilder,_find_connected_components,"self, fastener: Detection, detections: List[Detection]",List[Detection],Find components connected by a fastener.
+src\drawing_intelligence\processing/,hierarchy_builder.py,HierarchyBuilder,_build_tree,"self, root: Detection, assemblies: List[Assembly], detections: List[Detection]",Dict,Build hierarchical tree structure.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,__init__,"self, config: PreprocessConfig",None (Inferred/Missing),Initialize image preprocessor.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,preprocess_for_ocr,"self, image: np.ndarray",np.ndarray,Apply preprocessing optimized for OCR.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,preprocess_for_detection,"self, image: np.ndarray",np.ndarray,Apply preprocessing optimized for shape detection.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,detect_and_correct_skew,"self, image: np.ndarray","Tuple[np.ndarray, float]",Detect and correct image skew/rotation.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,_rotate_image,"self, image: np.ndarray, angle: float",np.ndarray,Rotate image by specified angle.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,assess_image_quality,"self, image: np.ndarray",QualityMetrics,Evaluate image quality metrics.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,_apply_adaptive_threshold,"self, image: np.ndarray, block_size: int",np.ndarray,Apply adaptive thresholding for binarization.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,_apply_noise_reduction,"self, image: np.ndarray, median_kernel: int, morphology_kernel: int",np.ndarray,Apply noise reduction using median blur and morphological operations.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,_apply_clahe,"self, image: np.ndarray",np.ndarray,Apply Contrast Limited Adaptive Histogram Equalization.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,enhance_contrast,"self, image: np.ndarray, alpha: float",np.ndarray,Enhance image contrast using simple linear transformation.
+src\drawing_intelligence\processing/,image_preprocessor.py,ImagePreprocessor,sharpen_image,"self, image: np.ndarray",np.ndarray,Sharpen image using unsharp masking.
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,__init__,"self, config: OCRConfig",None (Inferred/Missing),Initialize OCR pipeline.
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,extract_text,"self, image: np.ndarray, language: str",OCRResult,Extract text with bounding boxes using primary OCR.
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,_run_primary_ocr,"self, image: np.ndarray, language: str",List[TextBlock],Run primary OCR engine (PaddleOCR).
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,apply_fallback_ocr,"self, image: np.ndarray, low_confidence_blocks: List[TextBlock]",List[TextBlock],Re-process low-confidence regions with fallback OCR.
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,_initialize_primary_ocr,self,None (Inferred/Missing),Lazy initialization of primary OCR engine.
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,_initialize_fallback_ocr,self,None (Inferred/Missing),Lazy initialization of fallback OCR engine.
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,_points_to_bbox,"self, points: List[List[float]]",BoundingBox,Convert OCR bbox points to BoundingBox.
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,_normalize_text,"self, text: str",str,Normalize OCR text.
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,_classify_layout_regions,"self, image: np.ndarray, text_blocks: List[TextBlock]",List[LayoutRegion],"Classify layout regions (title_block, table, text, figure)."
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,detect_language,"self, text_sample: str",str,Detect language from text sample.
+src\drawing_intelligence\processing/,ocr_pipeline.py,OCRPipeline,detect_language_from_image,"self, image: np.ndarray",str,Detect language by doing quick OCR and analyzing text.
+src\drawing_intelligence\processing/,pdf_processor.py,PDFProcessor,__init__,"self, config: PDFConfig",None (Inferred/Missing),Initialize PDF processor.
+src\drawing_intelligence\processing/,pdf_processor.py,PDFProcessor,extract_pages,"self, pdf_path: str",List[PDFPage],Extract all pages from PDF as images with embedded text.
+src\drawing_intelligence\processing/,pdf_processor.py,PDFProcessor,_render_page_to_image,"self, page: fitz.Page",np.ndarray,Render PDF page to numpy image array.
+src\drawing_intelligence\processing/,pdf_processor.py,PDFProcessor,_extract_text_blocks,"self, page: fitz.Page",List[dict],Extract text blocks with bounding box coordinates from page.
+src\drawing_intelligence\processing/,pdf_processor.py,PDFProcessor,pdf_bbox_to_pixel,"self, bbox_pdf: Tuple[float, float, float, float], page_dpi: float","Tuple[int, int, int, int]",Convert bounding box from PDF points to pixel coordinates.
+src\drawing_intelligence\processing/,pdf_processor.py,PDFProcessor,extract_embedded_text,"self, pdf_path: str",Optional[str],Extract all embedded text from PDF without coordinates.
+src\drawing_intelligence\processing/,pdf_processor.py,PDFProcessor,get_pdf_metadata,"self, pdf_path: str",dict,Extract metadata from PDF.
+src\drawing_intelligence\processing/,pdf_processor.py,PDFProcessor,validate_pdf,"self, pdf_path: str","Tuple[bool, str]",Comprehensive PDF validation.
+src\drawing_intelligence\processing/,shape_detector.py,ShapeDetector,__init__,"self, config: DetectionConfig",None (Inferred/Missing),Initialize shape detector.
+src\drawing_intelligence\processing/,shape_detector.py,ShapeDetector,detect_shapes,"self, image: np.ndarray",DetectionResult,Run shape detection on image.
+src\drawing_intelligence\processing/,shape_detector.py,ShapeDetector,_load_model,self,None (Inferred/Missing),Lazy load YOLOv8 model.
+src\drawing_intelligence\processing/,shape_detector.py,ShapeDetector,_postprocess_detections,"self, results: Any, image_shape: tuple",List[Detection],Convert YOLO results to Detection objects.
+src\drawing_intelligence\processing/,shape_detector.py,ShapeDetector,filter_by_confidence,"self, detections: List[Detection], threshold: float",List[Detection],Filter detections by confidence threshold.
+src\drawing_intelligence\processing/,shape_detector.py,ShapeDetector,_apply_nms,"self, detections: List[Detection], iou_threshold: float",List[Detection],Apply Non-Maximum Suppression to remove overlapping detections.
+src\drawing_intelligence\processing/,shape_detector.py,ShapeDetector,_calculate_summary,"self, detections: List[Detection]",DetectionSummary,Calculate summary statistics for detections.
+src\drawing_intelligence\processing/,shape_detector.py,ShapeDetector,detect_shapes_batch,"self, images: List[np.ndarray]",List[DetectionResult],Run shape detection on multiple images (batch processing).
+src\drawing_intelligence\processing/,shape_detector.py,ShapeDetector,get_model_info,self,dict,Get information about loaded model.
+src\drawing_intelligence\quality/,quality_scorer.py,QualityScorer,__init__,"self, config: QualityConfig",None (Inferred/Missing),Initialize quality scorer.
+src\drawing_intelligence\quality/,quality_scorer.py,QualityScorer,calculate_drawing_confidence,"self, processing_result: ProcessingResult",float,Calculate overall confidence score.
+src\drawing_intelligence\quality/,quality_scorer.py,QualityScorer,generate_review_flags,"self, processing_result: ProcessingResult",List[ReviewFlag],Generate flags for human review.
+src\drawing_intelligence\quality/,quality_scorer.py,QualityScorer,assess_completeness,"self, processing_result: ProcessingResult",CompletenessScore,Assess data completeness.
+src\drawing_intelligence\quality/,quality_scorer.py,QualityScorer,_check_critical_entities,"self, processing_result: ProcessingResult",List[str],Check for missing critical entities.
+src\drawing_intelligence\quality/,quality_scorer.py,QualityScorer,_classify_severity,"self, confidence: float",Severity,Classify severity based on confidence level.
+src\drawing_intelligence\quality/,quality_scorer.py,QualityScorer,_calculate_entity_completeness,"self, processing_result: ProcessingResult",float,Calculate entity completeness score.
+src\drawing_intelligence\quality/,quality_scorer.py,QualityScorer,_calculate_association_completeness,"self, processing_result: ProcessingResult",float,Calculate association completeness score.
+src\drawing_intelligence\utils/,config_loader.py,Config,load,config_path: str,SystemConfig,N/A (Missing Docstring)
+src\drawing_intelligence\utils/,config_loader.py,Config,validate,config: SystemConfig,list,Validate configuration and return list of errors
+src\drawing_intelligence\utils/,error_handlers.py,DrawingProcessingError,to_dict,self,"Dict[str, Any]",Convert exception to dictionary for logging/storage.
+src\drawing_intelligence\utils/,error_handlers.py,PDFProcessingError,to_dict,self,"Dict[str, Any]",N/A (Missing Docstring)
+src\drawing_intelligence\utils/,error_handlers.py,OCRError,to_dict,self,"Dict[str, Any]",N/A (Missing Docstring)
+src\drawing_intelligence\utils/,error_handlers.py,ShapeDetectionError,to_dict,self,"Dict[str, Any]",N/A (Missing Docstring)
+src\drawing_intelligence\utils/,error_handlers.py,LLMAPIError,to_dict,self,"Dict[str, Any]",N/A (Missing Docstring)
+src\drawing_intelligence\utils/,error_handlers.py,BudgetExceededException,to_dict,self,"Dict[str, Any]",N/A (Missing Docstring)
+src\drawing_intelligence\utils/,error_handlers.py,DatabaseError,to_dict,self,"Dict[str, Any]",N/A (Missing Docstring)
+src\drawing_intelligence\utils/,error_handlers.py,ConfigurationError,to_dict,self,"Dict[str, Any]",N/A (Missing Docstring)
+src\drawing_intelligence\utils/,error_handlers.py,ValidationError,to_dict,self,"Dict[str, Any]",N/A (Missing Docstring)
+src\drawing_intelligence\utils/,geometry_utils.py,BoundingBox,center,self,"Tuple[int, int]",Calculate center point of bounding box.
+src\drawing_intelligence\utils/,geometry_utils.py,BoundingBox,area,self,int,Calculate area of bounding box.
+src\drawing_intelligence\utils/,geometry_utils.py,BoundingBox,iou,"self, other: 'BoundingBox'",float,Calculate Intersection over Union with another bounding box.
+src\drawing_intelligence\utils/,geometry_utils.py,BoundingBox,to_tuple,self,"Tuple[int, int, int, int]","Convert to (x, y, width, height) tuple."
+src\drawing_intelligence\utils/,geometry_utils.py,BoundingBox,to_corners,self,"Tuple[int, int, int, int]","Convert to (x1, y1, x2, y2) corner coordinates."
+src\drawing_intelligence\utils/,geometry_utils.py,NormalizedBBox,to_tuple,self,"Tuple[float, float, float, float]","Convert to (x_center, y_center, width, height) tuple."
+src\drawing_intelligence\llm\providers/,anthropic_provider.py,AnthropicProvider,__init__,"self, api_key: Optional[str]",None (Inferred/Missing),Initialize Anthropic provider.
+src\drawing_intelligence\llm\providers/,anthropic_provider.py,AnthropicProvider,client,self,None (Inferred/Missing),Lazy load Anthropic client.
+src\drawing_intelligence\llm\providers/,anthropic_provider.py,AnthropicProvider,call,"self, prompt: str, image: Optional[bytes], model: str, max_tokens: int, temperature: float, response_format: Optional[Dict]",LLMResponse,Call Anthropic API.
+src\drawing_intelligence\llm\providers/,anthropic_provider.py,AnthropicProvider,get_available_models,self,List[str],Return list of supported models.
+src\drawing_intelligence\llm\providers/,anthropic_provider.py,AnthropicProvider,validate_credentials,self,bool,Validate API key by making a test call.
+src\drawing_intelligence\llm\providers/,base_provider.py,LLMProvider,call,"self, prompt: str, image: Optional[bytes], model: str, max_tokens: int, temperature: float, response_format: Optional[Dict[str, Any]]",LLMResponse,Make API call to LLM provider.
+src\drawing_intelligence\llm\providers/,base_provider.py,LLMProvider,get_available_models,self,list,Get list of available models for this provider.
+src\drawing_intelligence\llm\providers/,base_provider.py,LLMProvider,validate_credentials,self,bool,Validate API credentials.
+src\drawing_intelligence\llm\providers/,google_provider.py,GoogleProvider,__init__,"self, api_key: str",None (Inferred/Missing),Initialize Google provider.
+src\drawing_intelligence\llm\providers/,google_provider.py,GoogleProvider,_get_genai,self,None (Inferred/Missing),Lazy initialization of Google GenAI.
+src\drawing_intelligence\llm\providers/,google_provider.py,GoogleProvider,call,"self, prompt: str, image: Optional[bytes], model: str, max_tokens: int, temperature: float, response_format: Optional[Dict[str, Any]]",LLMResponse,Call Google AI API.
+src\drawing_intelligence\llm\providers/,google_provider.py,GoogleProvider,get_available_models,self,list,Get list of available Google models.
+src\drawing_intelligence\llm\providers/,google_provider.py,GoogleProvider,validate_credentials,self,bool,Validate Google AI API credentials.
+src\drawing_intelligence\llm\providers/,openai_provider.py,OpenAIProvider,__init__,"self, api_key: str, base_url: Optional[str]",None (Inferred/Missing),Initialize OpenAI provider.
+src\drawing_intelligence\llm\providers/,openai_provider.py,OpenAIProvider,_get_client,self,None (Inferred/Missing),Lazy initialization of OpenAI client.
+src\drawing_intelligence\llm\providers/,openai_provider.py,OpenAIProvider,call,"self, prompt: str, image: Optional[bytes], model: str, max_tokens: int, temperature: float, response_format: Optional[Dict[str, Any]]",LLMResponse,Call OpenAI API.
+src\drawing_intelligence\llm\providers/,openai_provider.py,OpenAIProvider,_encode_image,"self, image_bytes: bytes",str,Base64 encode image for API.
+src\drawing_intelligence\llm\providers/,openai_provider.py,OpenAIProvider,get_available_models,self,list,Get list of available OpenAI models.
+src\drawing_intelligence\llm\providers/,openai_provider.py,OpenAIProvider,validate_credentials,self,bool,Validate OpenAI API credentials.
+tests\fixtures/,test_data_generator.py,TestDataGenerator,create_mock_image,"width: int, height: int, add_text: bool, add_shapes: bool",np.ndarray,Create synthetic test image.
+tests\fixtures/,test_data_generator.py,TestDataGenerator,create_mock_pdf,"output_path: str, num_pages: int, add_content: bool",str,Create synthetic test PDF.
+tests\fixtures/,test_data_generator.py,TestDataGenerator,create_mock_text_blocks,count: int,List[TextBlock],Create mock text blocks.
+tests\fixtures/,test_data_generator.py,TestDataGenerator,create_mock_entities,count: int,List[Entity],Create mock entities.
+tests\fixtures/,test_data_generator.py,TestDataGenerator,create_mock_detections,count: int,List[Detection],Create mock shape detections.
+tests\fixtures/,test_data_generator.py,TestDataGenerator,create_mock_processing_result,"drawing_id: Optional[str], include_all: bool",ProcessingResult,Create complete mock processing result.
+tests\integration/,test_batch_processing.py,TestBatchProcessing,setup_method,self,None (Inferred/Missing),Setup test environment.
+tests\integration/,test_batch_processing.py,TestBatchProcessing,teardown_method,self,None (Inferred/Missing),Cleanup test environment.
+tests\integration/,test_batch_processing.py,TestBatchProcessing,test_small_batch_processing,"self, tmp_path",None (Inferred/Missing),Test processing small batch (3 drawings).
+tests\integration/,test_batch_processing.py,TestBatchProcessing,test_batch_with_failures,"self, tmp_path",None (Inferred/Missing),Test batch processing with some failures.
+tests\integration/,test_complete_pipeline.py,TestCompletePipeline,setup_method,self,None (Inferred/Missing),Setup test environment.
+tests\integration/,test_complete_pipeline.py,TestCompletePipeline,teardown_method,self,None (Inferred/Missing),Cleanup test environment.
+tests\integration/,test_complete_pipeline.py,TestCompletePipeline,test_process_single_drawing_baseline,self,None (Inferred/Missing),Test processing single drawing with baseline pipeline.
+tests\integration/,test_complete_pipeline.py,TestCompletePipeline,test_process_drawing_with_entities,self,None (Inferred/Missing),Test that entities are extracted.
+tests\integration/,test_complete_pipeline.py,TestCompletePipeline,test_process_drawing_error_handling,self,None (Inferred/Missing),Test error handling for invalid PDF.
+tests\integration/,test_complete_pipeline.py,TestCompletePipeline,test_quality_scoring_integration,self,None (Inferred/Missing),Test quality scoring is applied.
+tests\integration/,test_complete_pipeline.py,TestCompletePipeline,test_audit_trail_creation,self,None (Inferred/Missing),Test that audit trail is created.
+tests\integration/,test_complete_pipeline.py,TestBatchProcessing,setup_method,self,None (Inferred/Missing),Setup test environment.
+tests\integration/,test_complete_pipeline.py,TestBatchProcessing,teardown_method,self,None (Inferred/Missing),Cleanup test environment.
+tests\integration/,test_complete_pipeline.py,TestBatchProcessing,test_batch_processing,self,None (Inferred/Missing),Test batch processing multiple drawings.
+tests\integration/,test_complete_pipeline.py,TestBatchProcessing,test_checkpoint_resume,self,None (Inferred/Missing),Test resuming batch from checkpoint.
+tests\integration/,test_complete_pipeline.py,TestDatabaseIntegration,setup_method,self,None (Inferred/Missing),Setup test database.
+tests\integration/,test_complete_pipeline.py,TestDatabaseIntegration,teardown_method,self,None (Inferred/Missing),Cleanup test database.
+tests\integration/,test_complete_pipeline.py,TestDatabaseIntegration,test_store_and_retrieve_drawing,self,None (Inferred/Missing),Test storing and retrieving drawing.
+tests\integration/,test_complete_pipeline.py,TestDatabaseIntegration,test_query_drawings,self,None (Inferred/Missing),Test querying drawings with filters.
+tests\integration/,test_complete_pipeline.py,TestDatabaseIntegration,test_database_stats,self,None (Inferred/Missing),Test database statistics.
+tests\integration/,test_database_integration.py,TestDatabaseIntegration,setup_method,self,None (Inferred/Missing),Setup test database.
+tests\integration/,test_database_integration.py,TestDatabaseIntegration,teardown_method,self,None (Inferred/Missing),Cleanup test database.
+tests\integration/,test_database_integration.py,TestDatabaseIntegration,test_store_and_retrieve_complete_drawing,self,None (Inferred/Missing),Test storing and retrieving complete drawing.
+tests\integration/,test_database_integration.py,TestDatabaseIntegration,test_query_with_filters,self,None (Inferred/Missing),Test querying with various filters.
+tests\integration/,test_database_integration.py,TestDatabaseIntegration,test_search_entities,self,None (Inferred/Missing),Test full-text search on entities.
+tests\integration/,test_database_integration.py,TestDatabaseIntegration,test_database_statistics,self,None (Inferred/Missing),Test getting database statistics.
+tests\integration/,test_llm_integration.py,TestLLMIntegration,setup_method,self,None (Inferred/Missing),Setup test environment.
+tests\integration/,test_llm_integration.py,TestLLMIntegration,teardown_method,self,None (Inferred/Missing),Cleanup.
+tests\integration/,test_llm_integration.py,TestLLMIntegration,test_openai_provider,self,None (Inferred/Missing),Test OpenAI provider integration.
+tests\integration/,test_llm_integration.py,TestLLMIntegration,test_anthropic_provider,self,None (Inferred/Missing),Test Anthropic provider integration.
+tests\integration/,test_llm_integration.py,TestLLMIntegration,test_budget_controller,self,None (Inferred/Missing),Test budget controller.
+tests\performance/,benchmark_pipeline.py,PipelineBenchmark,__init__,"self, output_dir: str",None (Inferred/Missing),Initialize benchmark.
+tests\performance/,benchmark_pipeline.py,PipelineBenchmark,benchmark_single_drawing,"self, iterations: int",BenchmarkResult,Benchmark single drawing processing.
+tests\performance/,benchmark_pipeline.py,PipelineBenchmark,benchmark_batch_processing,"self, batch_sizes: List[int], workers: int","Dict[int, BenchmarkResult]",Benchmark batch processing with different sizes.
+tests\performance/,benchmark_pipeline.py,PipelineBenchmark,benchmark_component_stages,self,"Dict[str, float]",Benchmark individual pipeline stages.
+tests\performance/,benchmark_pipeline.py,PipelineBenchmark,generate_report,self,None (Inferred/Missing),Generate benchmark report.
+tests\performance/,test_performance.py,TestPerformance,test_pdf_processing_speed,"self, tmp_path",None (Inferred/Missing),Test PDF processing speed.
+tests\unit/,test_data_associator.py,TestDataAssociator,test_initialization,"self, associator, associator_config",None (Inferred/Missing),Test associator initialization.
+tests\unit/,test_data_associator.py,TestDataAssociator,test_associate_text_to_shapes,"self, associator, sample_text_blocks, sample_detections",None (Inferred/Missing),Test text-to-shape association.
+tests\unit/,test_data_associator.py,TestDataAssociator,test_calculate_distance,"self, associator",None (Inferred/Missing),Test distance calculation.
+tests\unit/,test_data_associator.py,TestDataAssociator,test_classify_text_type,"self, associator",None (Inferred/Missing),Test text type classification.
+tests\unit/,test_data_associator.py,TestDataAssociator,test_identify_multi_view_groups,"self, associator, sample_detections",None (Inferred/Missing),Test multi-view grouping.
+tests\unit/,test_data_associator.py,TestDataAssociator,test_empty_inputs,"self, associator",None (Inferred/Missing),Test with empty inputs.
+tests\unit/,test_data_associator.py,TestDataAssociator,test_confidence_calculation,"self, associator",None (Inferred/Missing),Test confidence decreases with distance.
+tests\unit/,test_entity_extractor.py,TestEntityExtractor,test_initialization,"self, entity_extractor",None (Inferred/Missing),Test extractor initialization.
+tests\unit/,test_entity_extractor.py,TestEntityExtractor,test_extract_part_number,"self, entity_extractor, sample_ocr_result",None (Inferred/Missing),Test part number extraction.
+tests\unit/,test_entity_extractor.py,TestEntityExtractor,test_extract_dimension,"self, entity_extractor, sample_ocr_result",None (Inferred/Missing),Test dimension extraction.
+tests\unit/,test_entity_extractor.py,TestEntityExtractor,test_extract_material,"self, entity_extractor, sample_ocr_result",None (Inferred/Missing),Test material extraction.
+tests\unit/,test_entity_extractor.py,TestEntityExtractor,test_extract_weight,"self, entity_extractor, sample_ocr_result",None (Inferred/Missing),Test weight extraction.
+tests\unit/,test_entity_extractor.py,TestEntityExtractor,test_extract_thread_spec,"self, entity_extractor, sample_ocr_result",None (Inferred/Missing),Test thread specification extraction.
+tests\unit/,test_entity_extractor.py,TestEntityExtractor,test_normalize_units,"self, entity_extractor",None (Inferred/Missing),Test unit normalization.
+tests\unit/,test_entity_extractor.py,TestEntityExtractor,test_extraction_statistics,"self, entity_extractor, sample_ocr_result",None (Inferred/Missing),Test extraction statistics.
+tests\unit/,test_entity_extractor.py,TestEntityExtractor,test_empty_ocr_result,"self, entity_extractor",None (Inferred/Missing),Test with empty OCR result.
+tests\unit/,test_export_manager.py,TestExportManager,test_initialization,"self, export_manager",None (Inferred/Missing),Test export manager initialization.
+tests\unit/,test_export_manager.py,TestExportManager,test_export_drawing_json,"self, export_manager, tmp_path",None (Inferred/Missing),Test JSON export.
+tests\unit/,test_export_manager.py,TestExportManager,test_export_drawing_csv,"self, export_manager, tmp_path",None (Inferred/Missing),Test CSV export.
+tests\unit/,test_export_manager.py,TestExportManager,test_export_invalid_drawing,"self, export_manager, tmp_path",None (Inferred/Missing),Test export with invalid drawing ID.
+tests\unit/,test_export_manager.py,TestExportManager,test_export_batch_json,"self, export_manager, tmp_path",None (Inferred/Missing),Test batch JSON export.
+tests\unit/,test_file_utils.py,TestEnsureDirectory,test_create_new_directory,"self, tmp_path",None (Inferred/Missing),Test creating a new directory.
+tests\unit/,test_file_utils.py,TestEnsureDirectory,test_create_nested_directories,"self, tmp_path",None (Inferred/Missing),Test creating nested directories.
+tests\unit/,test_file_utils.py,TestEnsureDirectory,test_existing_directory_no_error,"self, tmp_path",None (Inferred/Missing),Test that existing directory doesn't raise error.
+tests\unit/,test_file_utils.py,TestGetFileHash,test_md5_hash,"self, tmp_path",None (Inferred/Missing),Test MD5 hash calculation.
+tests\unit/,test_file_utils.py,TestGetFileHash,test_sha256_hash,"self, tmp_path",None (Inferred/Missing),Test SHA256 hash calculation.
+tests\unit/,test_file_utils.py,TestGetFileHash,test_nonexistent_file_raises_error,self,None (Inferred/Missing),Test that nonexistent file raises FileNotFoundError.
+tests\unit/,test_file_utils.py,TestGetFileHash,test_invalid_algorithm_raises_error,"self, tmp_path",None (Inferred/Missing),Test that invalid algorithm raises ValueError.
+tests\unit/,test_file_utils.py,TestGetFileSize,test_small_file_size,"self, tmp_path",None (Inferred/Missing),Test file size calculation for small file.
+tests\unit/,test_file_utils.py,TestGetFileSize,test_exact_1mb_file,"self, tmp_path",None (Inferred/Missing),Test file size for exactly 1 MB file.
+tests\unit/,test_file_utils.py,TestListFiles,test_list_all_files,"self, tmp_path",None (Inferred/Missing),Test listing all files in directory.
+tests\unit/,test_file_utils.py,TestListFiles,test_filter_by_extension,"self, tmp_path",None (Inferred/Missing),Test filtering files by extension.
+tests\unit/,test_file_utils.py,TestListFiles,test_recursive_listing,"self, tmp_path",None (Inferred/Missing),Test recursive file listing.
+tests\unit/,test_file_utils.py,TestListFiles,test_not_directory_raises_error,"self, tmp_path",None (Inferred/Missing),Test that non-directory path raises error.
+tests\unit/,test_file_utils.py,TestSafeFilename,test_remove_unsafe_characters,self,None (Inferred/Missing),Test removal of unsafe characters.
+tests\unit/,test_file_utils.py,TestSafeFilename,test_strip_spaces_and_dots,self,None (Inferred/Missing),Test stripping of leading/trailing spaces and dots.
+tests\unit/,test_file_utils.py,TestSafeFilename,test_empty_filename_becomes_unnamed,self,None (Inferred/Missing),Test that empty filename becomes 'unnamed'.
+tests\unit/,test_file_utils.py,TestSafeFilename,test_truncate_long_filename,self,None (Inferred/Missing),Test truncation of very long filename.
+tests\unit/,test_file_utils.py,TestGenerateUniqueId,test_without_prefix,self,None (Inferred/Missing),Test ID generation without prefix.
+tests\unit/,test_file_utils.py,TestGenerateUniqueId,test_with_prefix,self,None (Inferred/Missing),Test ID generation with prefix.
+tests\unit/,test_file_utils.py,TestGenerateUniqueId,test_uniqueness,self,None (Inferred/Missing),Test that consecutive IDs are unique.
+tests\unit/,test_file_utils.py,TestCopyFileWithBackup,test_copy_to_new_location,"self, tmp_path",None (Inferred/Missing),Test copying to new location.
+tests\unit/,test_file_utils.py,TestCopyFileWithBackup,test_backup_existing_destination,"self, tmp_path",None (Inferred/Missing),Test that existing destination is backed up.
+tests\unit/,test_file_utils.py,TestCopyFileWithBackup,test_nonexistent_source_raises_error,"self, tmp_path",None (Inferred/Missing),Test that nonexistent source raises error.
+tests\unit/,test_file_utils.py,TestAtomicWrite,test_atomic_write_new_file,"self, tmp_path",None (Inferred/Missing),Test atomic write to new file.
+tests\unit/,test_file_utils.py,TestAtomicWrite,test_atomic_write_overwrites_existing,"self, tmp_path",None (Inferred/Missing),Test atomic write overwrites existing file.
+tests\unit/,test_file_utils.py,TestAtomicWrite,test_no_partial_write_on_error,"self, tmp_path",None (Inferred/Missing),Test that partial writes don't occur on error.
+tests\unit/,test_file_utils.py,TestGetAvailableDiskSpace,test_returns_positive_number,"self, tmp_path",Annotated (Check Docstring),Test that function returns positive GB value.
+tests\unit/,test_file_utils.py,TestGetAvailableDiskSpace,test_nonexistent_path_raises_error,self,None (Inferred/Missing),Test that nonexistent path raises error.
+tests\unit/,test_geometry_utils.py,TestBoundingBox,test_creation,self,None (Inferred/Missing),Test creating a bounding box.
+tests\unit/,test_geometry_utils.py,TestBoundingBox,test_center,self,None (Inferred/Missing),Test center calculation.
+tests\unit/,test_geometry_utils.py,TestBoundingBox,test_area,self,None (Inferred/Missing),Test area calculation.
+tests\unit/,test_geometry_utils.py,TestBoundingBox,test_to_tuple,self,None (Inferred/Missing),Test conversion to tuple.
+tests\unit/,test_geometry_utils.py,TestBoundingBox,test_to_corners,self,None (Inferred/Missing),Test conversion to corner coordinates.
+tests\unit/,test_geometry_utils.py,TestCalculateIoU,test_identical_boxes,self,None (Inferred/Missing),Test IoU of identical boxes.
+tests\unit/,test_geometry_utils.py,TestCalculateIoU,test_no_overlap,self,None (Inferred/Missing),Test IoU of non-overlapping boxes.
+tests\unit/,test_geometry_utils.py,TestCalculateIoU,test_partial_overlap,self,None (Inferred/Missing),Test IoU of partially overlapping boxes.
+tests\unit/,test_geometry_utils.py,TestCalculateIoU,test_contained_box,self,None (Inferred/Missing),Test IoU when one box contains another.
+tests\unit/,test_geometry_utils.py,TestCalculateDistance,test_same_point,self,None (Inferred/Missing),Test distance between same point.
+tests\unit/,test_geometry_utils.py,TestCalculateDistance,test_horizontal_distance,self,None (Inferred/Missing),Test horizontal distance.
+tests\unit/,test_geometry_utils.py,TestCalculateDistance,test_vertical_distance,self,None (Inferred/Missing),Test vertical distance.
+tests\unit/,test_geometry_utils.py,TestCalculateDistance,test_diagonal_distance,self,None (Inferred/Missing),Test diagonal distance (Pythagorean theorem).
+tests\unit/,test_geometry_utils.py,TestBboxContains,test_fully_contained,self,None (Inferred/Missing),Test when inner box is fully inside outer.
+tests\unit/,test_geometry_utils.py,TestBboxContains,test_not_contained,self,None (Inferred/Missing),Test when boxes don't contain each other.
+tests\unit/,test_geometry_utils.py,TestBboxContains,test_edge_touching,self,None (Inferred/Missing),Test when inner box touches edge of outer.
+tests\unit/,test_geometry_utils.py,TestBboxOverlaps,test_overlapping_boxes,self,None (Inferred/Missing),Test overlapping boxes.
+tests\unit/,test_geometry_utils.py,TestBboxOverlaps,test_non_overlapping_boxes,self,None (Inferred/Missing),Test non-overlapping boxes.
+tests\unit/,test_geometry_utils.py,TestBboxOverlaps,test_edge_touching_boxes,self,None (Inferred/Missing),Test boxes that touch at edges (no overlap).
+tests\unit/,test_geometry_utils.py,TestExpandBbox,test_expand_by_10_pixels,self,None (Inferred/Missing),Test expanding bbox by 10 pixels.
+tests\unit/,test_geometry_utils.py,TestExpandBbox,test_expand_near_zero,self,None (Inferred/Missing),Test expanding bbox near zero (shouldn't go negative).
+tests\unit/,test_geometry_utils.py,TestMergeBboxes,test_merge_two_boxes,self,None (Inferred/Missing),Test merging two bounding boxes.
+tests\unit/,test_geometry_utils.py,TestMergeBboxes,test_merge_overlapping_boxes,self,None (Inferred/Missing),Test merging overlapping boxes.
+tests\unit/,test_geometry_utils.py,TestMergeBboxes,test_merge_empty_list_raises_error,self,None (Inferred/Missing),Test that merging empty list raises error.
+tests\unit/,test_geometry_utils.py,TestNormalizeDenormalizeBbox,test_normalize_bbox,self,None (Inferred/Missing),"Test normalizing bbox to [0,1] coordinates."
+tests\unit/,test_geometry_utils.py,TestNormalizeDenormalizeBbox,test_denormalize_bbox,self,None (Inferred/Missing),Test denormalizing bbox back to pixel coordinates.
+tests\unit/,test_geometry_utils.py,TestNormalizeDenormalizeBbox,test_normalize_denormalize_round_trip,self,None (Inferred/Missing),Test that normalize->denormalize gives back original.
+tests\unit/,test_geometry_utils.py,TestClipBboxToImage,test_clip_bbox_outside_image,self,None (Inferred/Missing),Test clipping bbox that extends outside image.
+tests\unit/,test_geometry_utils.py,TestClipBboxToImage,test_clip_negative_coordinates,self,None (Inferred/Missing),Test clipping bbox with negative coordinates.
+tests\unit/,test_geometry_utils.py,TestClipBboxToImage,test_bbox_fully_inside_unchanged,self,None (Inferred/Missing),Test that bbox fully inside image is unchanged.
+tests\unit/,test_geometry_utils.py,TestCalculateAspectRatio,test_square_aspect_ratio,self,None (Inferred/Missing),Test aspect ratio of square.
+tests\unit/,test_geometry_utils.py,TestCalculateAspectRatio,test_horizontal_rectangle,self,None (Inferred/Missing),Test aspect ratio of horizontal rectangle.
+tests\unit/,test_geometry_utils.py,TestCalculateAspectRatio,test_vertical_rectangle,self,None (Inferred/Missing),Test aspect ratio of vertical rectangle.
+tests\unit/,test_geometry_utils.py,TestCalculateAspectRatio,test_zero_height_raises_error,self,None (Inferred/Missing),Test that zero height raises error.
+tests\unit/,test_geometry_utils.py,TestPointInBbox,test_point_inside,self,None (Inferred/Missing),Test point inside bbox.
+tests\unit/,test_geometry_utils.py,TestPointInBbox,test_point_outside,self,None (Inferred/Missing),Test point outside bbox.
+tests\unit/,test_geometry_utils.py,TestPointInBbox,test_point_on_edge,self,None (Inferred/Missing),Test point on bbox edge.
+tests\unit/,test_geometry_utils.py,TestScaleBbox,test_scale_up,self,None (Inferred/Missing),Test scaling bbox up.
+tests\unit/,test_geometry_utils.py,TestScaleBbox,test_scale_down,self,None (Inferred/Missing),Test scaling bbox down.
+tests\unit/,test_image_utils.py,TestTextNormalization,test_normalize_whitespace,self,None (Inferred/Missing),Test whitespace normalization.
+tests\unit/,test_image_utils.py,TestTextNormalization,test_normalize_text_basic,self,None (Inferred/Missing),Test basic text normalization.
+tests\unit/,test_image_utils.py,TestTextNormalization,test_normalize_technical_symbols_diameter,self,None (Inferred/Missing),Test diameter symbol normalization.
+tests\unit/,test_image_utils.py,TestTextNormalization,test_normalize_technical_symbols_tolerance,self,None (Inferred/Missing),Test tolerance symbol normalization.
+tests\unit/,test_image_utils.py,TestTextNormalization,test_normalize_technical_symbols_degree,self,None (Inferred/Missing),Test degree symbol normalization.
+tests\unit/,test_image_utils.py,TestTextNormalization,test_normalize_multiple_symbols,self,None (Inferred/Missing),Test normalizing multiple symbols.
+tests\unit/,test_image_utils.py,TestNumberExtraction,test_extract_single_number,self,None (Inferred/Missing),Test extracting single number.
+tests\unit/,test_image_utils.py,TestNumberExtraction,test_extract_multiple_numbers,self,None (Inferred/Missing),Test extracting multiple numbers.
+tests\unit/,test_image_utils.py,TestNumberExtraction,test_extract_negative_numbers,self,None (Inferred/Missing),Test extracting negative numbers.
+tests\unit/,test_image_utils.py,TestNumberExtraction,test_extract_scientific_notation,self,None (Inferred/Missing),Test extracting scientific notation.
+tests\unit/,test_image_utils.py,TestNumberExtraction,test_extract_no_numbers,self,None (Inferred/Missing),Test text with no numbers.
+tests\unit/,test_image_utils.py,TestDimensionParsing,test_extract_simple_dimension,self,None (Inferred/Missing),Test simple dimension extraction.
+tests\unit/,test_image_utils.py,TestDimensionParsing,test_extract_dimension_with_tolerance,self,None (Inferred/Missing),Test dimension with tolerance.
+tests\unit/,test_image_utils.py,TestDimensionParsing,test_extract_diameter_dimension,self,None (Inferred/Missing),Test diameter dimension.
+tests\unit/,test_image_utils.py,TestDimensionParsing,test_extract_dimension_inches,self,None (Inferred/Missing),Test inch dimension.
+tests\unit/,test_image_utils.py,TestDimensionParsing,test_extract_dimension_with_asymmetric_tolerance,self,None (Inferred/Missing),Test dimension with +/- tolerance.
+tests\unit/,test_image_utils.py,TestDimensionParsing,test_extract_dimension_no_space,self,None (Inferred/Missing),Test dimension without spaces.
+tests\unit/,test_image_utils.py,TestDimensionParsing,test_extract_dimension_invalid,self,Annotated (Check Docstring),Test invalid dimension returns None.
+tests\unit/,test_image_utils.py,TestUnitConversion,test_convert_mm_to_inch,self,None (Inferred/Missing),Test mm to inch conversion.
+tests\unit/,test_image_utils.py,TestUnitConversion,test_convert_inch_to_mm,self,None (Inferred/Missing),Test inch to mm conversion.
+tests\unit/,test_image_utils.py,TestUnitConversion,test_convert_cm_to_mm,self,None (Inferred/Missing),Test cm to mm conversion.
+tests\unit/,test_image_utils.py,TestUnitConversion,test_convert_m_to_mm,self,None (Inferred/Missing),Test m to mm conversion.
+tests\unit/,test_image_utils.py,TestUnitConversion,test_convert_kg_to_lb,self,None (Inferred/Missing),Test kg to lb conversion.
+tests\unit/,test_image_utils.py,TestUnitConversion,test_convert_lb_to_kg,self,None (Inferred/Missing),Test lb to kg conversion.
+tests\unit/,test_image_utils.py,TestUnitConversion,test_convert_same_unit,self,None (Inferred/Missing),Test converting to same unit.
+tests\unit/,test_image_utils.py,TestUnitConversion,test_convert_invalid_unit,self,None (Inferred/Missing),Test invalid unit conversion.
+tests\unit/,test_image_utils.py,TestUnitConversion,test_convert_incompatible_units,self,None (Inferred/Missing),Test incompatible unit conversion.
+tests\unit/,test_image_utils.py,TestToleranceParsing,test_parse_symmetric_tolerance,self,None (Inferred/Missing),Test symmetric tolerance parsing.
+tests\unit/,test_image_utils.py,TestToleranceParsing,test_parse_asymmetric_tolerance,self,None (Inferred/Missing),Test asymmetric tolerance parsing.
+tests\unit/,test_image_utils.py,TestToleranceParsing,test_parse_single_sided_tolerance,self,None (Inferred/Missing),Test single-sided tolerance.
+tests\unit/,test_image_utils.py,TestToleranceParsing,test_parse_no_tolerance,self,None (Inferred/Missing),Test text without tolerance.
+tests\unit/,test_image_utils.py,TestPartNumberExtraction,test_extract_standard_part_number,self,None (Inferred/Missing),Test standard part number format.
+tests\unit/,test_image_utils.py,TestPartNumberExtraction,test_extract_part_number_no_dashes,self,None (Inferred/Missing),Test part number without dashes.
+tests\unit/,test_image_utils.py,TestPartNumberExtraction,test_extract_multiple_candidates,self,None (Inferred/Missing),Test extracting multiple candidates.
+tests\unit/,test_image_utils.py,TestPartNumberExtraction,test_extract_part_number_with_revision,self,None (Inferred/Missing),Test part number with revision.
+tests\unit/,test_image_utils.py,TestPartNumberExtraction,test_extract_no_part_numbers,self,None (Inferred/Missing),Test text with no part numbers.
+tests\unit/,test_image_utils.py,TestOCRCleaning,test_clean_common_ocr_errors,self,None (Inferred/Missing),Test cleaning common OCR mistakes.
+tests\unit/,test_image_utils.py,TestOCRCleaning,test_clean_o_to_0,self,None (Inferred/Missing),Test O to 0 conversion in numbers.
+tests\unit/,test_image_utils.py,TestOCRCleaning,test_clean_i_to_1,self,None (Inferred/Missing),Test I to 1 conversion in numbers.
+tests\unit/,test_image_utils.py,TestOCRCleaning,test_clean_special_chars,self,None (Inferred/Missing),Test removing unwanted special characters.
+tests\unit/,test_image_utils.py,TestOCRCleaning,test_clean_preserves_technical_symbols,self,None (Inferred/Missing),Test that technical symbols are preserved.
+tests\unit/,test_image_utils.py,TestFuzzyMatching,test_fuzzy_match_exact,self,Annotated (Check Docstring),Test exact match returns 1.0.
+tests\unit/,test_image_utils.py,TestFuzzyMatching,test_fuzzy_match_similar,self,None (Inferred/Missing),Test similar strings have high similarity.
+tests\unit/,test_image_utils.py,TestFuzzyMatching,test_fuzzy_match_different,self,None (Inferred/Missing),Test different strings have low similarity.
+tests\unit/,test_image_utils.py,TestFuzzyMatching,test_fuzzy_match_case_insensitive,self,None (Inferred/Missing),Test case-insensitive matching.
+tests\unit/,test_image_utils.py,TestFuzzyMatching,test_fuzzy_match_with_typo,self,None (Inferred/Missing),Test matching with typo.
+tests\unit/,test_image_utils.py,TestComplexScenarios,test_parse_full_dimension_string,self,None (Inferred/Missing),Test parsing complete dimension specification.
+tests\unit/,test_image_utils.py,TestComplexScenarios,test_normalize_technical_drawing_text,self,None (Inferred/Missing),Test normalizing technical drawing text.
+tests\unit/,test_image_utils.py,TestComplexScenarios,test_extract_all_dimensions_from_text,self,None (Inferred/Missing),Test extracting multiple dimensions.
+tests\unit/,test_image_utils.py,TestComplexScenarios,test_clean_and_parse_ocr_output,self,None (Inferred/Missing),Test cleaning OCR output and parsing.
+tests\unit/,test_image_utils.py,TestEdgeCases,test_empty_string,self,None (Inferred/Missing),Test operations on empty string.
+tests\unit/,test_image_utils.py,TestEdgeCases,test_none_input,self,None (Inferred/Missing),Test None input handling.
+tests\unit/,test_image_utils.py,TestEdgeCases,test_very_long_string,self,None (Inferred/Missing),Test handling very long strings.
+tests\unit/,test_image_utils.py,TestEdgeCases,test_unicode_characters,self,None (Inferred/Missing),Test handling unicode characters.
+tests\unit/,test_image_utils.py,TestEdgeCases,test_special_number_formats,self,None (Inferred/Missing),Test special number formats.
+tests\unit/,test_ocr_pipeline.py,TestOCRPipelineInitialization,test_init_with_config,"self, ocr_config, mock_paddleocr, mock_easyocr",None (Inferred/Missing),Test initialization with configuration.
+tests\unit/,test_ocr_pipeline.py,TestOCRPipelineInitialization,test_init_with_default_config,"self, mock_paddleocr, mock_easyocr",None (Inferred/Missing),Test initialization with default configuration.
+tests\unit/,test_ocr_pipeline.py,TestOCRPipelineInitialization,test_init_engines_lazy_loading,"self, ocr_config, mock_paddleocr, mock_easyocr",None (Inferred/Missing),Test engines are lazily loaded.
+tests\unit/,test_ocr_pipeline.py,TestOCRPipelineInitialization,test_init_with_invalid_engine,self,None (Inferred/Missing),Test initialization with invalid engine name.
+tests\unit/,test_ocr_pipeline.py,TestPrimaryOCRExtraction,test_extract_text_success,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test successful text extraction with primary engine.
+tests\unit/,test_ocr_pipeline.py,TestPrimaryOCRExtraction,test_extract_text_high_confidence,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test extraction with all high-confidence results.
+tests\unit/,test_ocr_pipeline.py,TestPrimaryOCRExtraction,test_extract_text_empty_result,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test extraction with no text found.
+tests\unit/,test_ocr_pipeline.py,TestPrimaryOCRExtraction,test_extract_text_with_special_characters,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test extraction of technical symbols.
+tests\unit/,test_ocr_pipeline.py,TestFallbackOCR,test_fallback_triggered_low_confidence,"self, ocr_config, test_image, mock_paddleocr, mock_easyocr",None (Inferred/Missing),Test fallback is triggered for low confidence blocks.
+tests\unit/,test_ocr_pipeline.py,TestFallbackOCR,test_fallback_improves_result,"self, ocr_config, test_image, mock_paddleocr, mock_easyocr",None (Inferred/Missing),Test fallback improves low-confidence extraction.
+tests\unit/,test_ocr_pipeline.py,TestFallbackOCR,test_fallback_not_triggered_high_confidence,"self, ocr_config, test_image, mock_paddleocr, mock_easyocr",None (Inferred/Missing),Test fallback is NOT triggered for high confidence.
+tests\unit/,test_ocr_pipeline.py,TestFallbackOCR,test_fallback_multiple_blocks,"self, ocr_config, test_image, mock_paddleocr, mock_easyocr",None (Inferred/Missing),Test fallback on multiple low-confidence blocks.
+tests\unit/,test_ocr_pipeline.py,TestLayoutAnalysis,test_detect_title_block,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test title block detection.
+tests\unit/,test_ocr_pipeline.py,TestLayoutAnalysis,test_detect_table_region,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test table region detection.
+tests\unit/,test_ocr_pipeline.py,TestLayoutAnalysis,test_detect_text_region,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test general text region detection.
+tests\unit/,test_ocr_pipeline.py,TestLayoutAnalysis,test_classify_text_block_types,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test classification of text block types.
+tests\unit/,test_ocr_pipeline.py,TestLanguageDetection,test_detect_english,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test English language detection.
+tests\unit/,test_ocr_pipeline.py,TestLanguageDetection,test_explicit_language,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test extraction with explicit language.
+tests\unit/,test_ocr_pipeline.py,TestLanguageDetection,test_multilingual_support,"self, mock_paddleocr",None (Inferred/Missing),Test multilingual OCR configuration.
+tests\unit/,test_ocr_pipeline.py,TestConfidenceCalculation,test_average_confidence_calculation,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test average confidence calculation.
+tests\unit/,test_ocr_pipeline.py,TestConfidenceCalculation,test_confidence_threshold_filtering,"self, ocr_config, test_image, mock_paddleocr, mock_easyocr",None (Inferred/Missing),Test confidence threshold determines fallback.
+tests\unit/,test_ocr_pipeline.py,TestErrorHandling,test_primary_engine_failure,"self, ocr_config, test_image, mock_paddleocr, mock_easyocr",None (Inferred/Missing),Test fallback when primary engine fails.
+tests\unit/,test_ocr_pipeline.py,TestErrorHandling,test_both_engines_fail,"self, ocr_config, test_image, mock_paddleocr, mock_easyocr",None (Inferred/Missing),Test handling when both engines fail.
+tests\unit/,test_ocr_pipeline.py,TestErrorHandling,test_invalid_image_input,"self, ocr_config, mock_paddleocr",None (Inferred/Missing),Test handling of invalid image.
+tests\unit/,test_ocr_pipeline.py,TestErrorHandling,test_empty_image,"self, ocr_config, mock_paddleocr",None (Inferred/Missing),Test handling of empty image.
+tests\unit/,test_ocr_pipeline.py,TestTextBlockCreation,test_text_block_has_bbox,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test text blocks have bounding boxes.
+tests\unit/,test_ocr_pipeline.py,TestTextBlockCreation,test_text_block_has_id,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test text blocks have unique IDs.
+tests\unit/,test_ocr_pipeline.py,TestFullTextGeneration,test_full_text_generation,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test full text is concatenated correctly.
+tests\unit/,test_ocr_pipeline.py,TestFullTextGeneration,test_full_text_preserves_order,"self, ocr_config, test_image, mock_paddleocr",None (Inferred/Missing),Test full text preserves reading order.
+tests\unit/,test_pdf_processor.py,TestPDFProcessorInitialization,test_init_with_config,"self, pdf_config",None (Inferred/Missing),Test initialization with configuration.
+tests\unit/,test_pdf_processor.py,TestPDFProcessorInitialization,test_init_with_default_config,self,None (Inferred/Missing),Test initialization with default configuration.
+tests\unit/,test_pdf_processor.py,TestPDFValidation,test_validate_valid_pdf,"self, pdf_processor, tmp_path",None (Inferred/Missing),Test validation of valid PDF.
+tests\unit/,test_pdf_processor.py,TestPDFValidation,test_validate_nonexistent_pdf,"self, pdf_processor",None (Inferred/Missing),Test validation of non-existent file.
+tests\unit/,test_pdf_processor.py,TestPDFValidation,test_validate_too_large_pdf,"self, pdf_processor, tmp_path",None (Inferred/Missing),Test validation of oversized PDF.
+tests\unit/,test_pdf_processor.py,TestPDFValidation,test_validate_empty_pdf,"self, pdf_processor, tmp_path",None (Inferred/Missing),Test validation of empty file.
+tests\unit/,test_pdf_processor.py,TestPDFExtraction,test_extract_pages_success,"self, mock_fitz, pdf_processor, tmp_path",None (Inferred/Missing),Test successful page extraction.
+tests\unit/,test_pdf_processor.py,TestPDFExtraction,test_extract_pages_multiple_pages,"self, mock_fitz, pdf_processor, tmp_path",None (Inferred/Missing),Test extraction of multiple pages.
+tests\unit/,test_pdf_processor.py,TestPDFExtraction,test_extract_pages_too_many_pages,"self, pdf_processor, tmp_path",None (Inferred/Missing),Test handling of PDF with too many pages.
+tests\unit/,test_pdf_processor.py,TestPDFExtraction,test_extract_pages_encrypted,"self, pdf_processor, tmp_path",None (Inferred/Missing),Test handling of encrypted PDF.
+tests\unit/,test_pdf_processor.py,TestTextBlockExtraction,test_extract_embedded_text_success,"self, mock_fitz, pdf_processor, tmp_path",None (Inferred/Missing),Test successful embedded text extraction.
+tests\unit/,test_pdf_processor.py,TestTextBlockExtraction,test_extract_embedded_text_empty_page,"self, mock_fitz, pdf_processor, tmp_path",None (Inferred/Missing),Test extraction from page with no text.
+tests\unit/,test_pdf_processor.py,TestCoordinateConversion,test_pdf_bbox_to_pixel,"self, pdf_processor",None (Inferred/Missing),Test PDF coordinate to pixel conversion.
+tests\unit/,test_pdf_processor.py,TestCoordinateConversion,test_coordinate_scaling,"self, pdf_processor",None (Inferred/Missing),Test coordinate scaling with different DPI.
+tests\unit/,test_pdf_processor.py,TestGetPDFMetadata,test_get_metadata_success,"self, mock_fitz, pdf_processor, tmp_path",None (Inferred/Missing),Test successful metadata extraction.
+tests\unit/,test_pdf_processor.py,TestGetPDFMetadata,test_get_metadata_missing_fields,"self, mock_fitz, pdf_processor, tmp_path",None (Inferred/Missing),Test metadata extraction with missing fields.
+tests\unit/,test_pdf_processor.py,TestErrorHandling,test_extract_invalid_file,"self, pdf_processor",None (Inferred/Missing),Test extraction from invalid file.
+tests\unit/,test_pdf_processor.py,TestErrorHandling,test_extract_corrupted_pdf,"self, mock_fitz, pdf_processor, tmp_path",None (Inferred/Missing),Test handling of corrupted PDF.
+tests\unit/,test_pdf_processor.py,TestErrorHandling,test_extract_render_failure,"self, mock_fitz, pdf_processor, tmp_path",None (Inferred/Missing),Test handling of page render failure.
+tests\unit/,test_pdf_processor.py,TestConfigurationOptions,test_different_dpi_settings,self,None (Inferred/Missing),Test processing with different DPI settings.
+tests\unit/,test_pdf_processor.py,TestConfigurationOptions,test_grayscale_conversion,self,None (Inferred/Missing),Test grayscale conversion setting.
+tests\unit/,test_quality_scorer.py,TestQualityScorerInitialization,test_init_with_config,"self, quality_config",None (Inferred/Missing),Test initialization with configuration.
+tests\unit/,test_quality_scorer.py,TestQualityScorerInitialization,test_init_with_default_config,self,None (Inferred/Missing),Test initialization with default configuration.
+tests\unit/,test_quality_scorer.py,TestConfidenceCalculation,test_calculate_drawing_confidence,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test basic confidence calculation.
+tests\unit/,test_quality_scorer.py,TestConfidenceCalculation,test_weighted_confidence_formula,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test weighted confidence calculation.
+tests\unit/,test_quality_scorer.py,TestConfidenceCalculation,test_confidence_with_validation_penalty,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test confidence with validation penalty applied.
+tests\unit/,test_quality_scorer.py,TestConfidenceCalculation,test_confidence_zero_detections,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test confidence with no detections.
+tests\unit/,test_quality_scorer.py,TestConfidenceCalculation,test_confidence_zero_entities,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test confidence with no entities.
+tests\unit/,test_quality_scorer.py,TestConfidenceCalculation,test_confidence_clamped_to_range,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),"Test confidence is clamped to [0, 1]."
+tests\unit/,test_quality_scorer.py,TestReviewFlagGeneration,test_generate_review_flags_no_issues,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test flag generation with no issues.
+tests\unit/,test_quality_scorer.py,TestReviewFlagGeneration,test_flag_low_confidence,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test low confidence flag generation.
+tests\unit/,test_quality_scorer.py,TestReviewFlagGeneration,test_flag_critical_low_confidence,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test critical low confidence flag.
+tests\unit/,test_quality_scorer.py,TestReviewFlagGeneration,test_flag_missing_entities,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test missing entities flag.
+tests\unit/,test_quality_scorer.py,TestReviewFlagGeneration,test_flag_missing_shapes,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test missing shapes flag.
+tests\unit/,test_quality_scorer.py,TestReviewFlagGeneration,test_flag_critical_field_missing,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test critical field missing flag.
+tests\unit/,test_quality_scorer.py,TestReviewFlagGeneration,test_flag_validation_issues,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test validation issues flag.
+tests\unit/,test_quality_scorer.py,TestReviewFlagGeneration,test_flag_processing_error,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test processing error flag.
+tests\unit/,test_quality_scorer.py,TestReviewFlagGeneration,test_multiple_flags,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test generation of multiple flags.
+tests\unit/,test_quality_scorer.py,TestCompletenessScore,test_assess_completeness,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test basic completeness assessment.
+tests\unit/,test_quality_scorer.py,TestCompletenessScore,test_completeness_has_part_number,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test completeness recognizes part number.
+tests\unit/,test_quality_scorer.py,TestCompletenessScore,test_completeness_missing_part_number,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test completeness detects missing part number.
+tests\unit/,test_quality_scorer.py,TestCompletenessScore,test_completeness_has_dimensions,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test completeness recognizes dimensions.
+tests\unit/,test_quality_scorer.py,TestCompletenessScore,test_completeness_has_shapes,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test completeness recognizes shapes.
+tests\unit/,test_quality_scorer.py,TestCompletenessScore,test_completeness_has_title_block,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test completeness recognizes title block.
+tests\unit/,test_quality_scorer.py,TestCompletenessScore,test_completeness_by_category,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test completeness breakdown by category.
+tests\unit/,test_quality_scorer.py,TestCompletenessScore,test_completeness_weighted_score,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test completeness uses weighted scoring.
+tests\unit/,test_quality_scorer.py,TestCompletenessScore,test_completeness_minimal_data,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test completeness with minimal data.
+tests\unit/,test_quality_scorer.py,TestReviewDecision,test_needs_review_low_confidence,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test needs review due to low confidence.
+tests\unit/,test_quality_scorer.py,TestReviewDecision,test_needs_review_critical_flag,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test needs review due to critical flag.
+tests\unit/,test_quality_scorer.py,TestReviewDecision,test_needs_review_high_severity,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test needs review due to high severity issue.
+tests\unit/,test_quality_scorer.py,TestReviewDecision,test_no_review_needed,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test no review needed for good quality result.
+tests\unit/,test_quality_scorer.py,TestCriticalEntityChecks,test_check_critical_entities_present,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test checking when critical entities present.
+tests\unit/,test_quality_scorer.py,TestCriticalEntityChecks,test_check_multiple_critical_entities,"self, quality_scorer, sample_processing_result",None (Inferred/Missing),Test checking multiple critical entity types.
+tests\unit/,test_quality_scorer.py,TestEdgeCases,test_calculate_confidence_no_data,"self, quality_scorer",None (Inferred/Missing),Test confidence calculation with no data.
+tests\unit/,test_quality_scorer.py,TestEdgeCases,test_generate_flags_failed_result,"self, quality_scorer",None (Inferred/Missing),Test flag generation for failed processing.
+tests\unit/,test_quality_scorer.py,TestConfigurationOptions,test_custom_review_threshold,"self, sample_processing_result",None (Inferred/Missing),Test custom review threshold.
+tests\unit/,test_quality_scorer.py,TestConfigurationOptions,test_custom_weights,"self, sample_processing_result",None (Inferred/Missing),Test custom confidence weights.
+tests\unit/,test_quality_scorer.py,TestConfigurationOptions,test_disable_critical_entity_flag,"self, sample_processing_result",None (Inferred/Missing),Test disabling critical entity flagging.
+tests\unit/,test_shape_detector.py,TestShapeDetectorInitialization,test_init_with_config,"self, detection_config, mock_yolo",None (Inferred/Missing),Test initialization with configuration.
+tests\unit/,test_shape_detector.py,TestShapeDetectorInitialization,test_init_with_default_config,"self, tmp_path, mock_yolo",None (Inferred/Missing),Test initialization with default configuration.
+tests\unit/,test_shape_detector.py,TestShapeDetectorInitialization,test_init_loads_model,"self, detection_config, mock_yolo",None (Inferred/Missing),Test model is loaded on initialization.
+tests\unit/,test_shape_detector.py,TestShapeDetectorInitialization,test_init_sets_device,"self, detection_config, mock_yolo",None (Inferred/Missing),Test device is set correctly.
+tests\unit/,test_shape_detector.py,TestShapeDetectorInitialization,test_init_invalid_model_path,"self, mock_yolo",None (Inferred/Missing),Test initialization with invalid model path.
+tests\unit/,test_shape_detector.py,TestSingleImageDetection,test_detect_shapes_success,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test successful shape detection.
+tests\unit/,test_shape_detector.py,TestSingleImageDetection,test_detect_multiple_shapes,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test detection of multiple shapes.
+tests\unit/,test_shape_detector.py,TestSingleImageDetection,test_detect_no_shapes,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test detection with no shapes found.
+tests\unit/,test_shape_detector.py,TestSingleImageDetection,test_detect_shapes_creates_bbox,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test detection creates proper bounding boxes.
+tests\unit/,test_shape_detector.py,TestBatchDetection,test_detect_shapes_batch,"self, detection_config, mock_yolo",None (Inferred/Missing),Test batch detection on multiple images.
+tests\unit/,test_shape_detector.py,TestBatchDetection,test_batch_processing_efficiency,"self, detection_config, mock_yolo",None (Inferred/Missing),Test batch processing is more efficient than sequential.
+tests\unit/,test_shape_detector.py,TestConfidenceFiltering,test_filter_by_confidence_threshold,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test filtering detections by confidence.
+tests\unit/,test_shape_detector.py,TestConfidenceFiltering,test_custom_confidence_filter,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test filtering with custom threshold.
+tests\unit/,test_shape_detector.py,TestNMS,test_nms_removes_duplicates,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test NMS removes duplicate detections.
+tests\unit/,test_shape_detector.py,TestNMS,test_nms_threshold,"self, detection_config, mock_yolo",None (Inferred/Missing),Test NMS threshold configuration.
+tests\unit/,test_shape_detector.py,TestBboxNormalization,test_normalized_bbox_creation,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test normalized bbox is created.
+tests\unit/,test_shape_detector.py,TestBboxNormalization,test_normalized_coordinates_range,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),"Test normalized coordinates are in [0, 1] range."
+tests\unit/,test_shape_detector.py,TestComponentClasses,test_detect_fasteners,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test detection of fastener types.
+tests\unit/,test_shape_detector.py,TestComponentClasses,test_detect_mechanical_components,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test detection of mechanical components.
+tests\unit/,test_shape_detector.py,TestDetectionSummary,test_summary_statistics,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test summary contains correct statistics.
+tests\unit/,test_shape_detector.py,TestDetectionSummary,test_summary_average_confidence,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test average confidence calculation.
+tests\unit/,test_shape_detector.py,TestDetectionSummary,test_summary_confidence_distribution,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test confidence distribution in summary.
+tests\unit/,test_shape_detector.py,TestDeviceHandling,test_cpu_device,"self, tmp_path, mock_yolo",None (Inferred/Missing),Test CPU device configuration.
+tests\unit/,test_shape_detector.py,TestDeviceHandling,test_cuda_device,"self, tmp_path, mock_yolo",None (Inferred/Missing),Test CUDA device configuration.
+tests\unit/,test_shape_detector.py,TestInferenceTime,test_inference_time_recorded,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test inference time is recorded.
+tests\unit/,test_shape_detector.py,TestErrorHandling,test_invalid_image_input,"self, detection_config, mock_yolo",None (Inferred/Missing),Test handling of invalid image.
+tests\unit/,test_shape_detector.py,TestErrorHandling,test_model_inference_failure,"self, detection_config, test_image, mock_yolo",None (Inferred/Missing),Test handling of inference failure.
+tests\unit/,test_shape_detector.py,TestErrorHandling,test_empty_batch,"self, detection_config, mock_yolo",None (Inferred/Missing),Test handling of empty batch.
+tests\unit/,test_shape_detector.py,TestModelInfo,test_get_model_info,"self, detection_config, mock_yolo",None (Inferred/Missing),Test getting model information.
+tests\unit/,test_text_utils.py,TestTextNormalization,test_normalize_whitespace,self,None (Inferred/Missing),Test whitespace normalization.
+tests\unit/,test_text_utils.py,TestTextNormalization,test_normalize_text_basic,self,None (Inferred/Missing),Test basic text normalization.
+tests\unit/,test_text_utils.py,TestTextNormalization,test_normalize_technical_symbols_diameter,self,None (Inferred/Missing),Test diameter symbol normalization.
+tests\unit/,test_text_utils.py,TestTextNormalization,test_normalize_technical_symbols_tolerance,self,None (Inferred/Missing),Test tolerance symbol normalization.
+tests\unit/,test_text_utils.py,TestTextNormalization,test_normalize_technical_symbols_degree,self,None (Inferred/Missing),Test degree symbol normalization.
+tests\unit/,test_text_utils.py,TestTextNormalization,test_normalize_multiple_symbols,self,None (Inferred/Missing),Test normalizing multiple symbols.
+tests\unit/,test_text_utils.py,TestNumberExtraction,test_extract_single_number,self,None (Inferred/Missing),Test extracting single number.
+tests\unit/,test_text_utils.py,TestNumberExtraction,test_extract_multiple_numbers,self,None (Inferred/Missing),Test extracting multiple numbers.
+tests\unit/,test_text_utils.py,TestNumberExtraction,test_extract_negative_numbers,self,None (Inferred/Missing),Test extracting negative numbers.
+tests\unit/,test_text_utils.py,TestNumberExtraction,test_extract_scientific_notation,self,None (Inferred/Missing),Test extracting scientific notation.
+tests\unit/,test_text_utils.py,TestNumberExtraction,test_extract_no_numbers,self,None (Inferred/Missing),Test text with no numbers.
+tests\unit/,test_text_utils.py,TestDimensionParsing,test_extract_simple_dimension,self,None (Inferred/Missing),Test simple dimension extraction.
+tests\unit/,test_text_utils.py,TestDimensionParsing,test_extract_dimension_with_tolerance,self,None (Inferred/Missing),Test dimension with tolerance.
+tests\unit/,test_text_utils.py,TestDimensionParsing,test_extract_diameter_dimension,self,None (Inferred/Missing),Test diameter dimension.
+tests\unit/,test_text_utils.py,TestDimensionParsing,test_extract_dimension_inches,self,None (Inferred/Missing),Test inch dimension.
+tests\unit/,test_text_utils.py,TestDimensionParsing,test_extract_dimension_with_asymmetric_tolerance,self,None (Inferred/Missing),Test dimension with +/- tolerance.
+tests\unit/,test_text_utils.py,TestDimensionParsing,test_extract_dimension_no_space,self,None (Inferred/Missing),Test dimension without spaces.
+tests\unit/,test_text_utils.py,TestDimensionParsing,test_extract_dimension_invalid,self,Annotated (Check Docstring),Test invalid dimension returns None.
+tests\unit/,test_text_utils.py,TestUnitConversion,test_convert_mm_to_inch,self,None (Inferred/Missing),Test mm to inch conversion.
+tests\unit/,test_text_utils.py,TestUnitConversion,test_convert_inch_to_mm,self,None (Inferred/Missing),Test inch to mm conversion.
+tests\unit/,test_text_utils.py,TestUnitConversion,test_convert_cm_to_mm,self,None (Inferred/Missing),Test cm to mm conversion.
+tests\unit/,test_text_utils.py,TestUnitConversion,test_convert_m_to_mm,self,None (Inferred/Missing),Test m to mm conversion.
+tests\unit/,test_text_utils.py,TestUnitConversion,test_convert_kg_to_lb,self,None (Inferred/Missing),Test kg to lb conversion.
+tests\unit/,test_text_utils.py,TestUnitConversion,test_convert_lb_to_kg,self,None (Inferred/Missing),Test lb to kg conversion.
+tests\unit/,test_text_utils.py,TestUnitConversion,test_convert_same_unit,self,None (Inferred/Missing),Test converting to same unit.
+tests\unit/,test_text_utils.py,TestUnitConversion,test_convert_invalid_unit,self,None (Inferred/Missing),Test invalid unit conversion.
+tests\unit/,test_text_utils.py,TestUnitConversion,test_convert_incompatible_units,self,None (Inferred/Missing),Test incompatible unit conversion.
+tests\unit/,test_text_utils.py,TestToleranceParsing,test_parse_symmetric_tolerance,self,None (Inferred/Missing),Test symmetric tolerance parsing.
+tests\unit/,test_text_utils.py,TestToleranceParsing,test_parse_asymmetric_tolerance,self,None (Inferred/Missing),Test asymmetric tolerance parsing.
+tests\unit/,test_text_utils.py,TestToleranceParsing,test_parse_single_sided_tolerance,self,None (Inferred/Missing),Test single-sided tolerance.
+tests\unit/,test_text_utils.py,TestToleranceParsing,test_parse_no_tolerance,self,None (Inferred/Missing),Test text without tolerance.
+tests\unit/,test_text_utils.py,TestPartNumberExtraction,test_extract_standard_part_number,self,None (Inferred/Missing),Test standard part number format.
+tests\unit/,test_text_utils.py,TestPartNumberExtraction,test_extract_part_number_no_dashes,self,None (Inferred/Missing),Test part number without dashes.
+tests\unit/,test_text_utils.py,TestPartNumberExtraction,test_extract_multiple_candidates,self,None (Inferred/Missing),Test extracting multiple candidates.
+tests\unit/,test_text_utils.py,TestPartNumberExtraction,test_extract_part_number_with_revision,self,None (Inferred/Missing),Test part number with revision.
+tests\unit/,test_text_utils.py,TestPartNumberExtraction,test_extract_no_part_numbers,self,None (Inferred/Missing),Test text with no part numbers.
+tests\unit/,test_text_utils.py,TestOCRCleaning,test_clean_common_ocr_errors,self,None (Inferred/Missing),Test cleaning common OCR mistakes.
+tests\unit/,test_text_utils.py,TestOCRCleaning,test_clean_o_to_0,self,None (Inferred/Missing),Test O to 0 conversion in numbers.
+tests\unit/,test_text_utils.py,TestOCRCleaning,test_clean_i_to_1,self,None (Inferred/Missing),Test I to 1 conversion in numbers.
+tests\unit/,test_text_utils.py,TestOCRCleaning,test_clean_special_chars,self,None (Inferred/Missing),Test removing unwanted special characters.
+tests\unit/,test_text_utils.py,TestOCRCleaning,test_clean_preserves_technical_symbols,self,None (Inferred/Missing),Test that technical symbols are preserved.
+tests\unit/,test_text_utils.py,TestFuzzyMatching,test_fuzzy_match_exact,self,Annotated (Check Docstring),Test exact match returns 1.0.
+tests\unit/,test_text_utils.py,TestFuzzyMatching,test_fuzzy_match_similar,self,None (Inferred/Missing),Test similar strings have high similarity.
+tests\unit/,test_text_utils.py,TestFuzzyMatching,test_fuzzy_match_different,self,None (Inferred/Missing),Test different strings have low similarity.
+tests\unit/,test_text_utils.py,TestFuzzyMatching,test_fuzzy_match_case_insensitive,self,None (Inferred/Missing),Test case-insensitive matching.
+tests\unit/,test_text_utils.py,TestFuzzyMatching,test_fuzzy_match_with_typo,self,None (Inferred/Missing),Test matching with typo.
+tests\unit/,test_text_utils.py,TestComplexScenarios,test_parse_full_dimension_string,self,None (Inferred/Missing),Test parsing complete dimension specification.
+tests\unit/,test_text_utils.py,TestComplexScenarios,test_normalize_technical_drawing_text,self,None (Inferred/Missing),Test normalizing technical drawing text.
+tests\unit/,test_text_utils.py,TestComplexScenarios,test_extract_all_dimensions_from_text,self,None (Inferred/Missing),Test extracting multiple dimensions.
+tests\unit/,test_text_utils.py,TestComplexScenarios,test_clean_and_parse_ocr_output,self,None (Inferred/Missing),Test cleaning OCR output and parsing.
+tests\unit/,test_text_utils.py,TestEdgeCases,test_empty_string,self,None (Inferred/Missing),Test operations on empty string.
+tests\unit/,test_text_utils.py,TestEdgeCases,test_none_input,self,None (Inferred/Missing),Test None input handling.
+tests\unit/,test_text_utils.py,TestEdgeCases,test_very_long_string,self,None (Inferred/Missing),Test handling very long strings.
+tests\unit/,test_text_utils.py,TestEdgeCases,test_unicode_characters,self,None (Inferred/Missing),Test handling unicode characters.
+tests\unit/,test_text_utils.py,TestEdgeCases,test_special_number_formats,self,None (Inferred/Missing),Test special number formats.
+tests\unit/,test_validation_utils.py,TestPDFValidation,test_validate_valid_pdf,"self, tmp_path",None (Inferred/Missing),Test validation of valid PDF file.
+tests\unit/,test_validation_utils.py,TestPDFValidation,test_validate_nonexistent_pdf,self,None (Inferred/Missing),Test validation of non-existent file.
+tests\unit/,test_validation_utils.py,TestPDFValidation,test_validate_non_pdf_file,"self, tmp_path",None (Inferred/Missing),Test validation of non-PDF file.
+tests\unit/,test_validation_utils.py,TestPDFValidation,test_validate_empty_pdf,"self, tmp_path",None (Inferred/Missing),Test validation of empty file.
+tests\unit/,test_validation_utils.py,TestPDFValidation,test_validate_pdf_max_size,"self, tmp_path",None (Inferred/Missing),Test PDF file size validation.
+tests\unit/,test_validation_utils.py,TestImageValidation,test_validate_valid_rgb_image,self,None (Inferred/Missing),Test validation of valid RGB image.
+tests\unit/,test_validation_utils.py,TestImageValidation,test_validate_valid_grayscale_image,self,None (Inferred/Missing),Test validation of valid grayscale image.
+tests\unit/,test_validation_utils.py,TestImageValidation,test_validate_invalid_shape,self,None (Inferred/Missing),Test validation of invalid image shape.
+tests\unit/,test_validation_utils.py,TestImageValidation,test_validate_invalid_dtype,self,None (Inferred/Missing),Test validation of invalid dtype.
+tests\unit/,test_validation_utils.py,TestImageValidation,test_validate_invalid_channels,self,None (Inferred/Missing),Test validation of invalid channel count.
+tests\unit/,test_validation_utils.py,TestImageValidation,test_validate_empty_image,self,None (Inferred/Missing),Test validation of empty image.
+tests\unit/,test_validation_utils.py,TestImageValidation,test_validate_min_dimensions,self,None (Inferred/Missing),Test validation of minimum dimensions.
+tests\unit/,test_validation_utils.py,TestImageValidation,test_validate_max_dimensions,self,None (Inferred/Missing),Test validation of maximum dimensions.
+tests\unit/,test_validation_utils.py,TestBboxValidation,test_validate_valid_bbox,self,None (Inferred/Missing),Test validation of valid bbox.
+tests\unit/,test_validation_utils.py,TestBboxValidation,test_validate_negative_coordinates,self,None (Inferred/Missing),Test bbox with negative coordinates.
+tests\unit/,test_validation_utils.py,TestBboxValidation,test_validate_zero_dimensions,self,None (Inferred/Missing),Test bbox with zero dimensions.
+tests\unit/,test_validation_utils.py,TestBboxValidation,test_validate_bbox_exceeds_image,self,None (Inferred/Missing),Test bbox exceeding image bounds.
+tests\unit/,test_validation_utils.py,TestBboxValidation,test_validate_bbox_partially_outside,self,None (Inferred/Missing),Test bbox partially outside image.
+tests\unit/,test_validation_utils.py,TestBboxValidation,test_validate_bbox_at_edge,self,None (Inferred/Missing),Test bbox at image edge (should be valid).
+tests\unit/,test_validation_utils.py,TestConfidenceValidation,test_validate_valid_confidence,self,None (Inferred/Missing),Test valid confidence scores.
+tests\unit/,test_validation_utils.py,TestConfidenceValidation,test_validate_negative_confidence,self,None (Inferred/Missing),Test negative confidence.
+tests\unit/,test_validation_utils.py,TestConfidenceValidation,test_validate_confidence_above_one,self,None (Inferred/Missing),Test confidence above 1.0.
+tests\unit/,test_validation_utils.py,TestConfidenceValidation,test_validate_confidence_boundary,self,None (Inferred/Missing),Test confidence at boundaries.
+tests\unit/,test_validation_utils.py,TestConfidenceValidation,test_validate_confidence_non_numeric,self,None (Inferred/Missing),Test non-numeric confidence.
+tests\unit/,test_validation_utils.py,TestEntityTypeValidation,test_validate_valid_entity_type,self,None (Inferred/Missing),Test valid entity types.
+tests\unit/,test_validation_utils.py,TestEntityTypeValidation,test_validate_entity_type_string,self,None (Inferred/Missing),Test entity type as string.
+tests\unit/,test_validation_utils.py,TestEntityTypeValidation,test_validate_invalid_entity_type,self,None (Inferred/Missing),Test invalid entity type.
+tests\unit/,test_validation_utils.py,TestEntityTypeValidation,test_validate_entity_type_case_insensitive,self,None (Inferred/Missing),Test case-insensitive entity type validation.
+tests\unit/,test_validation_utils.py,TestAPIKeyValidation,test_validate_openai_key_format,self,None (Inferred/Missing),Test OpenAI API key format.
+tests\unit/,test_validation_utils.py,TestAPIKeyValidation,test_validate_anthropic_key_format,self,None (Inferred/Missing),Test Anthropic API key format.
+tests\unit/,test_validation_utils.py,TestAPIKeyValidation,test_validate_google_key_format,self,None (Inferred/Missing),Test Google API key format.
+tests\unit/,test_validation_utils.py,TestAPIKeyValidation,test_validate_empty_api_key,self,None (Inferred/Missing),Test empty API key.
+tests\unit/,test_validation_utils.py,TestAPIKeyValidation,test_validate_invalid_format,self,None (Inferred/Missing),Test invalid API key format.
+tests\unit/,test_validation_utils.py,TestAPIKeyValidation,test_validate_unknown_provider,self,None (Inferred/Missing),Test unknown provider.
+tests\unit/,test_validation_utils.py,TestDrawingIDValidation,test_validate_valid_drawing_id,self,None (Inferred/Missing),Test valid drawing ID format.
+tests\unit/,test_validation_utils.py,TestDrawingIDValidation,test_validate_drawing_id_with_prefix,self,None (Inferred/Missing),Test drawing ID with correct prefix.
+tests\unit/,test_validation_utils.py,TestDrawingIDValidation,test_validate_drawing_id_invalid_format,self,None (Inferred/Missing),Test invalid drawing ID format.
+tests\unit/,test_validation_utils.py,TestDrawingIDValidation,test_validate_drawing_id_empty,self,None (Inferred/Missing),Test empty drawing ID.
+tests\unit/,test_validation_utils.py,TestDrawingIDValidation,test_validate_drawing_id_special_chars,self,None (Inferred/Missing),Test drawing ID with special characters.
+tests\unit/,test_validation_utils.py,TestFileSizeValidation,test_validate_file_within_limit,"self, tmp_path",None (Inferred/Missing),Test file within size limit.
+tests\unit/,test_validation_utils.py,TestFileSizeValidation,test_validate_file_exceeds_limit,"self, tmp_path",None (Inferred/Missing),Test file exceeding size limit.
+tests\unit/,test_validation_utils.py,TestFileSizeValidation,test_validate_nonexistent_file,self,None (Inferred/Missing),Test validation of non-existent file.
+tests\unit/,test_validation_utils.py,TestFileSizeValidation,test_validate_zero_size_file,"self, tmp_path",None (Inferred/Missing),Test empty file.
+tests\unit/,test_validation_utils.py,TestModelPathValidation,test_validate_existing_model,"self, tmp_path",None (Inferred/Missing),Test validation of existing model file.
+tests\unit/,test_validation_utils.py,TestModelPathValidation,test_validate_nonexistent_model,self,None (Inferred/Missing),Test validation of non-existent model.
+tests\unit/,test_validation_utils.py,TestModelPathValidation,test_validate_model_extension,"self, tmp_path",None (Inferred/Missing),Test model file extension validation.
+tests\unit/,test_validation_utils.py,TestModelPathValidation,test_validate_model_size,"self, tmp_path",None (Inferred/Missing),Test model file size validation.
+tests\unit/,test_validation_utils.py,TestComplexValidations,test_validate_multiple_bboxes,self,None (Inferred/Missing),Test validating multiple bboxes.
+tests\unit/,test_validation_utils.py,TestComplexValidations,test_validate_bbox_overlap,self,None (Inferred/Missing),Test bboxes that overlap.
+tests\unit/,test_validation_utils.py,TestComplexValidations,test_validate_full_pipeline_data,self,None (Inferred/Missing),Test validating complete pipeline data.
+tests\unit/,test_validation_utils.py,TestEdgeCases,test_validate_none_inputs,self,None (Inferred/Missing),Test None inputs.
+tests\unit/,test_validation_utils.py,TestEdgeCases,test_validate_extreme_values,self,None (Inferred/Missing),Test extreme values.
+tests\unit/,test_validation_utils.py,TestEdgeCases,test_validate_float_bbox_coordinates,self,None (Inferred/Missing),Test bbox with float coordinates.
+tests\utils/,test_helpers.py,MockLLMGateway,verify_ocr,"self, image_crop, ocr_text, drawing_id, region_type",None (Inferred/Missing),Mock OCR verification.
+tests\utils/,test_helpers.py,MockLLMGateway,extract_entities_llm,"self, text, context, entity_types, drawing_id",None (Inferred/Missing),Mock entity extraction.

@@ -1,0 +1,192 @@
+Folder<~>File Name<~>Function Name<~>Function Arguments<~>Function Return<~>Function Responsibility
+scripts/<~>codebase_analyzer.py<~>get_docstring_summary<~>node: Any<~>str<~>N/A (Missing Docstring)
+scripts/<~>codebase_analyzer.py<~>get_function_arguments<~>node: ast.FunctionDef<~>str<~>N/A (Missing Docstring)
+scripts/<~>codebase_analyzer.py<~>get_return_annotation<~>node: ast.FunctionDef<~>str<~>N/A (Missing Docstring)
+scripts/<~>codebase_analyzer.py<~>set_parents<~>node: ast.AST, parent: ast.AST<~>None (Inferred/Missing)<~>Recursively set 'parent' attribute for all child nodes.
+scripts/<~>codebase_analyzer.py<~>extract_info_from_file<~>file_path: Path<~>Tuple[List[List[str]], List[List[str]], List[List[str]]]<~>N/A (Missing Docstring)
+scripts/<~>codebase_analyzer.py<~>analyze_project_structure<~>root_dir: Path<~>Tuple[List[List[str]], List[List[str]], List[List[str]]]<~>N/A (Missing Docstring)
+scripts/<~>codebase_analyzer.py<~>write_data_to_csv<~>filepath: str, header: List[str], data: List[List[str]]<~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+scripts/<~>codebase_analyzer.py<~>generate_documentation_csvs<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+scripts/<~>Codebase_analyzer_v2.py<~>get_docstring_summary<~>node: Any<~>str<~>N/A (Missing Docstring)
+scripts/<~>Codebase_analyzer_v2.py<~>get_function_arguments<~>node: ast.FunctionDef<~>str<~>N/A (Missing Docstring)
+scripts/<~>Codebase_analyzer_v2.py<~>get_return_annotation<~>node: ast.FunctionDef<~>str<~>N/A (Missing Docstring)
+scripts/<~>Codebase_analyzer_v2.py<~>set_parents<~>node: ast.AST, parent: ast.AST<~>None (Inferred/Missing)<~>Recursively set 'parent' attribute for all child nodes.
+scripts/<~>Codebase_analyzer_v2.py<~>extract_info_from_file<~>file_path: Path<~>Tuple[List[List[str]], List[List[str]], List[List[str]]]<~>N/A (Missing Docstring)
+scripts/<~>Codebase_analyzer_v2.py<~>analyze_project_structure<~>root_dir: Path<~>Tuple[List[List[str]], List[List[str]], List[List[str]]]<~>N/A (Missing Docstring)
+scripts/<~>Codebase_analyzer_v2.py<~>write_data_to_txt<~>filepath: str, header: List[str], data: List[List[str]]<~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+scripts/<~>Codebase_analyzer_v2.py<~>generate_documentation_txts<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+scripts/<~>download_models.py<~>download_file<~>url: str, destination: Path<~>None (Inferred/Missing)<~>Download file with progress bar.
+scripts/<~>generate_folder_tree.py<~>_human_size<~>num: int<~>str<~>Return a human-readable size for file display.
+scripts/<~>generate_folder_tree.py<~>_get_metadata<~>path: Path, show_sizes: bool<~>str<~>Return status metadata (size / item count / empty markers).
+scripts/<~>generate_folder_tree.py<~>_tree_generator<~>path: Path, prefix: str, is_last: bool, show_sizes: bool, target_column: int<~>Iterator[str]<~>Recursively yield aligned tree lines.
+scripts/<~>generate_folder_tree.py<~>generate_clean_tree<~>project_dir: str, output_file: str, show_sizes: bool<~>None<~>Generate pretty directory tree and save to file.
+scripts/<~>generate_folder_tree.py<~>main<~><~>None (Inferred/Missing)<~>Main function. Parses command-line arguments, using defaults for direct execution.
+scripts/<~>generate_folder_tree_V2.py<~>_human_size<~>num: int<~>str<~>Return a human-readable size for file display.
+scripts/<~>generate_folder_tree_V2.py<~>_is_empty<~>path: Path<~>Tuple[bool, str]<~>Checks if a path is considered empty and returns the emptiness status string.
+scripts/<~>generate_folder_tree_V2.py<~>_get_metadata<~>path: Path, show_sizes: bool<~>str<~>Return status metadata (size / item count / empty markers).
+scripts/<~>generate_folder_tree_V2.py<~>_tree_generator<~>path: Path, prefix: str, is_last: bool, show_sizes: bool, empty_only: bool, target_column: int<~>Iterator[str]<~>Recursively yield aligned tree lines.
+scripts/<~>generate_folder_tree_V2.py<~>generate_clean_tree<~>project_dir: str, output_file: str, show_sizes: bool, empty_only: bool<~>None<~>Generate pretty directory tree and save to file.
+scripts/<~>generate_folder_tree_V2.py<~>main<~><~>None (Inferred/Missing)<~>Main function. Parses command-line arguments, using defaults for direct execution.
+scripts/<~>setup_environment.py<~>print_header<~>message: str<~>None (Inferred/Missing)<~>Print formatted header.
+scripts/<~>setup_environment.py<~>check_python_version<~><~>None (Inferred/Missing)<~>Check Python version.
+scripts/<~>setup_environment.py<~>create_directories<~><~>None (Inferred/Missing)<~>Create required directories.
+scripts/<~>setup_environment.py<~>install_dependencies<~><~>None (Inferred/Missing)<~>Install Python dependencies.
+scripts/<~>setup_environment.py<~>setup_configuration<~><~>None (Inferred/Missing)<~>Setup configuration files.
+scripts/<~>setup_environment.py<~>setup_environment_variables<~><~>None (Inferred/Missing)<~>Guide user through environment variable setup.
+scripts/<~>setup_environment.py<~>download_models_prompt<~><~>None (Inferred/Missing)<~>Prompt user to download models.
+scripts/<~>setup_environment.py<~>run_tests<~><~>None (Inferred/Missing)<~>Run test suite.
+scripts/<~>setup_environment.py<~>print_summary<~><~>None (Inferred/Missing)<~>Print setup summary.
+scripts/<~>setup_environment.py<~>main<~><~>None (Inferred/Missing)<~>Run complete setup.
+scripts/<~>validate_installation.py<~>check_python_version<~><~>None (Inferred/Missing)<~>Check Python version.
+scripts/<~>validate_installation.py<~>check_dependencies<~><~>None (Inferred/Missing)<~>Check required packages.
+scripts/<~>validate_installation.py<~>check_structure<~><~>None (Inferred/Missing)<~>Check directory structure.
+tests/<~>conftest.py<~>test_config<~><~>None (Inferred/Missing)<~>Create test configuration.
+tests/<~>conftest.py<~>temp_dir<~><~>None (Inferred/Missing)<~>Create temporary directory for test.
+tests/<~>conftest.py<~>test_db<~>temp_dir<~>None (Inferred/Missing)<~>Create test database.
+tests/<~>conftest.py<~>sample_image<~><~>None (Inferred/Missing)<~>Create sample test image.
+tests/<~>conftest.py<~>sample_bbox<~><~>None (Inferred/Missing)<~>Create sample bounding box.
+tests/<~>conftest.py<~>sample_text_block<~><~>None (Inferred/Missing)<~>Create sample text block.
+tests/<~>conftest.py<~>sample_entity<~><~>None (Inferred/Missing)<~>Create sample entity.
+tests/<~>conftest.py<~>sample_detection<~><~>None (Inferred/Missing)<~>Create sample detection.
+tests/<~>conftest.py<~>sample_association<~><~>None (Inferred/Missing)<~>Create sample association.
+tests/<~>conftest.py<~>sample_processing_result<~><~>None (Inferred/Missing)<~>Create sample processing result.
+tests/<~>conftest.py<~>mock_llm_gateway<~><~>None (Inferred/Missing)<~>Create mock LLM gateway for testing.
+tests/<~>conftest.py<~>reset_test_environment<~>temp_dir<~>None (Inferred/Missing)<~>Reset test environment before each test.
+tests/<~>conftest.py<~>pytest_configure<~>config<~>None (Inferred/Missing)<~>Configure custom pytest markers.
+tests/<~>test_model_registry.py<~>test_get_model<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+tests/<~>test_model_registry.py<~>test_cost_calculation<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+src\drawing_intelligence\cli/<~>main.py<~>setup_logging<~>log_level: str<~>None (Inferred/Missing)<~>Setup logging configuration.
+src\drawing_intelligence\cli/<~>main.py<~>main<~><~>int<~>Main CLI entry point.
+src\drawing_intelligence\cli/<~>main.py<~>command_process<~>args: argparse.Namespace<~>int<~>Handle 'process' command for single drawing.
+src\drawing_intelligence\cli/<~>main.py<~>command_batch<~>args: argparse.Namespace<~>int<~>Handle 'batch' command for multiple drawings.
+src\drawing_intelligence\cli/<~>main.py<~>command_export<~>args: argparse.Namespace<~>int<~>Handle 'export' command.
+src\drawing_intelligence\cli/<~>main.py<~>command_cost_report<~>args: argparse.Namespace<~>int<~>Handle 'cost-report' command.
+src\drawing_intelligence\cli/<~>main.py<~>command_validate_config<~>args: argparse.Namespace<~>int<~>Handle 'validate-config' command.
+src\drawing_intelligence\cli/<~>main.py<~>command_list_drawings<~>args: argparse.Namespace<~>int<~>Handle 'list' command to query drawings.
+src\drawing_intelligence\cli/<~>main.py<~>setup_argument_parser<~><~>argparse.ArgumentParser<~>Setup CLI argument parser.
+src\drawing_intelligence\cli/<~>main.py<~>display_progress<~>current: int, total: int, drawing_id: str<~>None<~>Display progress bar for batch processing.
+src\drawing_intelligence\cli/<~>main.py<~>print_result_summary<~>result<~>None<~>Print summary of processing result to console.
+src\drawing_intelligence\processing/<~>hierarchy_builder.py<~>build_node<~>node_id: str, visited: Set[str]<~>Dict<~>N/A (Missing Docstring)
+src\drawing_intelligence\utils/<~>error_handlers.py<~>handle_processing_error<~>error: Exception, context: Dict[str, Any], logger: Optional[logging.Logger]<~>Tuple[bool, str]<~>Generic error handler with logging and recovery decision.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>log_error_with_context<~>error: Exception, logger: logging.Logger, context: Dict[str, Any]<~>None<~>Log error with full context for debugging.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>create_error_report<~>error: Exception, processing_result: Optional[Any]<~>Dict[str, Any]<~>Create structured error report for storage/analysis.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>wrap_with_error_handling<~>func<~>None (Inferred/Missing)<~>Decorator to add error handling to functions.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>is_retriable_error<~>error: Exception<~>bool<~>Determine if an error should trigger a retry.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>get_retry_delay<~>attempt: int, base_delay: float<~>float<~>Calculate retry delay using exponential backoff.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>wrapper<~>*args, **kwargs<~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+src\drawing_intelligence\utils/<~>file_utils.py<~>ensure_directory<~>path: str<~>None<~>Create directory if it doesn't exist, including parent directories.
+src\drawing_intelligence\utils/<~>file_utils.py<~>get_file_hash<~>file_path: str, algorithm: str<~>str<~>Calculate hash of file contents.
+src\drawing_intelligence\utils/<~>file_utils.py<~>get_file_size_mb<~>file_path: str<~>float<~>Get file size in megabytes.
+src\drawing_intelligence\utils/<~>file_utils.py<~>list_files<~>directory: str, extension: Optional[str], recursive: bool<~>List[str]<~>List files in directory with optional filtering.
+src\drawing_intelligence\utils/<~>file_utils.py<~>safe_filename<~>filename: str, max_length: int<~>str<~>Sanitize filename for safe filesystem use.
+src\drawing_intelligence\utils/<~>file_utils.py<~>generate_unique_id<~>prefix: str<~>str<~>Generate unique ID with optional prefix.
+src\drawing_intelligence\utils/<~>file_utils.py<~>copy_file_with_backup<~>source: str, destination: str<~>None<~>Copy file, backing up destination if it exists.
+src\drawing_intelligence\utils/<~>file_utils.py<~>get_relative_path<~>path: str, base_dir: str<~>str<~>Get path relative to base directory.
+src\drawing_intelligence\utils/<~>file_utils.py<~>split_path_components<~>path: str<~>Tuple[str, str, str]<~>Split path into directory, filename, and extension.
+src\drawing_intelligence\utils/<~>file_utils.py<~>ensure_file_extension<~>filename: str, extension: str<~>str<~>Ensure filename has the correct extension.
+src\drawing_intelligence\utils/<~>file_utils.py<~>is_path_safe<~>path: str, base_dir: str<~>bool<~>Check if path is safe (doesn't escape base directory).
+src\drawing_intelligence\utils/<~>file_utils.py<~>atomic_write<~>file_path: str, content: str, encoding: str<~>None<~>Write file atomically using temporary file and rename.
+src\drawing_intelligence\utils/<~>file_utils.py<~>get_available_disk_space<~>path: str<~>float<~>Get available disk space in GB for the filesystem containing path.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>calculate_iou<~>bbox1: BoundingBox, bbox2: BoundingBox<~>float<~>Calculate Intersection over Union between two bounding boxes.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>calculate_distance<~>point1: Tuple[int, int], point2: Tuple[int, int]<~>float<~>Calculate Euclidean distance between two points.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>bbox_contains<~>outer: BoundingBox, inner: BoundingBox<~>bool<~>Check if inner bounding box is completely inside outer bounding box.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>bbox_overlaps<~>bbox1: BoundingBox, bbox2: BoundingBox<~>bool<~>Check if two bounding boxes overlap.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>expand_bbox<~>bbox: BoundingBox, pixels: int<~>BoundingBox<~>Expand bounding box by N pixels in all directions.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>merge_bboxes<~>bboxes: List[BoundingBox]<~>BoundingBox<~>Merge multiple bounding boxes into single bounding box.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>calculate_bbox_center<~>bbox: BoundingBox<~>Tuple[int, int]<~>Calculate center point of bounding box.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>normalize_bbox<~>bbox: BoundingBox, image_width: int, image_height: int<~>NormalizedBBox<~>Normalize bounding box to [0, 1] coordinates relative to image size.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>denormalize_bbox<~>norm_bbox: NormalizedBBox, image_width: int, image_height: int<~>BoundingBox<~>Convert normalized bounding box back to pixel coordinates.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>clip_bbox_to_image<~>bbox: BoundingBox, image_width: int, image_height: int<~>BoundingBox<~>Clip bounding box to image boundaries.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>bbox_intersection<~>bbox1: BoundingBox, bbox2: BoundingBox<~>Tuple[int, int, int, int]<~>Calculate intersection rectangle of two bounding boxes.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>calculate_aspect_ratio<~>bbox: BoundingBox<~>float<~>Calculate aspect ratio of bounding box.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>point_in_bbox<~>point: Tuple[int, int], bbox: BoundingBox<~>bool<~>Check if a point is inside a bounding box.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>bbox_distance<~>bbox1: BoundingBox, bbox2: BoundingBox<~>float<~>Calculate minimum distance between two bounding boxes.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>scale_bbox<~>bbox: BoundingBox, scale_factor: float<~>BoundingBox<~>Scale bounding box by a factor around its center.
+src\drawing_intelligence\utils/<~>image_utils.py<~>encode_image_base64<~>image: np.ndarray, format: str<~>str<~>Encode numpy image to base64 string.
+src\drawing_intelligence\utils/<~>image_utils.py<~>decode_image_base64<~>base64_string: str<~>np.ndarray<~>Decode base64 string to numpy image.
+src\drawing_intelligence\utils/<~>image_utils.py<~>resize_image<~>image: np.ndarray, max_width: int, max_height: int, maintain_aspect: bool<~>np.ndarray<~>Resize image to fit within dimensions.
+src\drawing_intelligence\utils/<~>image_utils.py<~>crop_image<~>image: np.ndarray, bbox: 'BoundingBox'<~>np.ndarray<~>Crop image using bounding box.
+src\drawing_intelligence\utils/<~>image_utils.py<~>draw_bboxes<~>image: np.ndarray, bboxes: List['BoundingBox'], labels: Optional[List[str]], colors: Optional[List[Tuple[int, int, int]]], thickness: int, font_scale: float<~>np.ndarray<~>Draw bounding boxes on image for visualization.
+src\drawing_intelligence\utils/<~>image_utils.py<~>calculate_image_hash<~>image: np.ndarray, hash_size: int<~>str<~>Calculate perceptual hash of image (average hash algorithm).
+src\drawing_intelligence\utils/<~>image_utils.py<~>images_are_similar<~>image1: np.ndarray, image2: np.ndarray, threshold: float<~>bool<~>Check if two images are similar using perceptual hashing.
+src\drawing_intelligence\utils/<~>image_utils.py<~>calculate_md5_hash<~>image: np.ndarray<~>str<~>Calculate MD5 hash of image data (exact match, not perceptual).
+src\drawing_intelligence\utils/<~>image_utils.py<~>pad_image<~>image: np.ndarray, target_width: int, target_height: int, pad_value: int<~>np.ndarray<~>Pad image to target size with specified value.
+src\drawing_intelligence\utils/<~>image_utils.py<~>create_thumbnail<~>image: np.ndarray, max_size: int<~>np.ndarray<~>Create thumbnail of image with max dimension.
+src\drawing_intelligence\utils/<~>image_utils.py<~>concatenate_images<~>images: List[np.ndarray], orientation: str, spacing: int, background_color: Tuple[int, int, int]<~>np.ndarray<~>Concatenate multiple images with spacing.
+src\drawing_intelligence\utils/<~>text_utils.py<~>normalize_whitespace<~>text: str<~>str<~>Normalize multiple spaces, tabs, newlines to single space.
+src\drawing_intelligence\utils/<~>text_utils.py<~>remove_special_characters<~>text: str, keep: Optional[str]<~>str<~>Remove special characters, optionally keeping some.
+src\drawing_intelligence\utils/<~>text_utils.py<~>extract_numbers<~>text: str<~>List[float]<~>Extract all numeric values from text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>detect_measurement_unit<~>text: str<~>Optional[str]<~>Detect measurement unit in text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>convert_unit<~>value: float, from_unit: str, to_unit: str<~>float<~>Convert between measurement units.
+src\drawing_intelligence\utils/<~>text_utils.py<~>fuzzy_match<~>text1: str, text2: str, threshold: float<~>bool<~>Fuzzy string matching using sequence matcher.
+src\drawing_intelligence\utils/<~>text_utils.py<~>extract_pattern<~>text: str, pattern: str<~>Optional[str]<~>Extract first match of regex pattern from text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>normalize_technical_symbols<~>text: str<~>str<~>Normalize technical symbols to readable text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>extract_dimension_value<~>text: str<~>Optional[Dict[str, any]]<~>Extract dimension value with tolerance and unit from text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>split_camel_case<~>text: str<~>str<~>Split camelCase or PascalCase text into words.
+src\drawing_intelligence\utils/<~>text_utils.py<~>remove_duplicate_spaces<~>text: str<~>str<~>Remove duplicate spaces while preserving single spaces.
+src\drawing_intelligence\utils/<~>text_utils.py<~>truncate_text<~>text: str, max_length: int, suffix: str<~>str<~>Truncate text to maximum length with suffix.
+src\drawing_intelligence\utils/<~>text_utils.py<~>extract_part_number_candidates<~>text: str<~>List[str]<~>Extract potential part numbers from text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>clean_ocr_text<~>text: str<~>str<~>Clean common OCR errors and artifacts.
+src\drawing_intelligence\utils/<~>text_utils.py<~>extract_words<~>text: str, min_length: int<~>List[str]<~>Extract words from text, filtering by minimum length.
+src\drawing_intelligence\utils/<~>text_utils.py<~>is_numeric_text<~>text: str<~>bool<~>Check if text is primarily numeric.
+src\drawing_intelligence\utils/<~>text_utils.py<~>normalize_line_endings<~>text: str<~>str<~>Normalize line endings to Unix style (LF).
+src\drawing_intelligence\utils/<~>text_utils.py<~>capitalize_first_letter<~>text: str<~>str<~>Capitalize first letter of text, leaving rest unchanged.
+src\drawing_intelligence\utils/<~>text_utils.py<~>count_words<~>text: str<~>int<~>Count number of words in text.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_pdf_file<~>file_path: str<~>Tuple[bool, str]<~>Validate PDF file exists and is readable.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_image_array<~>image: np.ndarray<~>Tuple[bool, str]<~>Validate numpy array is a valid image.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_bbox<~>bbox: 'BoundingBox', image_width: int, image_height: int<~>bool<~>Validate bounding box is within image bounds and has positive dimensions.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_confidence_score<~>score: float<~>bool<~>Validate confidence score is in valid range [0.0, 1.0].
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_entity_type<~>entity_type: str<~>bool<~>Validate entity type is recognized.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_api_key<~>provider: str, api_key: str<~>Tuple[bool, str]<~>Validate API key format for provider.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_drawing_id<~>drawing_id: str<~>bool<~>Validate drawing ID format.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_file_size<~>file_path: str, max_size_mb: float<~>Tuple[bool, str]<~>Validate file size is within limit.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_directory_writable<~>directory: str<~>Tuple[bool, str]<~>Validate directory exists and is writable.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_model_path<~>model_path: str<~>Tuple[bool, str]<~>Validate model file exists and has correct extension.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_coordinate<~>x: int, y: int, max_x: int, max_y: int<~>bool<~>Validate coordinate is within bounds.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_percentage<~>value: float<~>bool<~>Validate value is a valid percentage (0-100).
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_email<~>email: str<~>bool<~>Validate email address format.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_url<~>url: str<~>bool<~>Validate URL format.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_color<~>color: Tuple[int, int, int]<~>bool<~>Validate BGR color tuple.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_json_serializable<~>obj: any<~>Tuple[bool, str]<~>Validate object is JSON serializable.
+tests\fixtures/<~>generate_fixtures.py<~>generate_test_image<~>output_path: str, size<~>None (Inferred/Missing)<~>Generate a test engineering drawing image with text and shapes.
+tests\fixtures/<~>generate_fixtures.py<~>generate_test_pdf<~>output_path: str<~>None (Inferred/Missing)<~>Generate a test engineering drawing PDF.
+tests\fixtures/<~>generate_fixtures.py<~>generate_all_fixtures<~><~>None (Inferred/Missing)<~>Generate all test fixtures.
+tests\performance/<~>benchmark_pipeline.py<~>run_full_benchmark<~><~>None (Inferred/Missing)<~>Run complete benchmark suite.
+tests\unit/<~>test_data_associator.py<~>associator_config<~><~>None (Inferred/Missing)<~>Create test configuration.
+tests\unit/<~>test_data_associator.py<~>associator<~>associator_config<~>None (Inferred/Missing)<~>Create DataAssociator instance.
+tests\unit/<~>test_data_associator.py<~>sample_text_blocks<~><~>None (Inferred/Missing)<~>Create sample text blocks.
+tests\unit/<~>test_data_associator.py<~>sample_detections<~><~>None (Inferred/Missing)<~>Create sample detections.
+tests\unit/<~>test_entity_extractor.py<~>entity_config<~><~>None (Inferred/Missing)<~>Create test configuration.
+tests\unit/<~>test_entity_extractor.py<~>entity_extractor<~>entity_config<~>None (Inferred/Missing)<~>Create EntityExtractor instance.
+tests\unit/<~>test_entity_extractor.py<~>sample_ocr_result<~><~>None (Inferred/Missing)<~>Create sample OCR result.
+tests\unit/<~>test_export_manager.py<~>export_config<~><~>None (Inferred/Missing)<~>Create export configuration.
+tests\unit/<~>test_export_manager.py<~>test_db<~>tmp_path<~>None (Inferred/Missing)<~>Create test database.
+tests\unit/<~>test_export_manager.py<~>export_manager<~>test_db, export_config<~>None (Inferred/Missing)<~>Create ExportManager instance.
+tests\unit/<~>test_file_utils.py<~>tmp_path<~>tmpdir<~>None (Inferred/Missing)<~>Provide temporary directory for tests.
+tests\unit/<~>test_ocr_pipeline.py<~>ocr_config<~><~>None (Inferred/Missing)<~>Create test OCR configuration.
+tests\unit/<~>test_ocr_pipeline.py<~>test_image<~><~>None (Inferred/Missing)<~>Create test image with text.
+tests\unit/<~>test_ocr_pipeline.py<~>mock_paddleocr<~><~>None (Inferred/Missing)<~>Create mock PaddleOCR engine.
+tests\unit/<~>test_ocr_pipeline.py<~>mock_easyocr<~><~>None (Inferred/Missing)<~>Create mock EasyOCR engine.
+tests\unit/<~>test_pdf_processor.py<~>pdf_config<~><~>None (Inferred/Missing)<~>Create test PDF configuration.
+tests\unit/<~>test_pdf_processor.py<~>pdf_processor<~>pdf_config<~>None (Inferred/Missing)<~>Create PDF processor instance.
+tests\unit/<~>test_quality_scorer.py<~>quality_config<~><~>None (Inferred/Missing)<~>Create test quality configuration.
+tests\unit/<~>test_quality_scorer.py<~>quality_scorer<~>quality_config<~>None (Inferred/Missing)<~>Create quality scorer instance.
+tests\unit/<~>test_quality_scorer.py<~>sample_processing_result<~><~>None (Inferred/Missing)<~>Create sample processing result for testing.
+tests\unit/<~>test_shape_detector.py<~>detection_config<~>tmp_path<~>None (Inferred/Missing)<~>Create test detection configuration.
+tests\unit/<~>test_shape_detector.py<~>test_image<~><~>None (Inferred/Missing)<~>Create test image.
+tests\unit/<~>test_shape_detector.py<~>mock_yolo<~><~>None (Inferred/Missing)<~>Create mock YOLO model.
+tests\utils/<~>test_helpers.py<~>setup_test_database<~><~>DatabaseManager<~>Create temporary test database.
+tests\utils/<~>test_helpers.py<~>cleanup_test_database<~>db: DatabaseManager<~>None<~>Clean up test database.
+tests\utils/<~>test_helpers.py<~>create_test_config<~><~>Config<~>Create test configuration.
+tests\utils/<~>test_helpers.py<~>assert_bbox_equal<~>bbox1: BoundingBox, bbox2: BoundingBox, tolerance: int<~>None<~>Assert two bounding boxes are equal within tolerance.
+tests\utils/<~>test_helpers.py<~>assert_confidence_in_range<~>confidence: float, min_val: float, max_val: float<~>None<~>Assert confidence score is in valid range.
+tests\utils/<~>test_helpers.py<~>load_test_image<~>filename: str<~>np.ndarray<~>Load test image from fixtures directory.
+tests\utils/<~>test_helpers.py<~>load_test_pdf<~>filename: str<~>str<~>Load test PDF from fixtures directory.
+tests\utils/<~>test_helpers.py<~>compare_images_similar<~>img1: np.ndarray, img2: np.ndarray, threshold: float<~>bool<~>Compare if two images are similar.
+tests\utils/<~>test_helpers.py<~>create_temp_directory<~><~>str<~>Create temporary directory for testing.
+tests\utils/<~>test_helpers.py<~>cleanup_temp_directory<~>temp_dir: str<~>None<~>Remove temporary directory.
+tests\utils/<~>test_helpers.py<~>assert_processing_result_valid<~>result<~>None<~>Assert processing result has valid structure.
+tests\utils/<~>test_helpers.py<~>mock_ocr_response<~>confidence: float<~>dict<~>Create mock OCR response.
+tests\utils/<~>test_helpers.py<~>mock_detection_response<~>class_name: str, confidence: float<~>dict<~>Create mock detection response.
+tests\utils/<~>test_helpers.py<~>skip_if_no_gpu<~><~>None (Inferred/Missing)<~>Skip test if GPU not available.
+tests\utils/<~>test_helpers.py<~>skip_if_no_llm<~><~>None (Inferred/Missing)<~>Skip test if LLM not configured.
