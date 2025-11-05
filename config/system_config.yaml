@@ -1,5 +1,5 @@
 # config/system_config.yaml
-# Updated configuration with standardized model naming
+# Updated configuration with standardized model naming and relative paths for cross-platform compatibility
 
 system:
   name: "Engineering Drawing Intelligence System"
@@ -7,13 +7,13 @@ system:
   environment: "production"  # development, staging, production
   
 paths:
-  data_dir: "/data"
-  models_dir: "/models"
-  output_dir: "/output"
-  temp_dir: "/tmp/drawing_processing"
+  data_dir: "data"  # Changed from /data
+  models_dir: "src/drawing_intelligence/models/weights"  # Changed from /models
+  output_dir: "data/output"  # Changed from /output
+  temp_dir: "tmp/drawing_processing"  # Changed from /tmp/drawing_processing
   
 database:
-  path: "/data/drawings.db"
+  path: "data/drawings.db"  # Changed from /data/drawings.db
   backup_enabled: true
   backup_frequency_hours: 24
   
@@ -47,10 +47,10 @@ entity_extraction:
   use_spacy: true
   confidence_threshold: 0.80
   normalize_units: true
-  oem_dictionary_path: "/config/oem_names.txt"
+  oem_dictionary_path: "config/oem_names.txt"  # Changed from /config/oem_names.txt
   
 shape_detection:
-  model_path: "/models/yolov8s_engineering_v1.0/weights/best.pt"
+  model_path: "src/drawing_intelligence/models/weights/yolov8s_engineering_v1.0/best.pt"  # Changed from /models/yolov8s_engineering_v1.0/weights/best.pt
   confidence_threshold: 0.45
   nms_threshold: 0.45
   device: "cuda"  # cuda, cpu, mps
@@ -192,7 +192,7 @@ batch_processing:
     
     # Batch-level: Save every N drawings in batch processing
     batch_checkpoint_frequency: 10  # Save state every N drawings
-    batch_checkpoint_dir: "/tmp/checkpoints"
+    batch_checkpoint_dir: "tmp/checkpoints"  # Changed from /tmp/checkpoints
   
   continue_on_error: true
   max_retries_per_drawing: 2
@@ -204,7 +204,7 @@ export:
   
 logging:
   level: "INFO"  # DEBUG, INFO, WARNING, ERROR
-  log_dir: "/logs"
+  log_dir: "logs"  # Changed from /logs
   rotate_size_mb: 100
   rotate_count: 10
   log_to_console: true

@@ -1,0 +1,50 @@
+name: "ocr_verification"
+version: "v1.1"
+description: "Correct OCR errors in low-confidence text regions"
+use_case: "OCR_VERIFICATION"
+recommended_model: "claude-3-sonnet-20240229"
+token_budget: 2000
+temperature: 0.0
+
+variables:
+  - ocr_text
+  - region_type
+  - image_base64
+
+template: |
+  You are an OCR correction expert specializing in engineering drawings. Review and correct the OCR output.
+  
+  Region Type: {region_type}
+  OCR Output: {ocr_text}
+  
+  [Image of the text region is attached]
+  
+  Tasks:
+  1. Identify OCR errors (common mistakes: O→0, I→1, l→1, S→5)
+  2. Correct the text while preserving technical notation
+  3. Maintain formatting (dimensions, part numbers, symbols)
+  4. Provide confidence score for correction
+  
+  Technical symbols to preserve:
+  - Ø (diameter)
+  - ± (plus/minus tolerance)
+  - ° (degrees)
+  - Fractions and decimals
+  
+  Respond in JSON format:
+  {
+    "corrected_text": "Corrected version",
+    "confidence": 0.0-1.0,
+    "errors_found": ["list of corrections made"],
+    "reasoning": "Explanation of corrections"
+  }
+
+response_format:
+  type: "json_object"
+
+supports_vision: true
+
+metadata:
+  priority: "HIGH"
+  cost_tier: 1
+  typical_response_tokens: 300

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch Processing Report - {{ batch_id }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 24px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+
+        .header {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .meta-info {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-card.success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .summary-card.warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .summary-card.info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .summary-card h3 {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .summary-card .value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .summary-card .subtext {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .chart-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .confidence-bar {
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            transition: width 0.3s ease;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Batch Processing Report</h1>
+            <div class="meta-info">
+                <strong>Batch ID:</strong> {{ batch_id }}<br>
+                <strong>Generated:</strong> {{ generation_time }}<br>
+            </div>
+        </div>
+
+        <h2>Summary</h2>
+        <div class="summary-grid">
+            <div class="summary-card info">
+                <h3>Total Drawings</h3>
+                <div class="value">{{ total_drawings }}</div>
+            </div>
+
+            <div class="summary-card success">
+                <h3>Successful</h3>
+                <div class="value">{{ successful }}</div>
+                <div class="subtext">{{ "%.1f"|format(success_rate) }}% success rate</div>
+            </div>
+
+            <div class="summary-card warning">
+                <h3>Needs Review</h3>
+                <div class="value">{{ needs_review }}</div>
+                <div class="subtext">{{ "%.1f"|format(review_rate) }}% review rate</div>
+            </div>
+
+            <div class="summary-card">
+                <h3>Failed</h3>
+                <div class="value">{{ failed }}</div>
+            </div>
+        </div>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>Total LLM Cost</h3>
+                <div class="value">${{ "%.2f"|format(total_llm_cost) }}</div>
+            </div>
+
+            <div class="summary-card">
+                <h3>Avg Processing Time</h3>
+                <div class="value">{{ "%.1f"|format(average_processing_time) }}s</div>
+            </div>
+        </div>
+
+        {% if confidence_chart %}
+        <h2>Confidence Distribution</h2>
+        <div class="chart-container">
+            <img src="{{ confidence_chart }}" alt="Confidence Distribution">
+        </div>
+        {% endif %}
+
+        {% if status_chart %}
+        <h2>Processing Status</h2>
+        <div class="chart-container">
+            <img src="{{ status_chart }}" alt="Processing Status">
+        </div>
+        {% endif %}
+
+        {% if drawings %}
+        <h2>Drawing Details</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Drawing ID</th>
+                    <th>Source File</th>
+                    <th>Confidence</th>
+                    <th>Status</th>
+                    <th>Entities</th>
+                    <th>Detections</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for drawing in drawings %}
+                <tr>
+                    <td><code>{{ drawing.drawing_id[:20] }}...</code></td>
+                    <td>{{ drawing.source_file }}</td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span>{{ "%.2f"|format(drawing.confidence) }}</span>
+                            <div class="confidence-bar" style="width: 100px;">
+                                <div class="confidence-fill" style="width: {{ (drawing.confidence * 100)|int }}%;">
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        {% if drawing.needs_review %}
+                        <span class="status-badge status-warning">Needs Review</span>
+                        {% else %}
+                        <span class="status-badge status-success">Complete</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ drawing.entity_count }}</td>
+                    <td>{{ drawing.detection_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <div class="footer">
+            <p>Generated by Drawing Intelligence System</p>
+        </div>
+    </div>
+</body>
+
+</html>

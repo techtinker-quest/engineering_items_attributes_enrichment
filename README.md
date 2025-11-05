@@ -16,6 +16,7 @@ AI-powered system for extracting structured data from engineering PDF drawings u
 
 1. **Clone and navigate to project**
 ``````bash
+git clone 
 cd engineering_items_attributes_enrichment
 ``````
 

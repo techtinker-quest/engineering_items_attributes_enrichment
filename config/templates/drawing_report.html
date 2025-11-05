@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing Report - {{ drawing_id }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 600;
+            border-bottom: 3px solid #9b59b6;
+            padding-bottom: 10px;
+        }
+
+        .header {
+            border-bottom: 3px solid #9b59b6;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .meta-info {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 10px;
+            line-height: 1.8;
+        }
+
+        .meta-info strong {
+            color: #2c3e50;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 15px;
+            margin-right: 10px;
+        }
+
+        .status-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .status-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .confidence-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .confidence-score {
+            font-size: 72px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .confidence-label {
+            font-size: 18px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #9b59b6;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-card strong {
+            display: block;
+            color: #7f8c8d;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .info-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        thead {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        th {
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .alert {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 5px solid;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-warning {
+            border-color: #f39c12;
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe8a1 100%);
+        }
+
+        .alert-error {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        }
+
+        .alert-info {
+            border-color: #3498db;
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+        }
+
+        .alert strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .alert em {
+            display: block;
+            margin-top: 10px;
+            font-style: italic;
+            color: #555;
+        }
+
+        .entity-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-right: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .confidence-bar {
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .section-summary {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .summary-value {
+            color: #7f8c8d;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #e74c3c;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 Drawing Analysis Report</h1>
+            <div class="meta-info">
+                <strong>Drawing ID:</strong> <code>{{ drawing_id }}</code><br>
+                <strong>Source File:</strong> {{ source_file }}<br>
+                <strong>Processing Time:</strong> {{ processing_timestamp }}<br>
+                <strong>Status:</strong> {{ status }}
+
+                {% if needs_review %}
+                <span class="status-badge status-warning">⚠️ Needs Review</span>
+                {% else %}
+                <span class="status-badge status-success">✅ Complete</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <h2>Overall Confidence</h2>
+        <div class="confidence-section">
+            <div class="confidence-label">Overall Extraction Confidence</div>
+            <div class="confidence-score">{{ "%.1f"|format(overall_confidence * 100) }}%</div>
+            <div class="confidence-label">
+                {% if overall_confidence >= 0.85 %}
+                Excellent Quality
+                {% elif overall_confidence >= 0.75 %}
+                Good Quality
+                {% elif overall_confidence >= 0.60 %}
+                Fair Quality
+                {% else %}
+                Needs Improvement
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <strong>Entities Extracted</strong>
+                <div class="value">{{ entities|length }}</div>
+            </div>
+            <div class="info-card">
+                <strong>Shapes Detected</strong>
+                <div class="value">{{ detections|length }}</div>
+            </div>
+            {% if entity_counts %}
+            <div class="info-card">
+                <strong>Entity Types</strong>
+                <div class="value">{{ entity_counts|length }}</div>
+            </div>
+            {% endif %}
+            {% if detection_counts %}
+            <div class="info-card">
+                <strong>Shape Classes</strong>
+                <div class="value">{{ detection_counts|length }}</div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if review_flags %}
+        <h2>Review Flags</h2>
+        {% for flag in review_flags %}
+        <div
+            class="alert {% if flag.severity == 'CRITICAL' %}alert-error{% elif flag.severity == 'HIGH' %}alert-warning{% else %}alert-info{% endif %}">
+            <strong>[{{ flag.severity }}] {{ flag.type }}</strong>
+            <div>{{ flag.reason }}</div>
+            <em>Suggested Action: {{ flag.action }}</em>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if entities %}
+        <h2>Extracted Entities</h2>
+
+        {% if entity_counts %}
+        <div class="section-summary">
+            <h3 style="margin-top: 0; margin-bottom: 15px; color: #2c3e50;">Entity Type Summary</h3>
+            {% for entity_type, count in entity_counts.items() %}
+            <div class="summary-item">
+                <span class="summary-label">{{ entity_type }}</span>
+                <span class="summary-value">{{ count }} found</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Confidence</th>
+                    <th>Method</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities[:30] %}
+                <tr>
+                    <td>
+                        <span class="entity-badge">{{ entity.type }}</span>
+                    </td>
+                    <td><strong>{{ entity.value }}</strong></td>
+                    <td>
+                        <div>{{ "%.2f"|format(entity.confidence) }}</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: {{ (entity.confidence * 100)|int }}%;"></div>
+                        </div>
+                    </td>
+                    <td><code>{{ entity.method }}</code></td>
+                </tr>
+                {% endfor %}
+                {% if entities|length > 30 %}
+                <tr>
+                    <td colspan="4" style="text-align: center; font-style: italic; color: #7f8c8d;">
+                        ... and {{ entities|length - 30 }} more entities
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        {% else %}
+        <h2>Extracted Entities</h2>
+        <div class="no-data">No entities extracted from this drawing</div>
+        {% endif %}
+
+        {% if detections %}
+        <h2>Detected Shapes</h2>
+
+        {% if detection_counts %}
+        <div class="section-summary">
+            <h3 style="margin-top: 0; margin-bottom: 15px; color: #2c3e50;">Shape Class Summary</h3>
+            {% for shape_class, count in detection_counts.items() %}
+            <div class="summary-item">
+                <span class="summary-label">{{ shape_class }}</span>
+                <span class="summary-value">{{ count }} detected</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Component Class</th>
+                    <th>Confidence</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set shape_summary = {} %}
+                {% for detection in detections %}
+                {% if detection.class not in shape_summary %}
+                {% set _ = shape_summary.update({detection.class: {'count': 1, 'confidences': [detection.confidence]}})
+                %}
+                {% else %}
+                {% set _ = shape_summary[detection.class]['count'].__add__(1) %}
+                {% set _ = shape_summary[detection.class]['confidences'].append(detection.confidence) %}
+                {% endif %}
+                {% endfor %}
+
+                {% for shape_class, data in shape_summary.items() %}
+                <tr>
+                    <td><strong>{{ shape_class }}</strong></td>
+                    <td>
+                        {% set avg_conf = (data.confidences|sum / data.confidences|length) %}
+                        <div>{{ "%.2f"|format(avg_conf) }}</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: {{ (avg_conf * 100)|int }}%;"></div>
+                        </div>
+                    </td>
+                    <td>{{ data.count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h2>Detected Shapes</h2>
+        <div class="no-data">No shapes detected in this drawing</div>
+        {% endif %}
+
+        <div class="footer">
+            <p><strong>Drawing Intelligence System</strong></p>
+            <p>Report generated on {{ generation_time }}</p>
+            <p style="margin-top: 10px; font-size: 12px;">
+                This automated analysis should be reviewed by qualified personnel before use in production.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

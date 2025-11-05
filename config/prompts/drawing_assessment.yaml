@@ -1,0 +1,49 @@
+name: "drawing_assessment"
+version: "v1.2"
+description: "Evaluate engineering drawing quality for routing decisions"
+use_case: "DRAWING_ASSESSMENT"
+recommended_model: "claude-3-haiku-20240307"
+token_budget: 1000
+temperature: 0.0
+
+variables:
+  - file_name
+  - context
+
+template: |
+  You are an expert in analyzing engineering drawings. Evaluate the quality of this drawing to determine the best processing approach.
+  
+  Drawing: {file_name}
+  Context: {context}
+  
+  Analyze the drawing and provide:
+  1. Overall quality assessment (0.0 to 1.0)
+  2. Text clarity (0.0 to 1.0)
+  3. Image quality (0.0 to 1.0)
+  4. Complexity level (LOW/MEDIUM/HIGH)
+  5. Recommended pipeline (BASELINE_ONLY/LLM_ENHANCED)
+  
+  Consider:
+  - Image resolution and clarity
+  - Text readability
+  - Presence of technical symbols
+  - Drawing complexity
+  - Whether advanced AI processing is needed
+  
+  Respond in JSON format:
+  {
+    "overall_quality": 0.0-1.0,
+    "text_clarity": 0.0-1.0,
+    "image_quality": 0.0-1.0,
+    "complexity": "LOW/MEDIUM/HIGH",
+    "recommended_pipeline": "BASELINE_ONLY/LLM_ENHANCED",
+    "reasoning": "Brief explanation"
+  }
+
+response_format:
+  type: "json_object"
+
+metadata:
+  priority: "HIGH"
+  cost_tier: 0
+  typical_response_tokens: 200

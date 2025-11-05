@@ -1,0 +1,63 @@
+name: "entity_extraction"
+version: "v1.0"
+description: "Extract structured entities from drawing text"
+use_case: "ENTITY_EXTRACTION"
+recommended_model: "gpt-4-turbo-2024-04-09"
+token_budget: 4000
+temperature: 0.0
+
+variables:
+  - text
+  - context
+  - entity_types
+
+template: |
+  You are an expert in extracting structured data from engineering drawings. Extract the following entities from the text.
+  
+  Text: {text}
+  Context: {context}
+  Required Entities: {entity_types}
+  
+  Entity Types to Extract:
+  1. PART_NUMBER: Format like ABC-12345-REV-A, XYZ-001
+  2. OEM: Manufacturer or company name
+  3. DIMENSION: Measurements with units (e.g., 25.4mm, 1.5")
+  4. TOLERANCE: Precision specs (±0.05, +0.1/-0.05)
+  5. THREAD_SPEC: Thread specifications (M8x1.25, 1/4-20 UNC)
+  6. MATERIAL: Material type (Steel 304, Aluminum 6061-T6)
+  7. WEIGHT: Mass specifications (2.5kg, 10lbs)
+  8. SURFACE_FINISH: Roughness (Ra 1.6, N7)
+  9. SCALE: Drawing scale (1:1, 1:2, FULL SCALE)
+  10. DATE: Date in any format
+  11. REVISION: Revision code (REV A, R01, Version 2)
+  12. DRAFTER: Person who created drawing
+  13. TITLE: Drawing title
+  
+  Instructions:
+  - Extract ALL occurrences of each entity type
+  - Preserve original format exactly
+  - Provide confidence score (0.0-1.0) for each extraction
+  - Include context/location if available
+  - Handle multiple formats for same entity type
+  
+  Respond in JSON format:
+  {
+    "entities": [
+      {
+        "type": "PART_NUMBER",
+        "value": "ABC-12345",
+        "original_text": "P/N: ABC-12345",
+        "confidence": 0.95,
+        "context": "Found in title block"
+      },
+      ...
+    ]
+  }
+
+response_format:
+  type: "json_object"
+
+metadata:
+  priority: "CRITICAL"
+  cost_tier: 2
+  typical_response_tokens: 800

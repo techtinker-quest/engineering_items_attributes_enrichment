@@ -1,27 +1,48 @@
-# Ignore environments, data, and logs
-# Python
+# Python Bytecode & Cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
 *.pyc
+.Python
 .python-version
 
+# Build & Distribution
+build/
+dist/
+*.egg-info/
+
 # Virtual Environments
-.venv/
 venv/
 env/
+ENV/
+.venv/
 
-# Conda
-# (Conda environments are typically outside project, but included for safety)
+# Conda (typically outside project, but safe to ignore)
+# conda/
 
-# Data and Models (too large for Git)
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Data, Models, Checkpoints & Large Files
 data/
 models/
-logs/
 checkpoints/
 tmp/
+logs/
 *.db
 *.pt
 *.pth
@@ -29,23 +50,23 @@ tmp/
 *.pickle
 *.h5
 *.hdf5
-
-# Logs
 *.log
-logs/
 
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb_checkpoints/
+# Keep .gitkeep in models (exception)
+!data/models/.gitkeep
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# Secrets & Credentials
+.env
+.env.local
+.env.*.local
+*.env
+*.key
+config/*_secrets.yaml
+config/*_secret.yaml
+secrets.yaml
+credentials.json
 
-# OS
+# OS Generated Files
 .DS_Store
 .DS_Store?
 ._*
@@ -53,18 +74,3 @@ logs/
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-# Secrets and Environment Variables
-.env
-.env.local
-.env.*.local
-*.env
-*.key
-config/*_secret.yaml
-secrets.yaml
-credentials.json
-
-# Build and Distribution
-build/
-dist/
-*.egg-info/
