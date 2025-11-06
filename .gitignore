@@ -74,3 +74,6 @@ credentials.json
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Miscellaneous
+not_purely_project_code_related
