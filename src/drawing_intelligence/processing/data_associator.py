@@ -1,99 +1,203 @@
-"""
-Data association module for the Drawing Intelligence System.
+"""Data association module for the Drawing Intelligence System.
 
-Links text annotations to detected shapes based on spatial relationships.
+Links text annotations to detected shapes using spatial relationships, multi-view
+grouping, and dimension-to-feature linking with configurable confidence scoring.
+
+This module uses spatial indexing (KD-tree), advanced obstruction detection, and
+clustering algorithms (DBSCAN) for robust association in complex engineering drawings.
 """
 
 import logging
-from dataclasses import dataclass
-from typing import List, Tuple, Dict, Set
+import re
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Dict, List, Optional, Set, Tuple
+
 import numpy as np
+from scipy.spatial import KDTree
+from sklearn.cluster import DBSCAN
 
 from ..models.data_structures import (
-    TextBlock,
-    Detection,
     Association,
-    ViewGroup,
+    Detection,
     DimensionLink,
+    Entity,
+    TextBlock,
+    ViewGroup,
 )
-from ..utils.geometry_utils import calculate_distance, bbox_overlaps, point_in_bbox
 from ..utils.file_utils import generate_unique_id
+from ..utils.geometry_utils import (
+    bbox_overlaps,
+    calculate_distance,
+    point_in_bbox,
+    line_intersects_bbox,
+)
 
 logger = logging.getLogger(__name__)
 
 
+class ObstacleDetectionMode(Enum):
+    """Obstacle detection complexity levels."""
+
+    OFF = "off"
+    SIMPLE = "simple"  # Midpoint check only
+    ADVANCED = "advanced"  # Line intersection with multiple sample points
+
+
 @dataclass
 class AssociationConfig:
-    """
-    Configuration for data association.
+    """Configuration for data association with adaptive thresholds.
 
     Attributes:
-        label_distance_threshold: Max distance for labels (default: 200 pixels)
-        dimension_distance_threshold: Max distance for dimensions (default: 500 pixels)
-        min_association_confidence: Minimum confidence for associations (default: 0.6)
-        enable_obstacle_detection: Check for obstacles between text and shape (default: True)
+        label_distance_threshold: Maximum distance for label associations (pixels).
+        dimension_distance_threshold: Maximum distance for dimension associations.
+        min_association_confidence: Minimum confidence score for associations.
+        obstacle_detection_mode: Obstacle detection complexity level.
+        alignment_tolerance_px: Tolerance for shape alignment detection.
+        size_similarity_ratio: Minimum size ratio for multi-view grouping.
+        max_dimension_distance_px: Maximum distance for dimension-feature links.
+        confidence_multipliers: Text type confidence multipliers (dimension, label, note).
+        dbscan_eps: DBSCAN epsilon parameter for shape clustering.
+        dbscan_min_samples: DBSCAN minimum samples for cluster formation.
+        adaptive_thresholds: Enable DPI-based threshold scaling.
+        drawing_dpi: Drawing DPI for threshold normalization (if adaptive).
     """
 
     label_distance_threshold: int = 200
     dimension_distance_threshold: int = 500
     min_association_confidence: float = 0.6
-    enable_obstacle_detection: bool = True
+    obstacle_detection_mode: ObstacleDetectionMode = ObstacleDetectionMode.SIMPLE
+    alignment_tolerance_px: int = 50
+    size_similarity_ratio: float = 0.5
+    max_dimension_distance_px: int = 500
+    confidence_multipliers: Dict[str, float] = field(
+        default_factory=lambda: {"dimension": 0.9, "label": 1.0, "note": 0.8}
+    )
+    dbscan_eps: float = 100.0
+    dbscan_min_samples: int = 2
+    adaptive_thresholds: bool = False
+    drawing_dpi: int = 300
+
+    def __post_init__(self) -> None:
+        """Normalize thresholds if adaptive mode is enabled."""
+        if self.adaptive_thresholds and self.drawing_dpi != 300:
+            scale_factor = self.drawing_dpi / 300.0
+            self.label_distance_threshold = int(
+                self.label_distance_threshold * scale_factor
+            )
+            self.dimension_distance_threshold = int(
+                self.dimension_distance_threshold * scale_factor
+            )
+            self.max_dimension_distance_px = int(
+                self.max_dimension_distance_px * scale_factor
+            )
+            self.alignment_tolerance_px = int(
+                self.alignment_tolerance_px * scale_factor
+            )
+            logger.info(
+                f"Thresholds scaled by {scale_factor:.2f}x for {self.drawing_dpi} DPI"
+            )
 
 
 class DataAssociator:
-    """
-    Link text annotations to detected shapes.
+    """Link text annotations to detected shapes using advanced spatial analysis.
 
-    Uses spatial proximity and relationship analysis.
+    Uses KD-tree spatial indexing for efficient nearest-neighbor search,
+    configurable obstacle detection, DBSCAN clustering for multi-view grouping,
+    and multi-factor confidence scoring.
+
+    Attributes:
+        config: Association configuration parameters.
+        _dimension_pattern: Compiled regex for dimension detection.
+        _radius_pattern: Compiled regex for radius detection.
+        _diameter_pattern: Compiled regex for diameter detection.
+
+    Example:
+        >>> config = AssociationConfig(
+        ...     label_distance_threshold=150,
+        ...     obstacle_detection_mode=ObstacleDetectionMode.ADVANCED
+        ... )
+        >>> associator = DataAssociator(config)
+        >>> associations = associator.associate_text_to_shapes(texts, shapes)
     """
 
-    def __init__(self, config: AssociationConfig):
-        """
-        Initialize data associator.
+    def __init__(self, config: AssociationConfig) -> None:
+        """Initialize data associator with compiled patterns.
 
         Args:
-            config: Association configuration
+            config: Association configuration parameters.
         """
         self.config = config
-        logger.info("DataAssociator initialized")
+
+        # Compile regex patterns for feature inference
+        self._dimension_pattern = re.compile(r"\d+\.?\d*\s*(mm|cm|in|inch|\")")
+        self._radius_pattern = re.compile(r"r\s*\d+\.?\d*", re.IGNORECASE)
+        self._diameter_pattern = re.compile(
+            r"(ø|diameter|dia\.?)\s*\d+\.?\d*", re.IGNORECASE
+        )
+
+        logger.info(
+            f"DataAssociator initialized with {config.obstacle_detection_mode.value} "
+            f"obstacle detection"
+        )
 
     def associate_text_to_shapes(
         self, text_blocks: List[TextBlock], detections: List[Detection]
     ) -> List[Association]:
-        """
-        Link text blocks to nearest shapes based on proximity.
+        """Link text blocks to nearest shapes using spatial indexing.
+
+        Uses KD-tree for efficient nearest-neighbor search and multi-factor
+        confidence scoring including distance, size ratio, and semantic compatibility.
 
         Args:
-            text_blocks: List of OCR text blocks
-            detections: List of shape detections
+            text_blocks: OCR-extracted text blocks with entity types.
+            detections: Shape detections from YOLO model.
 
         Returns:
-            List of text-shape associations
+            List of Association objects with confidence scores and relationship types.
+
+        Raises:
+            ValueError: If inputs are invalid or empty.
         """
+        # Validate inputs
+        if not text_blocks:
+            logger.warning("No text blocks provided for association")
+            return []
+        if not detections:
+            logger.warning("No detections provided for association")
+            return []
+
         associations = []
 
-        if not text_blocks or not detections:
-            logger.warning("No text blocks or detections to associate")
-            return associations
+        # Build KD-tree for spatial indexing
+        shape_centers = np.array([det.bbox.center() for det in detections])
+        kdtree = KDTree(shape_centers)
 
         for text_block in text_blocks:
-            # Classify text type
-            text_type = self._classify_text_type(text_block.content)
+            # Use entity type from EntityExtractor instead of heuristic classification
+            text_type = self._get_entity_type(text_block)
 
-            # Find nearest shape
-            nearest_shape, distance = self._find_nearest_shape(text_block, detections)
+            # Find nearest shape using KD-tree
+            nearest_shape, distance = self._find_nearest_shape_kdtree(
+                text_block, detections, kdtree
+            )
 
             if nearest_shape is None:
+                logger.debug(f"No valid shape found for text '{text_block.content}'")
                 continue
 
             # Get distance threshold based on text type
             threshold = self._get_distance_threshold(text_type)
 
             if distance > threshold:
+                logger.debug(
+                    f"Text '{text_block.content}' exceeds threshold "
+                    f"({distance:.1f} > {threshold}px)"
+                )
                 continue
 
             # Check for obstacles if enabled
-            if self.config.enable_obstacle_detection:
+            if self.config.obstacle_detection_mode != ObstacleDetectionMode.OFF:
                 has_obstacle = self._check_obstacles(
                     text_block, nearest_shape, detections
                 )
@@ -104,12 +208,16 @@ class DataAssociator:
                     )
                     continue
 
-            # Calculate confidence based on distance
+            # Calculate multi-factor confidence
             confidence = self._calculate_association_confidence(
-                distance, threshold, text_type
+                text_block, nearest_shape, distance, threshold, text_type
             )
 
             if confidence < self.config.min_association_confidence:
+                logger.debug(
+                    f"Low confidence ({confidence:.2f}) for "
+                    f"'{text_block.content}' → {nearest_shape.class_name}"
+                )
                 continue
 
             # Create association
@@ -131,68 +239,38 @@ class DataAssociator:
         logger.info(f"Created {len(associations)} text-shape associations")
         return associations
 
-    def _find_nearest_shape(
-        self, text_block: TextBlock, detections: List[Detection]
-    ) -> Tuple[Detection, float]:
-        """
-        Find the nearest shape to a text block.
+    def _get_entity_type(self, text_block: TextBlock) -> str:
+        """Extract entity type from TextBlock (set by EntityExtractor).
 
         Args:
-            text_block: Text block to find shape for
-            detections: List of shape detections
+            text_block: Text block with entity metadata.
 
         Returns:
-            Tuple of (nearest_detection, distance) or (None, inf)
+            Entity type string: 'dimension', 'label', 'note', or fallback.
         """
-        text_center = text_block.bbox.center()
+        # Check if entity_type attribute exists (from EntityExtractor)
+        if hasattr(text_block, "entity_type") and text_block.entity_type:
+            return text_block.entity_type.lower()
 
-        min_distance = float("inf")
-        nearest_shape = None
+        # Fallback: Use content-based classification only if entity_type missing
+        logger.warning(
+            f"Text block '{text_block.content}' missing entity_type, using fallback"
+        )
+        return self._classify_text_type_fallback(text_block.content)
 
-        for detection in detections:
-            shape_center = detection.bbox.center()
-            distance = calculate_distance(text_center, shape_center)
-
-            if distance < min_distance:
-                min_distance = distance
-                nearest_shape = detection
-
-        return nearest_shape, min_distance
-
-    def _classify_text_type(self, content: str) -> str:
-        """
-        Classify text as dimension, label, or note.
+    def _classify_text_type_fallback(self, content: str) -> str:
+        """Fallback text classification using regex patterns.
 
         Args:
-            content: Text content
+            content: Text string to classify.
 
         Returns:
-            Type string: 'dimension', 'label', or 'note'
+            Classification string: 'dimension', 'label', or 'note'.
         """
         content_lower = content.lower()
 
-        # Dimension patterns
-        dimension_indicators = [
-            "mm",
-            "cm",
-            "inch",
-            "in",
-            '"',
-            "ø",
-            "diameter",
-            "±",
-            "tolerance",
-            "m",
-            "r",
-            "x",
-            "°",
-        ]
-
-        # Check if text contains dimension indicators
-        has_number = any(c.isdigit() for c in content)
-        has_dim_indicator = any(ind in content_lower for ind in dimension_indicators)
-
-        if has_number and has_dim_indicator:
+        # Check for dimension pattern
+        if self._dimension_pattern.search(content):
             return "dimension"
 
         # Label patterns (short, alphabetic)
@@ -202,21 +280,91 @@ class DataAssociator:
         # Everything else is a note
         return "note"
 
-    def _get_distance_threshold(self, text_type: str) -> int:
-        """
-        Get distance threshold based on text type.
+    def _find_nearest_shape_kdtree(
+        self,
+        text_block: TextBlock,
+        detections: List[Detection],
+        kdtree: KDTree,
+    ) -> Tuple[Optional[Detection], float]:
+        """Find nearest shape using KD-tree spatial index.
+
+        Calculates distance from text center to nearest point on shape edge
+        (not center-to-center) for improved accuracy.
 
         Args:
-            text_type: Type of text ('dimension', 'label', 'note')
+            text_block: Text block to find nearest shape for.
+            detections: List of all shape detections.
+            kdtree: Pre-built KD-tree of shape centers.
 
         Returns:
-            Distance threshold in pixels
+            Tuple containing nearest Detection and edge distance (or None, inf).
+        """
+        if not detections:
+            return None, float("inf")
+
+        text_center = np.array(text_block.bbox.center())
+
+        # Query KD-tree for k nearest candidates
+        k = min(5, len(detections))
+        distances_center, indices = kdtree.query(text_center, k=k)
+
+        # Refine by calculating distance to shape edge
+        min_edge_distance = float("inf")
+        nearest_shape = None
+
+        for idx in indices:
+            detection = detections[idx]
+            edge_distance = self._distance_to_bbox_edge(text_center, detection.bbox)
+
+            if edge_distance < min_edge_distance:
+                min_edge_distance = edge_distance
+                nearest_shape = detection
+
+        return nearest_shape, min_edge_distance
+
+    def _distance_to_bbox_edge(self, point: np.ndarray, bbox) -> float:
+        """Calculate minimum distance from point to bounding box edge.
+
+        Args:
+            point: (x, y) coordinates as numpy array.
+            bbox: BoundingBox object.
+
+        Returns:
+            Minimum distance to bbox edge in pixels.
+        """
+        px, py = point
+
+        # Check if point is inside bbox
+        if bbox.x_min <= px <= bbox.x_max and bbox.y_min <= py <= bbox.y_max:
+            # Point inside: distance to nearest edge
+            return min(
+                px - bbox.x_min,
+                bbox.x_max - px,
+                py - bbox.y_min,
+                bbox.y_max - py,
+            )
+
+        # Point outside: calculate perpendicular distance to edges
+        dx = max(bbox.x_min - px, 0, px - bbox.x_max)
+        dy = max(bbox.y_min - py, 0, py - bbox.y_max)
+
+        return np.sqrt(dx**2 + dy**2)
+
+    def _get_distance_threshold(self, text_type: str) -> int:
+        """Get distance threshold based on text type.
+
+        Args:
+            text_type: Type of text ('dimension', 'label', 'note').
+
+        Returns:
+            Distance threshold in pixels.
         """
         if text_type == "label":
             return self.config.label_distance_threshold
         elif text_type == "dimension":
             return self.config.dimension_distance_threshold
         else:
+            # Notes use label threshold as default
             return self.config.label_distance_threshold
 
     def _check_obstacles(
@@ -225,82 +373,239 @@ class DataAssociator:
         target_shape: Detection,
         all_shapes: List[Detection],
     ) -> bool:
-        """
-        Check if other shapes obstruct the text-shape association.
+        """Check if shapes obstruct text-to-shape line of sight.
+
+        Uses configurable detection mode: simple (midpoint) or advanced
+        (line intersection with multiple sample points).
 
         Args:
-            text_block: Text block
-            target_shape: Target shape detection
-            all_shapes: All shape detections
+            text_block: Source text block.
+            target_shape: Target shape for association.
+            all_shapes: All shape detections to check as obstacles.
 
         Returns:
-            True if obstacle detected
+            True if obstruction detected, False otherwise.
         """
         text_center = text_block.bbox.center()
         shape_center = target_shape.bbox.center()
 
-        # Check if any other shape intersects the line between text and shape
+        if self.config.obstacle_detection_mode == ObstacleDetectionMode.SIMPLE:
+            return self._check_obstacles_simple(
+                text_center, shape_center, target_shape, all_shapes
+            )
+        else:  # ADVANCED
+            return self._check_obstacles_advanced(
+                text_center, shape_center, target_shape, all_shapes
+            )
+
+    def _check_obstacles_simple(
+        self,
+        text_center: Tuple[int, int],
+        shape_center: Tuple[int, int],
+        target_shape: Detection,
+        all_shapes: List[Detection],
+    ) -> bool:
+        """Simple obstacle detection using midpoint check.
+
+        Args:
+            text_center: Text block center coordinates.
+            shape_center: Target shape center coordinates.
+            target_shape: Target shape detection.
+            all_shapes: All shapes to check as obstacles.
+
+        Returns:
+            True if midpoint falls inside an obstacle bbox.
+        """
+        midpoint = (
+            (text_center[0] + shape_center[0]) // 2,
+            (text_center[1] + shape_center[1]) // 2,
+        )
+
         for shape in all_shapes:
             if shape.detection_id == target_shape.detection_id:
                 continue
-
-            # Simple check: if shape bbox contains midpoint
-            midpoint = (
-                (text_center[0] + shape_center[0]) // 2,
-                (text_center[1] + shape_center[1]) // 2,
-            )
 
             if point_in_bbox(midpoint, shape.bbox):
                 return True
 
         return False
 
-    def _calculate_association_confidence(
-        self, distance: float, threshold: float, text_type: str
-    ) -> float:
-        """
-        Calculate confidence score for association.
+    def _check_obstacles_advanced(
+        self,
+        text_center: Tuple[int, int],
+        shape_center: Tuple[int, int],
+        target_shape: Detection,
+        all_shapes: List[Detection],
+    ) -> bool:
+        """Advanced obstacle detection using line intersection.
 
-        Confidence decreases with distance.
+        Samples multiple points along text-to-shape line and checks for
+        line segment intersection with obstacle bounding boxes.
 
         Args:
-            distance: Distance in pixels
-            threshold: Maximum threshold
-            text_type: Type of text
+            text_center: Text block center coordinates.
+            shape_center: Target shape center coordinates.
+            target_shape: Target shape detection.
+            all_shapes: All shapes to check as obstacles.
 
         Returns:
-            Confidence score (0.0-1.0)
+            True if line intersects any obstacle bbox.
         """
-        # Base confidence: inverse of normalized distance
+        # Sample 5 points along the line
+        sample_points = []
+        for t in np.linspace(0, 1, 5):
+            x = int(text_center[0] + t * (shape_center[0] - text_center[0]))
+            y = int(text_center[1] + t * (shape_center[1] - text_center[1]))
+            sample_points.append((x, y))
+
+        for shape in all_shapes:
+            if shape.detection_id == target_shape.detection_id:
+                continue
+
+            # Check if any sample point is inside obstacle
+            for point in sample_points:
+                if point_in_bbox(point, shape.bbox):
+                    return True
+
+            # Check for line-bbox intersection
+            if line_intersects_bbox(text_center, shape_center, shape.bbox):
+                return True
+
+        return False
+
+    def _calculate_association_confidence(
+        self,
+        text_block: TextBlock,
+        shape: Detection,
+        distance: float,
+        threshold: float,
+        text_type: str,
+    ) -> float:
+        """Calculate multi-factor confidence score for association.
+
+        Considers:
+        1. Distance (exponential decay)
+        2. Text-to-shape size ratio
+        3. Alignment quality
+        4. Semantic compatibility
+
+        Args:
+            text_block: Source text block.
+            shape: Target shape detection.
+            distance: Distance between text and shape edge.
+            threshold: Maximum allowed distance.
+            text_type: Text classification type.
+
+        Returns:
+            Confidence score between 0.0 and 1.0.
+        """
+        # Factor 1: Distance confidence (exponential decay)
         normalized_distance = min(distance / threshold, 1.0)
-        base_confidence = 1.0 - normalized_distance
+        distance_conf = np.exp(-3 * normalized_distance)
 
-        # Adjust based on text type
-        if text_type == "dimension":
-            # Dimensions can be further away
-            confidence = base_confidence * 0.9
-        elif text_type == "label":
-            # Labels should be close
-            confidence = base_confidence * 1.0
+        # Factor 2: Size ratio confidence
+        text_area = text_block.bbox.area()
+        shape_area = shape.bbox.area()
+        size_ratio = min(text_area, shape_area) / max(text_area, shape_area)
+        size_conf = min(1.0, size_ratio + 0.5)  # Boost small ratios
+
+        # Factor 3: Alignment quality (check if text is aligned with shape edges)
+        alignment_conf = self._calculate_alignment_confidence(text_block, shape)
+
+        # Factor 4: Semantic compatibility
+        semantic_conf = self._calculate_semantic_confidence(text_type, shape.class_name)
+
+        # Weighted combination
+        base_confidence = (
+            0.5 * distance_conf
+            + 0.2 * size_conf
+            + 0.15 * alignment_conf
+            + 0.15 * semantic_conf
+        )
+
+        # Apply text type multiplier from config
+        multiplier = self.config.confidence_multipliers.get(text_type, 0.8)
+        final_confidence = base_confidence * multiplier
+
+        return max(0.0, min(1.0, final_confidence))
+
+    def _calculate_alignment_confidence(
+        self, text_block: TextBlock, shape: Detection
+    ) -> float:
+        """Calculate alignment quality between text and shape.
+
+        Args:
+            text_block: Text block.
+            shape: Shape detection.
+
+        Returns:
+            Alignment confidence (0.0-1.0).
+        """
+        text_center = text_block.bbox.center()
+        shape_bbox = shape.bbox
+
+        # Check horizontal/vertical alignment with shape edges
+        h_aligned = (
+            abs(text_center[1] - shape_bbox.y_min) < 20
+            or abs(text_center[1] - shape_bbox.y_max) < 20
+        )
+        v_aligned = (
+            abs(text_center[0] - shape_bbox.x_min) < 20
+            or abs(text_center[0] - shape_bbox.x_max) < 20
+        )
+
+        if h_aligned or v_aligned:
+            return 1.0
         else:
-            # Notes are less reliable
-            confidence = base_confidence * 0.8
+            return 0.5  # Neutral for non-aligned
 
-        return max(0.0, min(1.0, confidence))
+    def _calculate_semantic_confidence(self, text_type: str, shape_class: str) -> float:
+        """Calculate semantic compatibility between text type and shape class.
+
+        Args:
+            text_type: Text classification type.
+            shape_class: Shape class name.
+
+        Returns:
+            Semantic confidence (0.0-1.0).
+        """
+        # Define semantic compatibility rules
+        if text_type == "dimension":
+            # Dimensions compatible with all shapes
+            return 1.0
+        elif text_type == "label":
+            # Labels prefer specific components (bolts, gears, etc.)
+            if shape_class.lower() in [
+                "bolt",
+                "nut",
+                "screw",
+                "gear",
+                "bearing",
+            ]:
+                return 1.0
+            else:
+                return 0.7
+        else:  # note
+            # Notes are generic
+            return 0.6
 
     def identify_multi_view_groups(
         self, detections: List[Detection]
     ) -> List[ViewGroup]:
-        """
-        Group shapes representing different views of same component.
+        """Group shapes representing orthographic views using DBSCAN clustering.
 
-        Uses spatial alignment and size similarity.
+        Uses DBSCAN to cluster shapes of the same class that are spatially
+        aligned and have similar sizes, indicating multi-view representations.
 
         Args:
-            detections: List of shape detections
+            detections: All shape detections from drawing.
 
         Returns:
-            List of ViewGroups
+            List of ViewGroup objects with inferred view types.
+
+        Note:
+            DBSCAN parameters (eps, min_samples) are configurable via
+            AssociationConfig for tuning to specific drawing styles.
         """
         view_groups = []
 
@@ -314,13 +619,13 @@ class DataAssociator:
                 by_class[det.class_name] = []
             by_class[det.class_name].append(det)
 
-        # For each class, find aligned shapes
+        # For each class, find aligned groups using DBSCAN
         for class_name, shapes in by_class.items():
             if len(shapes) < 2:
                 continue
 
-            # Find aligned groups
-            groups = self._find_aligned_shapes(shapes)
+            # Cluster shapes using DBSCAN
+            groups = self._cluster_shapes_dbscan(shapes)
 
             for group in groups:
                 if len(group) >= 2:
@@ -337,128 +642,176 @@ class DataAssociator:
         logger.info(f"Identified {len(view_groups)} multi-view groups")
         return view_groups
 
-    def _find_aligned_shapes(self, shapes: List[Detection]) -> List[List[Detection]]:
-        """
-        Find shapes that are spatially aligned.
+    def _cluster_shapes_dbscan(self, shapes: List[Detection]) -> List[List[Detection]]:
+        """Cluster shapes using DBSCAN based on spatial features.
 
         Args:
-            shapes: List of shapes of same class
+            shapes: List of shapes of same class.
 
         Returns:
-            List of aligned shape groups
+            List of shape clusters (groups).
         """
-        groups = []
-        used: Set[str] = set()
+        if len(shapes) < 2:
+            return []
 
-        for i, shape1 in enumerate(shapes):
-            if shape1.detection_id in used:
+        # Extract features: center coordinates + normalized size
+        features = []
+        for shape in shapes:
+            center = shape.bbox.center()
+            area = shape.bbox.area()
+            features.append([center[0], center[1], np.sqrt(area)])
+
+        features = np.array(features)
+
+        # Normalize features for consistent clustering
+        features_normalized = (features - features.mean(axis=0)) / (
+            features.std(axis=0) + 1e-8
+        )
+
+        # Apply DBSCAN
+        clustering = DBSCAN(
+            eps=self.config.dbscan_eps / 100.0,  # Normalized scale
+            min_samples=self.config.dbscan_min_samples,
+        ).fit(features_normalized)
+
+        # Group shapes by cluster label
+        clusters: Dict[int, List[Detection]] = {}
+        for idx, label in enumerate(clustering.labels_):
+            if label == -1:  # Noise
                 continue
+            if label not in clusters:
+                clusters[label] = []
+            clusters[label].append(shapes[idx])
 
-            group = [shape1]
-            used.add(shape1.detection_id)
+        # Filter clusters by size similarity
+        valid_groups = []
+        for cluster_shapes in clusters.values():
+            if self._shapes_have_similar_size(cluster_shapes):
+                valid_groups.append(cluster_shapes)
 
-            center1 = shape1.bbox.center()
+        return valid_groups
 
-            # Find other shapes aligned horizontally or vertically
-            for shape2 in shapes[i + 1 :]:
-                if shape2.detection_id in used:
-                    continue
+    def _shapes_have_similar_size(self, shapes: List[Detection]) -> bool:
+        """Check if shapes in group have similar sizes.
 
-                center2 = shape2.bbox.center()
+        Args:
+            shapes: List of shapes to check.
 
-                # Check horizontal alignment
-                y_diff = abs(center1[1] - center2[1])
-                x_diff = abs(center1[0] - center2[0])
+        Returns:
+            True if all shapes have similar size ratios.
+        """
+        if len(shapes) < 2:
+            return True
 
-                # Aligned if Y-coords similar (horizontal alignment)
-                # or X-coords similar (vertical alignment)
-                if y_diff < 50 or x_diff < 50:
-                    # Check size similarity
-                    size1 = shape1.bbox.width * shape1.bbox.height
-                    size2 = shape2.bbox.width * shape2.bbox.height
-                    size_ratio = min(size1, size2) / max(size1, size2)
+        areas = [s.bbox.area() for s in shapes]
+        min_area = min(areas)
+        max_area = max(areas)
 
-                    if size_ratio > 0.5:  # Similar size
-                        group.append(shape2)
-                        used.add(shape2.detection_id)
-
-            if len(group) >= 2:
-                groups.append(group)
-
-        return groups
+        size_ratio = min_area / max_area
+        return size_ratio >= self.config.size_similarity_ratio
 
     def _infer_view_types(self, shapes: List[Detection]) -> List[str]:
-        """
-        Infer view types (front, side, top) based on positions.
+        """Infer view types based on relative spatial positions.
 
         Args:
-            shapes: List of aligned shapes
+            shapes: List of aligned shapes.
 
         Returns:
-            List of view type strings
+            List of view type strings based on positioning.
         """
-        # Simplified inference based on position
-        views = []
+        if len(shapes) == 1:
+            return ["single"]
 
-        if len(shapes) == 2:
-            views = ["front", "side"]
-        elif len(shapes) == 3:
-            views = ["front", "side", "top"]
+        # Sort shapes by position
+        shapes_sorted = sorted(shapes, key=lambda s: s.bbox.center())
+
+        # Determine layout (horizontal or vertical)
+        x_coords = [s.bbox.center()[0] for s in shapes]
+        y_coords = [s.bbox.center()[1] for s in shapes]
+
+        x_range = max(x_coords) - min(x_coords)
+        y_range = max(y_coords) - min(y_coords)
+
+        if x_range > y_range:
+            # Horizontal layout
+            if len(shapes) == 2:
+                return ["front", "side"]
+            else:
+                return ["front", "side", "top"][: len(shapes)]
         else:
-            views = [f"view_{i+1}" for i in range(len(shapes))]
-
-        return views
+            # Vertical layout
+            if len(shapes) == 2:
+                return ["top", "front"]
+            else:
+                return ["top", "front", "side"][: len(shapes)]
 
     def _select_primary_shape(self, shapes: List[Detection]) -> str:
-        """
-        Select primary shape from group (largest/clearest).
+        """Select primary shape from group (largest area).
 
         Args:
-            shapes: List of shapes in group
+            shapes: List of shapes in group.
 
         Returns:
-            detection_id of primary shape
+            detection_id of primary shape.
         """
-        # Select largest shape
         largest = max(shapes, key=lambda s: s.bbox.area())
         return largest.detection_id
 
     def link_dimensions_to_features(
-        self, dimensions: List, shapes: List[Detection]
+        self, dimensions: List[Entity], shapes: List[Detection]
     ) -> List[DimensionLink]:
-        """
-        Link dimension entities to shape features.
+        """Link dimension entities to shape features with contextual inference.
+
+        Uses shape geometry, dimension orientation, and spatial context to
+        infer which feature (diameter, radius, length) the dimension describes.
 
         Args:
-            dimensions: List of dimension entities
-            shapes: List of shape detections
+            dimensions: Dimension entities extracted by EntityExtractor.
+            shapes: Shape detections from YOLO model.
 
         Returns:
-            List of dimension-shape links
+            List of DimensionLink objects with confidence scores.
+
+        Note:
+            Uses configurable max_dimension_distance_px threshold. Feature
+            type inference considers both dimension text and shape context.
         """
         links = []
 
+        if not dimensions or not shapes:
+            logger.warning("No dimensions or shapes for linking")
+            return links
+
+        # Build KD-tree for efficient search
+        shape_centers = np.array([s.bbox.center() for s in shapes])
+        kdtree = KDTree(shape_centers)
+
         for dimension in dimensions:
-            # Find nearest shape
-            dim_center = dimension.bbox.center()
+            dim_center = np.array(dimension.bbox.center())
+
+            # Query nearest shapes
+            k = min(3, len(shapes))
+            distances, indices = kdtree.query(dim_center, k=k)
 
             nearest_shape = None
             min_distance = float("inf")
 
-            for shape in shapes:
-                shape_center = shape.bbox.center()
-                distance = calculate_distance(dim_center, shape_center)
+            # Find nearest shape within threshold
+            for dist, idx in zip(distances, indices):
+                if dist < self.config.max_dimension_distance_px:
+                    if dist < min_distance:
+                        min_distance = dist
+                        nearest_shape = shapes[idx]
 
-                if distance < min_distance:
-                    min_distance = distance
-                    nearest_shape = shape
+            if nearest_shape:
+                # Infer feature type using context
+                feature_type = self._infer_feature_type_contextual(
+                    dimension, nearest_shape
+                )
 
-            if nearest_shape and min_distance < 500:
-                # Infer feature type from dimension
-                feature_type = self._infer_feature_type(dimension)
-
-                # Calculate confidence
-                confidence = 1.0 - (min_distance / 500.0)
+                # Calculate confidence (exponential decay)
+                normalized_dist = min_distance / self.config.max_dimension_distance_px
+                confidence = np.exp(-2 * normalized_dist)
 
                 link = DimensionLink(
                     entity_id=dimension.entity_id,
@@ -467,27 +820,60 @@ class DataAssociator:
                     confidence=confidence,
                 )
                 links.append(link)
+                logger.debug(
+                    f"Linked dimension '{dimension.value}' → "
+                    f"{nearest_shape.class_name} ({feature_type})"
+                )
 
         logger.info(f"Created {len(links)} dimension-shape links")
         return links
 
-    def _infer_feature_type(self, dimension) -> str:
-        """
-        Infer feature type from dimension entity.
+    def _infer_feature_type_contextual(
+        self, dimension: Entity, shape: Detection
+    ) -> str:
+        """Infer feature type using dimension text and shape context.
 
         Args:
-            dimension: Dimension entity
+            dimension: Dimension entity.
+            shape: Associated shape detection.
 
         Returns:
-            Feature type string
+            Feature type string ('diameter', 'radius', 'length_width', etc.).
         """
         value_str = str(dimension.value).lower()
 
-        if "ø" in value_str or "diameter" in value_str:
+        # Check explicit patterns first
+        if self._diameter_pattern.search(value_str):
             return "diameter"
-        elif "r" in value_str and len(value_str) < 5:
+        elif self._radius_pattern.search(value_str):
             return "radius"
-        elif "x" in value_str:
+
+        # Contextual inference based on shape class
+        shape_class = shape.class_name.lower()
+
+        # Circular shapes likely have diameter/radius
+        if shape_class in ["circle", "hole", "cylinder", "shaft"]:
+            if "x" in value_str:
+                return "length_width"
+            else:
+                return "diameter"
+
+        # Rectangular shapes likely have length/width
+        if shape_class in ["rectangle", "block", "plate"]:
+            if "x" in value_str:
+                return "length_width"
+            else:
+                return "dimension"
+
+        # Threaded features
+        if shape_class in ["bolt", "screw", "thread"]:
+            if "m" in value_str or "thread" in value_str:
+                return "thread_size"
+            else:
+                return "length"
+
+        # Default: generic dimension
+        if "x" in value_str:
             return "length_width"
         else:
             return "dimension"

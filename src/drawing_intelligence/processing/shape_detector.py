@@ -1,12 +1,35 @@
 """
 Shape detection module for the Drawing Intelligence System.
 
-Uses YOLOv8 for detecting and classifying component shapes.
+This module provides YOLOv8-based object detection for identifying and classifying
+mechanical component shapes in engineering drawings. Supports both single-image
+and batch processing with configurable confidence thresholds and NMS parameters.
+
+Classes:
+    DetectionConfig: Configuration dataclass for shape detection parameters.
+    ShapeDetector: Main detector class implementing YOLOv8 inference pipeline.
+
+Typical usage example:
+    config = DetectionConfig(
+        model_path="models/yolov8_shapes.pt",
+        confidence_threshold=0.5,
+        device="cuda"
+    )
+    detector = ShapeDetector(config)
+
+    # Single image processing
+    result = detector.detect_shapes(image)
+
+    # Batch processing with context manager (recommended for GPU)
+    with detector:
+        results = detector.detect_shapes_batch(images)
 """
 
 import logging
-from dataclasses import dataclass
-from typing import List, Optional
+import threading
+from dataclasses import dataclass, field
+from typing import Any, Callable, Dict, List, Optional, Union
+
 import numpy as np
 
 from ..models.data_structures import Detection, DetectionResult, DetectionSummary
@@ -25,16 +48,33 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class DetectionConfig:
-    """
-    Configuration for shape detection.
+    """Configuration parameters for YOLOv8 shape detection.
 
     Attributes:
-        model_path: Path to YOLOv8 model weights
-        confidence_threshold: Minimum confidence for detections (default: 0.45)
-        nms_threshold: IoU threshold for NMS (default: 0.45)
-        device: Device for inference ('cuda', 'cpu', 'mps')
-        batch_size: Batch size for inference (default: 8)
-        max_det: Maximum detections per image (default: 300)
+        model_path: Absolute or relative path to YOLOv8 model weights file (.pt).
+        confidence_threshold: Minimum confidence score for detections during
+            inference. Must be in range [0.0, 1.0]. Default: 0.45.
+        nms_threshold: Intersection-over-Union threshold for Non-Maximum
+            Suppression. Must be in range [0.0, 1.0]. Default: 0.45.
+        device: Compute device for inference. Must be one of: 'cuda', 'cpu',
+            'mps'. Default: 'cuda'. Falls back to 'cpu' if unavailable.
+        batch_size: Number of images to process simultaneously in batch mode.
+            Must be >= 1. Default: 8.
+        max_det: Maximum number of detections to keep per image. Prevents
+            memory issues with extremely complex drawings. Must be >= 1.
+            Default: 300.
+        confidence_high_threshold: Threshold for classifying detections as
+            "high confidence" in summary statistics. Default: 0.7.
+        confidence_medium_threshold: Threshold for classifying detections as
+            "medium confidence" in summary statistics. Default: 0.5.
+        check_batch_consistency: If True, validates that all images in a batch
+            have the same dimensions. Default: True.
+        progress_callback: Optional callback function for batch progress
+            reporting. Called with (current_index, total_images). Default: None.
+
+    Raises:
+        ValueError: If any threshold values are outside valid ranges or if
+            device is not a supported value.
     """
 
     model_path: str
@@ -43,27 +83,107 @@ class DetectionConfig:
     device: str = "cuda"
     batch_size: int = 8
     max_det: int = 300
+    confidence_high_threshold: float = 0.7
+    confidence_medium_threshold: float = 0.5
+    check_batch_consistency: bool = True
+    progress_callback: Optional[Callable[[int, int], None]] = None
+
+    def __post_init__(self) -> None:
+        """Validate configuration parameters after initialization.
+
+        Raises:
+            ValueError: If any configuration parameter is invalid.
+        """
+        # Validate confidence thresholds
+        if not 0.0 <= self.confidence_threshold <= 1.0:
+            raise ValueError(
+                f"confidence_threshold must be in [0.0, 1.0], "
+                f"got {self.confidence_threshold}"
+            )
+        if not 0.0 <= self.nms_threshold <= 1.0:
+            raise ValueError(
+                f"nms_threshold must be in [0.0, 1.0], got {self.nms_threshold}"
+            )
+        if not 0.0 <= self.confidence_high_threshold <= 1.0:
+            raise ValueError(
+                f"confidence_high_threshold must be in [0.0, 1.0], "
+                f"got {self.confidence_high_threshold}"
+            )
+        if not 0.0 <= self.confidence_medium_threshold <= 1.0:
+            raise ValueError(
+                f"confidence_medium_threshold must be in [0.0, 1.0], "
+                f"got {self.confidence_medium_threshold}"
+            )
+
+        # Validate logical threshold ordering
+        if self.confidence_medium_threshold > self.confidence_high_threshold:
+            raise ValueError(
+                f"confidence_medium_threshold ({self.confidence_medium_threshold}) "
+                f"must be <= confidence_high_threshold "
+                f"({self.confidence_high_threshold})"
+            )
+
+        # Validate integer parameters
+        if self.batch_size < 1:
+            raise ValueError(f"batch_size must be >= 1, got {self.batch_size}")
+        if self.max_det < 1:
+            raise ValueError(f"max_det must be >= 1, got {self.max_det}")
+
+        # Validate device
+        valid_devices = {"cuda", "cpu", "mps"}
+        if self.device not in valid_devices:
+            raise ValueError(
+                f"device must be one of {valid_devices}, got '{self.device}'"
+            )
 
 
 class ShapeDetector:
-    """
-    Detect and classify component shapes using YOLOv8.
+    """YOLOv8-based shape detector for mechanical component recognition.
 
-    Component classes (20 types):
-    - bearing, gear, bolt, screw, nut, washer, pin, shaft
-    - motor, sensor, controller, valve, pump, cylinder
-    - spring, pulley, bracket, housing, connector, fastener
+    Detects and classifies 20 types of mechanical components including:
+    fasteners (bolt, screw, nut, washer, pin), transmission elements (bearing,
+    gear, pulley, shaft), electromechanical (motor, sensor, controller),
+    hydraulic/pneumatic (valve, pump, cylinder), and structural (bracket,
+    housing, connector, spring, fastener).
+
+    The detector uses lazy model loading to minimize memory usage and supports
+    both single-image and batch processing modes. Implements context manager
+    protocol for automatic resource cleanup.
+
+    Attributes:
+        config: Detection configuration parameters.
+
+    Example:
+        >>> config = DetectionConfig(model_path="yolov8n.pt")
+        >>> detector = ShapeDetector(config)
+        >>> result = detector.detect_shapes(image)
+        >>> print(f"Found {result.summary.total_detections} shapes")
+
+        >>> # Recommended for batch processing with GPU
+        >>> with ShapeDetector(config) as detector:
+        ...     results = detector.detect_shapes_batch(images)
+
+    Note:
+        Input images should be NumPy arrays with:
+        - Format: BGR (H, W, 3), RGB (H, W, 3), or grayscale (H, W)
+        - Dtype: uint8
+        - Value range: [0, 255]
+
+        Common pitfalls:
+        - OpenCV loads images in BGR format by default
+        - Normalized float images [0.0, 1.0] will fail validation
+        - RGBA images (4 channels) are not supported
     """
 
-    def __init__(self, config: DetectionConfig):
-        """
-        Initialize shape detector.
+    def __init__(self, config: DetectionConfig) -> None:
+        """Initialize shape detector with configuration.
 
         Args:
-            config: Detection configuration
+            config: Detection configuration containing model path, thresholds,
+                and device settings.
 
         Raises:
-            ShapeDetectionError: If initialization fails
+            ShapeDetectionError: If model path is invalid or inaccessible.
         """
         self.config = config
 
@@ -72,24 +192,95 @@ class ShapeDetector:
         if not is_valid:
             raise ShapeDetectionError(error_msg)
 
-        # Lazy load model
-        self._model = None
-        self._model_version = None
+        # Lazy load model (with thread-safe initialization)
+        self._model: Optional[Any] = None
+        self._model_version: Optional[str] = None
+        self._actual_device: Optional[str] = None
+        self._model_lock = threading.Lock()
 
-        logger.info(f"ShapeDetector initialized (device: {config.device})")
+        logger.info(f"ShapeDetector initialized (requested device: {config.device})")
 
-    def detect_shapes(self, image: np.ndarray) -> DetectionResult:
-        """
-        Run shape detection on image.
-
-        Args:
-            image: Input image (BGR or grayscale)
+    def __enter__(self) -> "ShapeDetector":
+        """Enter context manager.
 
         Returns:
-            DetectionResult with all detections
+            Self for use in with statement.
+        """
+        return self
+
+    def __exit__(
+        self,
+        exc_type: Optional[type],
+        exc_val: Optional[Exception],
+        exc_tb: Optional[Any],
+    ) -> None:
+        """Exit context manager and cleanup resources.
+
+        Args:
+            exc_type: Exception type if an exception occurred.
+            exc_val: Exception value if an exception occurred.
+            exc_tb: Exception traceback if an exception occurred.
+        """
+        self.cleanup()
+
+    def cleanup(self) -> None:
+        """Release model resources and free GPU memory.
+
+        This method is called automatically when using the detector as a
+        context manager. For manual resource management, call this method
+        explicitly when done with the detector.
+
+        Note:
+            After calling cleanup(), the detector can still be used - the
+            model will be reloaded on the next inference call.
+        """
+        if self._model is not None:
+            logger.info("Releasing model resources")
+            with self._model_lock:
+                del self._model
+                self._model = None
+                self._actual_device = None
+
+                # Clear GPU cache if using CUDA
+                try:
+                    import torch
+
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+                        logger.debug("GPU cache cleared")
+                except ImportError:
+                    pass  # PyTorch not installed, skip GPU cleanup
+
+    def detect_shapes(self, image: np.ndarray) -> DetectionResult:
+        """Detect and classify shapes in a single image.
+
+        Performs the full detection pipeline: model loading (if needed),
+        inference, post-processing, and summary statistics calculation.
+
+        IMPORTANT: YOLOv8's inference already applies confidence thresholding
+        using config.confidence_threshold. No additional filtering is performed.
+
+        Args:
+            image: Input image as NumPy array. Must be:
+                - Format: BGR (H, W, 3), RGB (H, W, 3), or grayscale (H, W)
+                - Dtype: uint8
+                - Value range: [0, 255]
+
+        Returns:
+            DetectionResult containing:
+                - List of Detection objects with bounding boxes and confidence
+                - DetectionSummary with aggregate statistics
+                - Inference time in milliseconds
+                - Model version identifier
 
         Raises:
-            ShapeDetectionError: If detection fails
+            ShapeDetectionError: If image validation fails, model loading fails,
+                or inference encounters an error. Error includes model version
+                and context for debugging.
+
+        Note:
+            First call triggers lazy model loading, which may take several
+            seconds. Subsequent calls use the cached model instance.
         """
         # Validate image
         is_valid, error_msg = validate_image_array(image)
@@ -105,7 +296,7 @@ class ShapeDetector:
 
             start_time = time.time()
 
-            # Run inference
+            # Run inference (confidence filtering applied by YOLO)
             results = self._model.predict(
                 source=image,
                 conf=self.config.confidence_threshold,
@@ -116,16 +307,8 @@ class ShapeDetector:
 
             inference_time = (time.time() - start_time) * 1000  # ms
 
-            # Process results
+            # Process results (no additional filtering needed)
             detections = self._postprocess_detections(results[0], image.shape)
-
-            # Apply additional NMS if needed
-            detections = self._apply_nms(detections, self.config.nms_threshold)
-
-            # Filter by confidence
-            detections = self.filter_by_confidence(
-                detections, self.config.confidence_threshold
-            )
 
             # Calculate summary
             summary = self._calculate_summary(detections)
@@ -134,60 +317,100 @@ class ShapeDetector:
                 detections=detections,
                 summary=summary,
                 inference_time_ms=inference_time,
-                model_version=self._model_version,
+                model_version=self._model_version or "unknown",
             )
 
             logger.info(
                 f"Shape detection complete: {len(detections)} shapes detected "
-                f"in {inference_time:.1f}ms"
+                f"in {inference_time:.1f}ms (device: {self._actual_device})"
             )
 
             return result
 
         except Exception as e:
             raise ShapeDetectionError(
-                f"Shape detection failed: {e}", model_version=self._model_version
-            )
+                f"Shape detection failed: {e}",
+                model_version=self._model_version,
+            ) from e
 
-    def _load_model(self):
-        """Lazy load YOLOv8 model."""
-        try:
-            from ultralytics import YOLO
+    def _load_model(self) -> None:
+        """Lazy-load YOLOv8 model from configured path.
 
-            logger.info(f"Loading YOLOv8 model from {self.config.model_path}")
-            self._model = YOLO(self.config.model_path)
+        Loads model weights, transfers to specified device (with fallback),
+        and caches model version identifier. This method is called automatically
+        on first inference request.
 
-            # Set device
-            self._model.to(self.config.device)
+        Raises:
+            ShapeDetectionError: If ultralytics package is not installed,
+                model file doesn't exist, or loading fails for any reason.
 
-            # Get model version/name
-            self._model_version = f"YOLOv8_{self.config.model_path.split('/')[-1]}"
+        Note:
+            Model is stored in self._model for reuse across multiple detections.
+            Thread-safe via lock to prevent duplicate loading.
+        """
+        with self._model_lock:
+            # Double-check pattern: another thread may have loaded while waiting
+            if self._model is not None:
+                return
 
-            logger.info(f"Model loaded successfully on {self.config.device}")
+            try:
+                from ultralytics import YOLO
 
-        except ImportError:
-            raise ShapeDetectionError(
-                "ultralytics not installed. Install with: pip install ultralytics"
-            )
-        except FileNotFoundError:
-            raise ShapeDetectionError(f"Model file not found: {self.config.model_path}")
-        except Exception as e:
-            raise ShapeDetectionError(f"Failed to load model: {e}")
+                logger.info(f"Loading YOLOv8 model from {self.config.model_path}")
+                self._model = YOLO(self.config.model_path)
+
+                # Set device with fallback
+                try:
+                    self._model.to(self.config.device)
+                    self._actual_device = self.config.device
+                    logger.info(f"Model loaded successfully on {self._actual_device}")
+                except Exception as device_error:
+                    logger.warning(
+                        f"Failed to set device to '{self.config.device}': "
+                        f"{device_error}. Falling back to 'cpu'."
+                    )
+                    self._model.to("cpu")
+                    self._actual_device = "cpu"
+                    logger.info("Model loaded successfully on cpu (fallback)")
+
+                # Get model version/name
+                model_file = self.config.model_path.split("/")[-1]
+                self._model_version = f"YOLOv8_{model_file}"
+
+            except ImportError as e:
+                raise ShapeDetectionError(
+                    "ultralytics not installed. Install with: "
+                    "pip install ultralytics"
+                ) from e
+            except FileNotFoundError as e:
+                raise ShapeDetectionError(
+                    f"Model file not found: {self.config.model_path}"
+                ) from e
+            except Exception as e:
+                raise ShapeDetectionError(f"Failed to load model: {e}") from e
 
     def _postprocess_detections(
         self, results: Any, image_shape: tuple
     ) -> List[Detection]:
-        """
-        Convert YOLO results to Detection objects.
+        """Convert YOLO raw results to Detection dataclass objects.
+
+        Extracts bounding boxes, confidence scores, and class predictions from
+        YOLO output format, converting to absolute pixel coordinates and creating
+        both pixel-space and normalized bounding boxes.
 
         Args:
-            results: YOLO results object
-            image_shape: Original image shape (H, W, C)
+            results: YOLO results object from model.predict() containing boxes,
+                scores, and class predictions. Type is ultralytics Results but
+                using Any to avoid hard dependency.
+            image_shape: Original image dimensions as (height, width, channels).
+                Used to compute normalized bounding boxes.
 
         Returns:
-            List of Detection objects
+            List of Detection objects with unique IDs, bounding boxes in both
+            coordinate systems, and model version metadata. Returns empty list
+            if no detections found.
         """
-        detections = []
+        detections: List[Detection] = []
 
         # Get image dimensions
         height, width = image_shape[:2]
@@ -224,83 +447,32 @@ class ShapeDetector:
                 confidence=confidence,
                 bbox=bbox,
                 bbox_normalized=bbox_normalized,
-                model_version=self._model_version,
+                model_version=self._model_version or "unknown",
             )
 
             detections.append(detection)
 
         return detections
 
-    def filter_by_confidence(
-        self, detections: List[Detection], threshold: float
-    ) -> List[Detection]:
-        """
-        Filter detections by confidence threshold.
-
-        Args:
-            detections: List of detections
-            threshold: Minimum confidence
-
-        Returns:
-            Filtered list of detections
-        """
-        filtered = [d for d in detections if d.confidence >= threshold]
-
-        if len(filtered) < len(detections):
-            logger.debug(
-                f"Filtered {len(detections) - len(filtered)} "
-                f"low-confidence detections"
-            )
-
-        return filtered
-
-    def _apply_nms(
-        self, detections: List[Detection], iou_threshold: float
-    ) -> List[Detection]:
-        """
-        Apply Non-Maximum Suppression to remove overlapping detections.
-
-        Args:
-            detections: List of detections
-            iou_threshold: IoU threshold for suppression
-
-        Returns:
-            List of detections after NMS
-        """
-        if not detections:
-            return detections
-
-        # Sort by confidence (descending)
-        detections = sorted(detections, key=lambda d: d.confidence, reverse=True)
-
-        keep = []
-
-        while detections:
-            # Keep highest confidence detection
-            current = detections.pop(0)
-            keep.append(current)
-
-            # Remove overlapping detections
-            detections = [
-                d
-                for d in detections
-                if calculate_iou(current.bbox, d.bbox) < iou_threshold
-            ]
-
-        return keep
-
     def _calculate_summary(self, detections: List[Detection]) -> DetectionSummary:
-        """
-        Calculate summary statistics for detections.
+        """Compute aggregate statistics for a set of detections.
+
+        Uses configurable thresholds from DetectionConfig to classify
+        detections into high/medium/low confidence categories.
 
         Args:
-            detections: List of detections
+            detections: List of Detection objects to summarize.
 
         Returns:
-            DetectionSummary object
+            DetectionSummary containing:
+                - total_detections: Count of all detections
+                - detections_by_class: Dict mapping class names to counts
+                - average_confidence: Mean confidence across all detections
+                - confidence_distribution: Dict with 'high', 'medium', and 'low'
+                  confidence proportions based on configurable thresholds
         """
         # Count by class
-        detections_by_class = {}
+        detections_by_class: Dict[str, int] = {}
         for det in detections:
             detections_by_class[det.class_name] = (
                 detections_by_class.get(det.class_name, 0) + 1
@@ -313,17 +485,39 @@ class ShapeDetector:
             else 0.0
         )
 
-        # Confidence distribution
-        high_conf = len([d for d in detections if d.confidence >= 0.7])
-        medium_conf = len([d for d in detections if 0.5 <= d.confidence < 0.7])
-        low_conf = len([d for d in detections if d.confidence < 0.5])
-
-        total = len(detections) if detections else 1
-        confidence_distribution = {
-            "high": high_conf / total,
-            "medium": medium_conf / total,
-            "low": low_conf / total,
-        }
+        # Confidence distribution using configurable thresholds
+        if detections:
+            high_conf = len(
+                [
+                    d
+                    for d in detections
+                    if d.confidence >= self.config.confidence_high_threshold
+                ]
+            )
+            medium_conf = len(
+                [
+                    d
+                    for d in detections
+                    if self.config.confidence_medium_threshold
+                    <= d.confidence
+                    < self.config.confidence_high_threshold
+                ]
+            )
+            low_conf = len(
+                [
+                    d
+                    for d in detections
+                    if d.confidence < self.config.confidence_medium_threshold
+                ]
+            )
+            total = len(detections)
+            confidence_distribution = {
+                "high": high_conf / total,
+                "medium": medium_conf / total,
+                "low": low_conf / total,
+            }
+        else:
+            confidence_distribution = {"high": 0.0, "medium": 0.0, "low": 0.0}
 
         return DetectionSummary(
             total_detections=len(detections),
@@ -333,30 +527,72 @@ class ShapeDetector:
         )
 
     def detect_shapes_batch(self, images: List[np.ndarray]) -> List[DetectionResult]:
-        """
-        Run shape detection on multiple images (batch processing).
+        """Detect shapes in multiple images using batch processing.
+
+        Processes images in batches (size determined by config.batch_size) to
+        improve throughput. Tracks total batch time and distributes across
+        images for approximate per-image timing.
 
         Args:
-            images: List of input images
+            images: List of input images. Each image must be:
+                - Format: BGR (H, W, 3), RGB (H, W, 3), or grayscale (H, W)
+                - Dtype: uint8
+                - Value range: [0, 255]
 
         Returns:
-            List of DetectionResult objects
+            List of DetectionResult objects, one per input image. Order matches
+            input order. Failed batch images receive empty DetectionResult
+            with error logged.
+
+        Note:
+            **Important timing caveat:** The `inference_time_ms` in each result
+            is an APPROXIMATION calculated by dividing the total batch inference
+            time equally among all images in the batch. Actual per-image times
+            may vary based on image complexity, but batch processing prevents
+            individual timing measurements.
+
+            Batch processing is significantly faster than repeated single-image
+            calls (typically 2-5x speedup). Individual image failures within a
+            batch are logged but don't halt processing of remaining images.
         """
         if not images:
             return []
+
+        # Check batch consistency if enabled
+        if self.config.check_batch_consistency and len(images) > 1:
+            first_shape = images[0].shape
+            inconsistent = [
+                idx for idx, img in enumerate(images) if img.shape != first_shape
+            ]
+            if inconsistent:
+                logger.warning(
+                    f"Inconsistent image shapes detected in batch. "
+                    f"First image shape: {first_shape}. "
+                    f"Mismatched indices: {inconsistent[:5]}"
+                    f"{'...' if len(inconsistent) > 5 else ''}. "
+                    f"This may cause YOLO inference errors."
+                )
 
         # Load model if not loaded
         if self._model is None:
             self._load_model()
 
-        results_list = []
+        results_list: List[DetectionResult] = []
 
         # Process in batches
         for i in range(0, len(images), self.config.batch_size):
             batch = images[i : i + self.config.batch_size]
 
+            # Progress callback
+            if self.config.progress_callback:
+                self.config.progress_callback(i, len(images))
+
             try:
-                # Run batch inference
+                import time
+
+                batch_start = time.time()
+
+                # Run batch inference (confidence filtering applied by YOLO)
                 batch_results = self._model.predict(
                     source=batch,
                     conf=self.config.confidence_threshold,
@@ -365,7 +601,10 @@ class ShapeDetector:
                     verbose=False,
                 )
 
-                # Process each result
+                batch_time = (time.time() - batch_start) * 1000  # ms
+                avg_time_per_image = batch_time / len(batch)
+
+                # Process each result (no additional filtering)
                 for idx, results in enumerate(batch_results):
                     image_shape = batch[idx].shape
                     detections = self._postprocess_detections(results, image_shape)
@@ -374,14 +613,17 @@ class ShapeDetector:
                     result = DetectionResult(
                         detections=detections,
                         summary=summary,
-                        inference_time_ms=0.0,  # Not tracked in batch mode
-                        model_version=self._model_version,
+                        inference_time_ms=avg_time_per_image,
+                        model_version=self._model_version or "unknown",
                     )
                     results_list.append(result)
 
             except Exception as e:
-                logger.error(f"Batch detection failed for batch {i}: {e}")
-                # Add empty results for failed images
+                logger.error(
+                    f"Batch detection failed for batch starting at index {i}: {e}",
+                    exc_info=True,
+                )
+                # Add empty results for failed images in this batch
                 for _ in batch:
                     results_list.append(
                         DetectionResult(
@@ -391,34 +633,61 @@ class ShapeDetector:
                                 detections_by_class={},
                                 average_confidence=0.0,
                                 confidence_distribution={
-                                    "high": 0,
-                                    "medium": 0,
-                                    "low": 0,
+                                    "high": 0.0,
+                                    "medium": 0.0,
+                                    "low": 0.0,
                                 },
                             ),
                             inference_time_ms=0.0,
-                            model_version=self._model_version,
+                            model_version=self._model_version or "unknown",
                         )
                     )
 
-        logger.info(f"Batch detection complete: {len(images)} images processed")
+        # Final progress callback
+        if self.config.progress_callback:
+            self.config.progress_callback(len(images), len(images))
+
+        logger.info(
+            f"Batch detection complete: {len(images)} images processed "
+            f"(device: {self._actual_device})"
+        )
         return results_list
 
-    def get_model_info(self) -> dict:
-        """
-        Get information about loaded model.
+    def get_model_info(self) -> Dict[str, Union[bool, str, int, List[str]]]:
+        """Retrieve metadata about the loaded detection model.
 
         Returns:
-            Dictionary with model information
-        """
-        if self._model is None:
-            return {"loaded": False, "model_path": self.config.model_path}
+            Dictionary containing:
+                - loaded (bool): Whether model is currently loaded in memory
+                - model_path (str): Path to model weights file
+                - model_version (str): Model identifier (only if loaded)
+                - requested_device (str): Device specified in config
+                - actual_device (str): Device actually in use (only if loaded)
+                - num_classes (int): Number of detectable classes (only if
+                  loaded)
+                - class_names (List[str]): Names of detectable classes (only
+                  if loaded)
 
-        return {
-            "loaded": True,
+        Note:
+            If model is not loaded, only 'loaded', 'model_path', and
+            'requested_device' keys are present.
+        """
+        base_info: Dict[str, Union[bool, str, int, List[str]]] = {
+            "loaded": self._model is not None,
             "model_path": self.config.model_path,
-            "model_version": self._model_version,
-            "device": self.config.device,
-            "num_classes": len(self._model.names),
-            "class_names": list(self._model.names.values()),
+            "requested_device": self.config.device,
         }
+
+        if self._model is None:
+            return base_info
+
+        base_info.update(
+            {
+                "model_version": self._model_version or "unknown",
+                "actual_device": self._actual_device or "unknown",
+                "num_classes": len(self._model.names),
+                "class_names": list(self._model.names.values()),
+            }
+        )
+
+        return base_info

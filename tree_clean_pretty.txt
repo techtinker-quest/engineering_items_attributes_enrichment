@@ -1,0 +1,270 @@
+# Folder structure
+# Generated: 2025-11-06 18:05:31
+# Root: C:\00Projects\engineering_items_attributes_enrichment
+# Folder: engineering_items_attributes_enrichment/
+
+engineering_items_attributes_enrichment/
+├── __pycache__/
+│   ├── test_config.cpython-312-pytest-8.4.2.pyc
+│   └── test_env.cpython-312-pytest-8.4.2.pyc
+├── config/
+│   ├── prompts/
+│   │   ├── drawing_assessment.yaml
+│   │   ├── entity_extraction.yaml
+│   │   ├── ocr_verification.yaml
+│   │   └── shape_validation.yaml
+│   ├── templates/
+│   │   ├── batch_report.html
+│   │   ├── cost_report.html
+│   │   └── drawing_report.html
+│   └── system_config.yaml
+├── data/
+│   ├── drawing/                                            [EMPTY FOLDER]
+│   ├── models/                                             [EMPTY FOLDER]
+│   └── output/                                             [EMPTY FOLDER]
+├── deployment/
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   ├── requirements-dev.txt
+│   ├── requirements.txt
+│   └── setup.py
+├── docs/
+│   ├── api/                                                [EMPTY FOLDER]
+│   ├── architecture/                                       [EMPTY FOLDER]
+│   └── guides/                                             [EMPTY FOLDER]
+├── general_utils/
+│   ├── codebase_analyzer_CSV.py
+│   ├── Codebase_analyzer_TXT.py
+│   ├── concatenate_files.py
+│   ├── concatenate_files_in_multiple_batches.py
+│   ├── generate_folder_tree.py
+│   ├── github_py_links.py
+│   ├── repo_analyzer.py
+│   ├── repo_analyzer_v2.py
+│   └── split_large_batch.py
+├── logs/                                                   [EMPTY FOLDER]
+├── not_purely_project_code_related/
+│   ├── getting_help_from_llms/
+│   │   ├── FUNCTIONAL_REQUIREMENTS_SUMMARY.md              [EMPTY]
+│   │   ├── INSTRUCTIONS.md
+│   │   ├── PROJECT_CONTEXT.md
+│   │   ├── PROJECT_FILE_TREE.txt
+│   │   └── readme.md
+│   ├── all_code.txt                                        [EMPTY]
+│   ├── batch_1_models.txt
+│   ├── batch_2_processing.txt
+│   ├── batch_2_processing_a.txt
+│   ├── batch_2_processing_b.txt
+│   ├── batch_3_orchestration.txt
+│   ├── batch_4_database.txt
+│   ├── batch_5_llm.txt
+│   ├── batch_6_export.txt
+│   ├── batch_7_quality.txt
+│   ├── batch_8_utils.txt
+│   ├── batch_9_cli.txt
+│   ├── class_info.csv
+│   ├── class_info.txt
+│   ├── concatenated_code.txt
+│   ├── function_info.csv
+│   ├── function_info.txt
+│   ├── git_py_files.csv
+│   ├── git_scan.json
+│   ├── github_scan.csv
+│   ├── local_project_scan.csv
+│   ├── local_scan.json
+│   ├── local_scan.txt                                      [EMPTY]
+│   ├── method_info.csv
+│   └── method_info.txt
+├── notebooks/
+│   └── experiments/                                        [EMPTY FOLDER]
+├── scripts/
+│   ├── download_models.py
+│   ├── run_tests.sh
+│   ├── setup_environment.py
+│   └── validate_installation.py
+├── src/
+│   ├── drawing_intelligence/
+│   │   ├── __pycache__/
+│   │   │   └── __init__.cpython-312.pyc
+│   │   ├── cli/
+│   │   │   ├── __init__.py
+│   │   │   ├── config_validator.py
+│   │   │   └── main.py
+│   │   ├── config/                                         [EMPTY FOLDER]
+│   │   ├── database/
+│   │   │   ├── __pycache__/
+│   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   ├── database_manager.cpython-312.pyc
+│   │   │   │   └── query_filters.cpython-312.pyc
+│   │   │   ├── migrations/                                 [EMPTY FOLDER]
+│   │   │   ├── __init__.py
+│   │   │   ├── database_manager.py
+│   │   │   ├── query_filters.py
+│   │   │   └── schema.sql
+│   │   ├── export/
+│   │   │   ├── __init__.py
+│   │   │   ├── csv_exporter.py
+│   │   │   ├── export_manager.py
+│   │   │   ├── json_exporter.py
+│   │   │   └── report_generator.py
+│   │   ├── llm/
+│   │   │   ├── providers/
+│   │   │   │   ├── anthropic_provider.py
+│   │   │   │   ├── base_provider.py
+│   │   │   │   ├── google_provider.py
+│   │   │   │   └── openai_provider.py
+│   │   │   ├── __init__.py
+│   │   │   ├── budget_controller.py
+│   │   │   ├── cost_tracker.py
+│   │   │   ├── llm_gateway.py
+│   │   │   └── prompt_library.py
+│   │   ├── models/
+│   │   │   ├── __pycache__/
+│   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   ├── data_structures.cpython-312.pyc
+│   │   │   │   └── model_registry.cpython-312.pyc
+│   │   │   ├── __init__.py
+│   │   │   ├── data_structures.py
+│   │   │   ├── data_v1.py                                  [EMPTY]
+│   │   │   └── model_registry.py
+│   │   ├── orchestration/
+│   │   │   ├── __pycache__/
+│   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   ├── checkpoint_manager.cpython-312.pyc
+│   │   │   │   ├── pipeline_orchestrator.cpython-312.pyc
+│   │   │   │   ├── routing_engine.cpython-312.pyc
+│   │   │   │   └── workflow_state.cpython-312.pyc
+│   │   │   ├── __init__.py
+│   │   │   ├── checkpoint_manager.py
+│   │   │   ├── pipeline_orchestrator.py
+│   │   │   ├── routing_engine.py
+│   │   │   └── workflow_state.py
+│   │   ├── processing/
+│   │   │   ├── __pycache__/
+│   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   ├── entity_extractor.cpython-312.pyc
+│   │   │   │   ├── image_preprocessor.cpython-312.pyc
+│   │   │   │   ├── ocr_pipeline.cpython-312.pyc
+│   │   │   │   ├── pdf_processor.cpython-312.pyc
+│   │   │   │   └── shape_detector.cpython-312.pyc
+│   │   │   ├── __init__.py
+│   │   │   ├── data_associator.py
+│   │   │   ├── data_validator.py
+│   │   │   ├── entity_extractor.py
+│   │   │   ├── hierarchy_builder.py
+│   │   │   ├── image_preprocessor.py
+│   │   │   ├── ocr_pipeline.py
+│   │   │   ├── pdf_processor.py
+│   │   │   └── shape_detector.py
+│   │   ├── quality/
+│   │   │   ├── __init__.py
+│   │   │   └── quality_scorer.py
+│   │   ├── utils/
+│   │   │   ├── __pycache__/
+│   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   ├── config_loader.cpython-312.pyc
+│   │   │   │   ├── error_handlers.cpython-312.pyc
+│   │   │   │   ├── file_utils.cpython-312.pyc
+│   │   │   │   ├── geometry_utils.cpython-312.pyc
+│   │   │   │   ├── text_utils.cpython-312.pyc
+│   │   │   │   └── validation_utils.cpython-312.pyc
+│   │   │   ├── __init__.py
+│   │   │   ├── config_loader.py
+│   │   │   ├── error_handlers.py
+│   │   │   ├── file_utils.py
+│   │   │   ├── geometry_utils.py
+│   │   │   ├── image_utils.py
+│   │   │   ├── text_utils.py
+│   │   │   └── validation_utils.py
+│   │   └── __init__.py
+│   └── drawing_intelligence.egg-info/
+│       ├── dependency_links.txt
+│       ├── PKG-INFO
+│       ├── requires.txt
+│       ├── SOURCES.txt
+│       └── top_level.txt
+├── tests/
+│   ├── __pycache__/
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── conftest.cpython-312-pytest-8.4.2.pyc
+│   │   ├── test_config.cpython-312-pytest-8.4.2.pyc
+│   │   ├── test_env.cpython-312-pytest-8.4.2.pyc
+│   │   ├── test_file_utils.cpython-312-pytest-8.4.2.pyc
+│   │   ├── test_geometry_utils.cpython-312-pytest-8.4.2.pyc
+│   │   └── test_model_registry.cpython-312-pytest-8.4.2.pyc
+│   ├── fixtures/
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   └── test_data_generator.cpython-312-pytest-8.4.2.pyc
+│   │   ├── sample_drawings/
+│   │   │   ├── test_drawing.pdf                            [EMPTY]
+│   │   │   └── test_image.png                              [EMPTY]
+│   │   ├── __init__.py
+│   │   ├── generate_fixtures.py
+│   │   └── test_data_generator.py
+│   ├── integration/
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   ├── test_batch_processing.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_complete_pipeline.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_database_integration.cpython-312-pytest-8.4.2.pyc
+│   │   │   └── test_llm_integration.cpython-312-pytest-8.4.2.pyc
+│   │   ├── __init__.py
+│   │   ├── test_batch_processing.py
+│   │   ├── test_complete_pipeline.py
+│   │   ├── test_database_integration.py
+│   │   └── test_llm_integration.py
+│   ├── performance/
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   └── test_performance.cpython-312-pytest-8.4.2.pyc
+│   │   ├── __init__.py
+│   │   ├── benchmark_pipeline.py
+│   │   └── test_performance.py
+│   ├── unit/
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   ├── test_data_associator.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_entity_extractor.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_export_manager.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_file_utils.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_geometry_utils.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_image_utils.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_ocr_pipeline.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_pdf_processor.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_quality_scorer.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_shape_detector.cpython-312-pytest-8.4.2.pyc
+│   │   │   ├── test_text_utils.cpython-312-pytest-8.4.2.pyc
+│   │   │   └── test_validation_utils.cpython-312-pytest-8.4.2.pyc
+│   │   ├── __init__.py
+│   │   ├── test_data_associator.py
+│   │   ├── test_entity_extractor.py
+│   │   ├── test_export_manager.py
+│   │   ├── test_file_utils.py
+│   │   ├── test_geometry_utils.py
+│   │   ├── test_image_utils.py
+│   │   ├── test_ocr_pipeline.py
+│   │   ├── test_pdf_processor.py
+│   │   ├── test_quality_scorer.py
+│   │   ├── test_shape_detector.py
+│   │   ├── test_text_utils.py
+│   │   └── test_validation_utils.py
+│   ├── utils/
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   └── test_helpers.cpython-312-pytest-8.4.2.pyc
+│   │   ├── __init__.py
+│   │   └── test_helpers.py
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── test.py
+│   ├── test_config.py
+│   ├── test_env.py
+│   └── test_model_registry.py
+├── main.py
+├── Makefile
+├── MANIFEST.in
+├── project_tree.txt
+├── pytest.ini
+├── README.md
+└── tree_clean_pretty.txt
