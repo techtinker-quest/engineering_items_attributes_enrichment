@@ -3,9 +3,10 @@
 
 # Testing
 pytest>=7.0.0
-pytest-cov>=3.0.0
-pytest-mock>=3.6.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
 pytest-xdist>=2.5.0
+
 
 # Test Data Generation
 reportlab>=3.6.0

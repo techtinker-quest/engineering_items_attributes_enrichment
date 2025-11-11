@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Project Analysis Report</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6; 
+            color: #333; 
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; margin-bottom: 30px; }
+        h2 { color: #34495e; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #3498db; padding-left: 10px; }
+        h3 { color: #7f8c8d; margin-top: 20px; margin-bottom: 10px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; }
+        .stat-card.success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .stat-card.warning { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .stat-card.info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { font-size: 0.9em; opacity: 0.9; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #3498db; color: white; font-weight: 600; }
+        tr:hover { background-color: #f5f5f5; }
+        .status-exists { color: #27ae60; font-weight: bold; }
+        .status-missing { color: #e74c3c; font-weight: bold; }
+        .status-external { color: #3498db; font-weight: bold; }
+        .status-optional { color: #f39c12; font-weight: bold; }
+        .status-uncertain { color: #95a5a6; font-weight: bold; }
+        .file-path { font-family: 'Courier New', monospace; font-size: 0.9em; color: #7f8c8d; }
+        .summary { background: #ecf0f1; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .error-box { background: #fee; border-left: 4px solid #e74c3c; padding: 15px; margin: 10px 0; }
+        .success-box { background: #efe; border-left: 4px solid #27ae60; padding: 15px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Python Project Analysis Report</h1>
+        
+        <div class="summary">
+            <strong>Project:</strong> C:\00Projects\engineering_items_attributes_enrichment<br>
+            <strong>Scan Time:</strong> 2025-11-10T16:46:05.056987<br>
+            <strong>Files Scanned:</strong> 54<br>
+            <strong>Tool Version:</strong> 2.1.0
+        </div>
+
+        <div class="stats">
+            <div class="stat-card info">
+                <div class="stat-value">776</div>
+                <div class="stat-label">Total Imports</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-value">238</div>
+                <div class="stat-label">Missing Imports</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-value">122</div>
+                <div class="stat-label">Unused Imports</div>
+            </div>
+            <div class="stat-card info">
+                <div class="stat-value">4417</div>
+                <div class="stat-label">Total Calls</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-value">636</div>
+                <div class="stat-label">Missing Calls</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-value">580</div>
+                <div class="stat-label">Unused Variables</div>
+            </div>
+        </div>
+
+        <h2>🚨 Critical Issues</h2>
+
+        <h3>Missing Imports (238)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Line</th>
+                    <th>Import</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>11</td>
+                    <td><code>from src.drawing_intelligence.orchestration import PipelineOrchestrator</code></td>
+                    <td>Symbol 'PipelineOrchestrator' NOT FOUND</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>12</td>
+                    <td><code>from src.drawing_intelligence.database import DatabaseManager</code></td>
+                    <td>Symbol 'DatabaseManager' NOT FOUND</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>13</td>
+                    <td><code>from src.drawing_intelligence.models import ProcessingResult</code></td>
+                    <td>Symbol 'ProcessingResult' NOT FOUND</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>14</td>
+                    <td><code>from src.drawing_intelligence.export import ExportManager</code></td>
+                    <td>Symbol 'ExportManager' NOT FOUND</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">config_validator.py</td>
+                    <td>26</td>
+                    <td><code>from src.drawing_intelligence.cli.utils.config_loader import SystemConfig</code></td>
+                    <td>Module 'src.drawing_intelligence.cli.utils.config_loader' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">main.py</td>
+                    <td>22</td>
+                    <td><code>from src.drawing_intelligence.database.database_manager import QueryFilters</code></td>
+                    <td>Symbol 'QueryFilters' NOT FOUND</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>31</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import ProcessingResult</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>31</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import TextBlock</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>31</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import Entity</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>31</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import Detection</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>31</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import Association</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>31</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import ComponentHierarchy</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>31</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import TokenUsage</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>40</td>
+                    <td><code>from src.drawing_intelligence.database.utils.error_handlers import DatabaseError</code></td>
+                    <td>Module 'src.drawing_intelligence.database.utils.error_handlers' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>41</td>
+                    <td><code>from src.drawing_intelligence.database.utils.file_utils import generate_unique_id</code></td>
+                    <td>Module 'src.drawing_intelligence.database.utils.file_utils' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>42</td>
+                    <td><code>from src.drawing_intelligence.database.database_manager.query_filters import QueryFilter</code></td>
+                    <td>Module 'src.drawing_intelligence.database.database_manager.query_filters' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>4</td>
+                    <td><code>from src.drawing_intelligence.database.database_manager.query_filters import QueryFilters</code></td>
+                    <td>Module 'src.drawing_intelligence.database.database_manager.query_filters' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">csv_exporter.py</td>
+                    <td>26</td>
+                    <td><code>from src.drawing_intelligence.export.database.database_manager import DrawingRecord</code></td>
+                    <td>Module 'src.drawing_intelligence.export.database.database_manager' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">csv_exporter.py</td>
+                    <td>27</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import EntityType</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>48</td>
+                    <td><code>from src.drawing_intelligence.export.database.database_manager import DatabaseManager</code></td>
+                    <td>Module 'src.drawing_intelligence.export.database.database_manager' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>48</td>
+                    <td><code>from src.drawing_intelligence.export.database.database_manager import DrawingRecord</code></td>
+                    <td>Module 'src.drawing_intelligence.export.database.database_manager' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>49</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager.json_exporter import JSONExporter</code></td>
+                    <td>Module 'src.drawing_intelligence.export.export_manager.json_exporter' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>50</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager.csv_exporter import CSVExporter</code></td>
+                    <td>Module 'src.drawing_intelligence.export.export_manager.csv_exporter' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>51</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager.report_generator import ReportGenerator</code></td>
+                    <td>Module 'src.drawing_intelligence.export.export_manager.report_generator' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>760</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import BatchResult</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>849</td>
+                    <td><code>from src.drawing_intelligence.export.llm.cost_tracker import CostTracker</code></td>
+                    <td>Module 'src.drawing_intelligence.export.llm.cost_tracker' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">json_exporter.py</td>
+                    <td>23</td>
+                    <td><code>from src.drawing_intelligence.export.database.database_manager import DrawingRecord</code></td>
+                    <td>Module 'src.drawing_intelligence.export.database.database_manager' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">json_exporter.py</td>
+                    <td>24</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import Association</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">json_exporter.py</td>
+                    <td>24</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import BoundingBox</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">json_exporter.py</td>
+                    <td>24</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import ComponentHierarchy</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">json_exporter.py</td>
+                    <td>24</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import Detection</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">json_exporter.py</td>
+                    <td>24</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import Entity</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">json_exporter.py</td>
+                    <td>24</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import ReviewFlag</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">json_exporter.py</td>
+                    <td>24</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import TextBlock</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>44</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import BatchResult</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>44</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import CostReport</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>44</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import DailyCost</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>44</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import DrawingRecord</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>44</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import EntityType</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>442</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import EntityType</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>6</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager.json_exporter import JSONExporter</code></td>
+                    <td>Module 'src.drawing_intelligence.export.export_manager.json_exporter' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>7</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager.csv_exporter import CSVExporter</code></td>
+                    <td>Module 'src.drawing_intelligence.export.export_manager.csv_exporter' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>8</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager.report_generator import ReportGenerator</code></td>
+                    <td>Module 'src.drawing_intelligence.export.export_manager.report_generator' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">budget_controller.py</td>
+                    <td>30</td>
+                    <td><code>from src.drawing_intelligence.llm.models.model_registry import ModelRegistry</code></td>
+                    <td>Module 'src.drawing_intelligence.llm.models.model_registry' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">budget_controller.py</td>
+                    <td>30</td>
+                    <td><code>from src.drawing_intelligence.llm.models.model_registry import ModelSpec</code></td>
+                    <td>Module 'src.drawing_intelligence.llm.models.model_registry' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">budget_controller.py</td>
+                    <td>30</td>
+                    <td><code>from src.drawing_intelligence.llm.models.model_registry import ModelTier</code></td>
+                    <td>Module 'src.drawing_intelligence.llm.models.model_registry' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">budget_controller.py</td>
+                    <td>33</td>
+                    <td><code>from src.drawing_intelligence.export.database.database_manager import DatabaseManager</code></td>
+                    <td>Module 'src.drawing_intelligence.export.database.database_manager' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">cost_tracker.py</td>
+                    <td>18</td>
+                    <td><code>from src.drawing_intelligence.export.database.database_manager import DatabaseManager</code></td>
+                    <td>Module 'src.drawing_intelligence.export.database.database_manager' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">cost_tracker.py</td>
+                    <td>19</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import CostReport</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">cost_tracker.py</td>
+                    <td>19</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import DailyCost</code></td>
+                    <td>Module 'src.drawing_intelligence.database.models.data_structures' not found</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <h3>Unused Imports (122)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Line</th>
+                    <th>Import</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td class="file-path">download_models.py</td>
+                    <td>5</td>
+                    <td><code>import os</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">download_models.py</td>
+                    <td>6</td>
+                    <td><code>import sys</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">setup_environment.py</td>
+                    <td>11</td>
+                    <td><code>import shutil</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>11</td>
+                    <td><code>from src.drawing_intelligence.orchestration import PipelineOrchestrator</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>12</td>
+                    <td><code>from src.drawing_intelligence.database import DatabaseManager</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>13</td>
+                    <td><code>from src.drawing_intelligence.models import ProcessingResult</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>14</td>
+                    <td><code>from src.drawing_intelligence.export import ExportManager</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">config_validator.py</td>
+                    <td>26</td>
+                    <td><code>from src.drawing_intelligence.cli.utils.config_loader import SystemConfig</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">main.py</td>
+                    <td>40</td>
+                    <td><code>from src.drawing_intelligence.utils.error_handlers import DrawingProcessingError</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>5</td>
+                    <td><code>from src.drawing_intelligence.cli.main import main</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>6</td>
+                    <td><code>from src.drawing_intelligence.cli.config_validator import ConfigValidator</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>6</td>
+                    <td><code>from src.drawing_intelligence.cli.config_validator import ValidationResult</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>25</td>
+                    <td><code>from typing import Sequence</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>3</td>
+                    <td><code>from src.drawing_intelligence.database.database_manager import DatabaseManager</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>4</td>
+                    <td><code>from src.drawing_intelligence.database.database_manager.query_filters import QueryFilters</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>44</td>
+                    <td><code>from typing import Dict</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>44</td>
+                    <td><code>from typing import Any</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>11</td>
+                    <td><code>from typing import Optional</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>44</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import BatchResult</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>44</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import CostReport</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>44</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import DailyCost</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>44</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import DrawingRecord</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>44</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import EntityType</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">report_generator.py</td>
+                    <td>442</td>
+                    <td><code>from src.drawing_intelligence.database.models.data_structures import EntityType</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>5</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager import ExportManager</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>5</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager import ExportConfig</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>6</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager.json_exporter import JSONExporter</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>7</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager.csv_exporter import CSVExporter</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>8</td>
+                    <td><code>from src.drawing_intelligence.export.export_manager.report_generator import ReportGenerator</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">budget_controller.py</td>
+                    <td>33</td>
+                    <td><code>from src.drawing_intelligence.export.database.database_manager import DatabaseManager</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">cost_tracker.py</td>
+                    <td>25</td>
+                    <td><code>from src.drawing_intelligence.llm.models.model_registry import ModelRegistry</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">llm_gateway.py</td>
+                    <td>37</td>
+                    <td><code>from abc import ABC</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">llm_gateway.py</td>
+                    <td>37</td>
+                    <td><code>from abc import abstractmethod</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">llm_gateway.py</td>
+                    <td>39</td>
+                    <td><code>from enum import Enum</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">llm_gateway.py</td>
+                    <td>40</td>
+                    <td><code>from typing import Tuple</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">llm_gateway.py</td>
+                    <td>58</td>
+                    <td><code>from src.drawing_intelligence.llm.utils.geometry_utils import BoundingBox</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">llm_gateway.py</td>
+                    <td>59</td>
+                    <td><code>from src.drawing_intelligence.llm.utils.image_utils import encode_image_base64</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">llm_gateway.py</td>
+                    <td>63</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway.providers.base_provider import TokenUsage</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>7</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway import LLMGateway</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>7</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway import LLMConfig</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>7</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway import UseCaseType</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>7</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway import LLMResponse</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>8</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway.budget_controller import BudgetController</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>9</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway.cost_tracker import CostTracker</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>10</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway.prompt_library import PromptLibrary</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>10</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway.prompt_library import PromptTemplate</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>11</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway.providers.base_provider import LLMProvider</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>12</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway.providers.openai_provider import OpenAIProvider</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>13</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway.providers.anthropic_provider import AnthropicProvider</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>14</td>
+                    <td><code>from src.drawing_intelligence.llm.llm_gateway.providers.google_provider import GoogleProvider</code></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <h3>Missing Function Calls (636)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Called Function</th>
+                    <th>Count</th>
+                    <th>Example Location</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.database.utils.error_handlers.DatabaseError</code></td>
+                    <td>22</td>
+                    <td class="file-path">database_manager.py:225</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.export.csv_exporter.CSVExporter._format_float</code></td>
+                    <td>17</td>
+                    <td class="file-path">csv_exporter.py:303</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.export.export_manager.ExportManager._atomic_write</code></td>
+                    <td>13</td>
+                    <td class="file-path">export_manager.py:430</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.quality.quality_scorer.QualityConfig._validate_range</code></td>
+                    <td>13</td>
+                    <td class="file-path">quality_scorer.py:157</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.database.database_manager.DatabaseManager._transaction</code></td>
+                    <td>11</td>
+                    <td class="file-path">database_manager.py:277</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.database.database_manager.DatabaseManager._get_connection</code></td>
+                    <td>10</td>
+                    <td class="file-path">database_manager.py:239</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.llm.cost_tracker.CostTracker._ensure_utc</code></td>
+                    <td>9</td>
+                    <td class="file-path">cost_tracker.py:222</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.processing.models.data_structures.ValidationIssue</code></td>
+                    <td>9</td>
+                    <td class="file-path">data_validator.py:321</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.orchestration.models.data_structures.Entity</code></td>
+                    <td>8</td>
+                    <td class="file-path">routing_engine.py:1035</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.processing.entity_extractor.EntityExtractor._is_entity_type_enabled</code></td>
+                    <td>8</td>
+                    <td class="file-path">entity_extractor.py:356</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.processing.entity_extractor.EntityExtractor._create_entity</code></td>
+                    <td>8</td>
+                    <td class="file-path">entity_extractor.py:360</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.processing.utils.file_utils.generate_unique_id</code></td>
+                    <td>6</td>
+                    <td class="file-path">data_associator.py:225</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.processing.utils.error_handlers.OCRError</code></td>
+                    <td>6</td>
+                    <td class="file-path">ocr_pipeline.py:255</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.processing.utils.error_handlers.ShapeDetectionError</code></td>
+                    <td>6</td>
+                    <td class="file-path">shape_detector.py:193</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.quality.models.data_structures.ReviewFlag</code></td>
+                    <td>6</td>
+                    <td class="file-path">quality_scorer.py:698</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.export.export_manager.ExportManager._prepare_output_path</code></td>
+                    <td>5</td>
+                    <td class="file-path">export_manager.py:419</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.export.json_exporter.JSONExporter._format_list</code></td>
+                    <td>5</td>
+                    <td class="file-path">json_exporter.py:425</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.orchestration.models.data_structures.ProcessingStage</code></td>
+                    <td>5</td>
+                    <td class="file-path">checkpoint_manager.py:225</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.orchestration.models.data_structures.ProcessingResult</code></td>
+                    <td>5</td>
+                    <td class="file-path">pipeline_orchestrator.py:1309</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.orchestration.routing_engine.RoutingEngine._budget_available</code></td>
+                    <td>5</td>
+                    <td class="file-path">routing_engine.py:633</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.orchestration.routing_engine.RoutingEngine._estimate_cost</code></td>
+                    <td>5</td>
+                    <td class="file-path">routing_engine.py:641</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.processing.utils.error_handlers.PDFProcessingError</code></td>
+                    <td>5</td>
+                    <td class="file-path">pdf_processor.py:282</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.database.database_manager.DatabaseManager._batch_execute</code></td>
+                    <td>4</td>
+                    <td class="file-path">database_manager.py:498</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.export.csv_exporter.CSVExporter._sanitize_value</code></td>
+                    <td>4</td>
+                    <td class="file-path">csv_exporter.py:301</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.export.export_manager.ExportManager._sanitize_filename</code></td>
+                    <td>4</td>
+                    <td class="file-path">export_manager.py:412</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.export.report_generator.ReportGenerator._fig_to_base64_uri</code></td>
+                    <td>4</td>
+                    <td class="file-path">report_generator.py:615</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.llm.cost_tracker.CostTracker._aggregate_costs_by_field</code></td>
+                    <td>4</td>
+                    <td class="file-path">cost_tracker.py:410</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.orchestration.checkpoint_manager.CheckpointManager._retry_operation</code></td>
+                    <td>4</td>
+                    <td class="file-path">checkpoint_manager.py:807</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.orchestration.models.data_structures.Detection</code></td>
+                    <td>4</td>
+                    <td class="file-path">routing_engine.py:1038</td>
+                </tr>
+
+                <tr>
+                    <td><code>src.drawing_intelligence.orchestration.models.data_structures.DrawingRecord</code></td>
+                    <td>4</td>
+                    <td class="file-path">routing_engine.py:1044</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <h3>Unused Variables (580)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Line</th>
+                    <th>Scope</th>
+                    <th>Variable</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>7</td>
+                    <td>module</td>
+                    <td><code>__version__</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>8</td>
+                    <td>module</td>
+                    <td><code>__author__</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>16</td>
+                    <td>module</td>
+                    <td><code>__all__</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">config_validator.py</td>
+                    <td>39</td>
+                    <td>class:ValidationProfile</td>
+                    <td><code>PERMISSIVE</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">config_validator.py</td>
+                    <td>40</td>
+                    <td>class:ValidationProfile</td>
+                    <td><code>STANDARD</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">config_validator.py</td>
+                    <td>41</td>
+                    <td>class:ValidationProfile</td>
+                    <td><code>STRICT</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">config_validator.py</td>
+                    <td>47</td>
+                    <td>class:ProviderName</td>
+                    <td><code>OPENAI</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">config_validator.py</td>
+                    <td>48</td>
+                    <td>class:ProviderName</td>
+                    <td><code>ANTHROPIC</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">config_validator.py</td>
+                    <td>49</td>
+                    <td>class:ProviderName</td>
+                    <td><code>GOOGLE</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">config_validator.py</td>
+                    <td>330</td>
+                    <td>class:LLMValidator</td>
+                    <td><code>PROVIDER_VALIDATORS</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">main.py</td>
+                    <td>51</td>
+                    <td>module</td>
+                    <td><code>MAX_DRAWING_ID_DISPLAY_LENGTH</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">main.py</td>
+                    <td>852</td>
+                    <td>function:setup_argument_parser</td>
+                    <td><code>validate_parser</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>9</td>
+                    <td>module</td>
+                    <td><code>__all__</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>59</td>
+                    <td>class:ProcessingStatus</td>
+                    <td><code>SUCCESS</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>60</td>
+                    <td>class:ProcessingStatus</td>
+                    <td><code>FAILED</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>61</td>
+                    <td>class:ProcessingStatus</td>
+                    <td><code>SKIPPED</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>62</td>
+                    <td>class:ProcessingStatus</td>
+                    <td><code>IN_PROGRESS</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">database_manager.py</td>
+                    <td>63</td>
+                    <td>class:ProcessingStatus</td>
+                    <td><code>COMPLETED</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>18</td>
+                    <td>class:DrawingStatus</td>
+                    <td><code>COMPLETE</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>19</td>
+                    <td>class:DrawingStatus</td>
+                    <td><code>PROCESSING</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>20</td>
+                    <td>class:DrawingStatus</td>
+                    <td><code>FAILED</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>26</td>
+                    <td>class:SortOrder</td>
+                    <td><code>ASC</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>27</td>
+                    <td>class:SortOrder</td>
+                    <td><code>DESC</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>86</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>status</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>87</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>needs_review</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>88</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>min_confidence</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>89</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>max_confidence</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>90</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>has_part_number</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>91</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>date_from</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>92</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>date_to</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>93</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>sort_by</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>94</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>sort_order</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>95</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>limit</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>96</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>offset</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>99</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>MAX_LIMIT</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">query_filters.py</td>
+                    <td>100</td>
+                    <td>class:QueryFilters</td>
+                    <td><code>VALID_SORT_COLUMNS</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">__init__.py</td>
+                    <td>6</td>
+                    <td>module</td>
+                    <td><code>__all__</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">csv_exporter.py</td>
+                    <td>135</td>
+                    <td>class:CSVConfigProtocol</td>
+                    <td><code>csv_delimiter</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">csv_exporter.py</td>
+                    <td>136</td>
+                    <td>class:CSVConfigProtocol</td>
+                    <td><code>float_precision</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">csv_exporter.py</td>
+                    <td>137</td>
+                    <td>class:CSVConfigProtocol</td>
+                    <td><code>datetime_format</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">csv_exporter.py</td>
+                    <td>138</td>
+                    <td>class:CSVConfigProtocol</td>
+                    <td><code>encoding</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>65</td>
+                    <td>class:JSONFormat</td>
+                    <td><code>PRETTY</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>66</td>
+                    <td>class:JSONFormat</td>
+                    <td><code>COMPACT</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>72</td>
+                    <td>class:ReportFormat</td>
+                    <td><code>HTML</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>73</td>
+                    <td>class:ReportFormat</td>
+                    <td><code>PDF</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>129</td>
+                    <td>class:ExportConfig</td>
+                    <td><code>json_format</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>130</td>
+                    <td>class:ExportConfig</td>
+                    <td><code>csv_delimiter</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>131</td>
+                    <td>class:ExportConfig</td>
+                    <td><code>include_intermediate_results</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">export_manager.py</td>
+                    <td>132</td>
+                    <td>class:ExportConfig</td>
+                    <td><code>include_images</code></td>
+                </tr>
+
+                <tr>
+                    <td class="file-path">json_exporter.py</td>
+                    <td>45</td>
+                    <td>class:ExportConfigProtocol</td>
+                    <td><code>json_format</code></td>
+                </tr>
+
+            </tbody>
+        </table>
+<div class="error-box"><h2>⚠️ Project Health: 1576 Issues Found</h2><p>Review the details above for specific problems.</p></div>
+    </div>
+</body>
+</html>

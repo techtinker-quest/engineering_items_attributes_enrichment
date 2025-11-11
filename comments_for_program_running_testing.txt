@@ -1,0 +1,1 @@
+python -m src.drawing_intelligence.processing.pdf_processor "data\drawing\01_57813_F_1.pdf"

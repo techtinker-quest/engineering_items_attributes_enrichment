@@ -1,0 +1,293 @@
+Folder<~>File Name<~>Function Name<~>Function Arguments<~>Function Return<~>Function Responsibility
+general_utils/<~>codebase_analyzer_CSV.py<~>get_docstring_summary<~>node: Any<~>str<~>N/A (Missing Docstring)
+general_utils/<~>codebase_analyzer_CSV.py<~>get_function_arguments<~>node: ast.FunctionDef<~>str<~>N/A (Missing Docstring)
+general_utils/<~>codebase_analyzer_CSV.py<~>get_return_annotation<~>node: ast.FunctionDef<~>str<~>N/A (Missing Docstring)
+general_utils/<~>codebase_analyzer_CSV.py<~>set_parents<~>node: ast.AST, parent: ast.AST<~>None (Inferred/Missing)<~>Recursively set 'parent' attribute for all child nodes.
+general_utils/<~>codebase_analyzer_CSV.py<~>extract_info_from_file<~>file_path: Path<~>Tuple[List[List[str]], List[List[str]], List[List[str]]]<~>N/A (Missing Docstring)
+general_utils/<~>codebase_analyzer_CSV.py<~>analyze_project_structure<~>root_dir: Path<~>Tuple[List[List[str]], List[List[str]], List[List[str]]]<~>N/A (Missing Docstring)
+general_utils/<~>codebase_analyzer_CSV.py<~>write_data_to_csv<~>filepath: str, header: List[str], data: List[List[str]]<~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+general_utils/<~>codebase_analyzer_CSV.py<~>generate_documentation_csvs<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+general_utils/<~>Codebase_analyzer_TXT.py<~>get_docstring_summary<~>node: Any<~>str<~>N/A (Missing Docstring)
+general_utils/<~>Codebase_analyzer_TXT.py<~>get_function_arguments<~>node: ast.FunctionDef<~>str<~>N/A (Missing Docstring)
+general_utils/<~>Codebase_analyzer_TXT.py<~>get_return_annotation<~>node: ast.FunctionDef<~>str<~>N/A (Missing Docstring)
+general_utils/<~>Codebase_analyzer_TXT.py<~>set_parents<~>node: ast.AST, parent: ast.AST<~>None (Inferred/Missing)<~>Recursively set 'parent' attribute for all child nodes.
+general_utils/<~>Codebase_analyzer_TXT.py<~>extract_info_from_file<~>file_path: Path<~>Tuple[List[List[str]], List[List[str]], List[List[str]]]<~>N/A (Missing Docstring)
+general_utils/<~>Codebase_analyzer_TXT.py<~>analyze_project_structure<~>root_dir: Path<~>Tuple[List[List[str]], List[List[str]], List[List[str]]]<~>N/A (Missing Docstring)
+general_utils/<~>Codebase_analyzer_TXT.py<~>write_data_to_txt<~>filepath: str, header: List[str], data: List[List[str]]<~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+general_utils/<~>Codebase_analyzer_TXT.py<~>generate_documentation_txts<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+general_utils/<~>concatenate_files.py<~>concatenate_python_files<~>root_dir, output_file<~>None (Inferred/Missing)<~>Concatenate all .py files in the project with clear delimiters.
+general_utils/<~>concatenate_files_in_multiple_batches.py<~>get_file_content<~>py_file, root_path<~>None (Inferred/Missing)<~>Get formatted content of a Python file.
+general_utils/<~>concatenate_files_in_multiple_batches.py<~>concatenate_by_batches<~>root_dir<~>None (Inferred/Missing)<~>Concatenate Python files in logical batches.
+general_utils/<~>generate_folder_tree.py<~>_human_size<~>num: int<~>str<~>Return a human-readable size for file display.
+general_utils/<~>generate_folder_tree.py<~>_is_empty<~>path: Path<~>Tuple[bool, str]<~>Checks if a path is considered empty and returns the emptiness status string.
+general_utils/<~>generate_folder_tree.py<~>_get_metadata<~>path: Path, show_sizes: bool<~>str<~>Return status metadata (size / item count / empty markers).
+general_utils/<~>generate_folder_tree.py<~>_tree_generator<~>path: Path, prefix: str, is_last: bool, show_sizes: bool, empty_only: bool, target_column: int<~>Iterator[str]<~>Recursively yield aligned tree lines.
+general_utils/<~>generate_folder_tree.py<~>generate_clean_tree<~>project_dir: str, output_file: str, show_sizes: bool, empty_only: bool<~>None<~>Generate pretty directory tree and save to file.
+general_utils/<~>generate_folder_tree.py<~>main<~><~>None (Inferred/Missing)<~>Main function. Parses command-line arguments, using defaults for direct execution.
+general_utils/<~>github_py_links.py<~>fetch_tree<~>owner: str, repo: str, branch: str, pat: str<~>list<~>Fetch recursive tree from GitHub API.
+general_utils/<~>github_py_links.py<~>build_urls<~>owner: str, repo: str, branch: str, path: str<~>tuple[str, str]<~>Build HTML and raw URLs for a file.
+general_utils/<~>github_py_links.py<~>write_markdown<~>py_files: list, output_path: Path<~>None (Inferred/Missing)<~>Write results to Markdown file.
+general_utils/<~>github_py_links.py<~>write_csv<~>py_files: list, output_path: Path<~>None (Inferred/Missing)<~>Write results to CSV file.
+general_utils/<~>repo_analyzer.py<~>analyze_python_file<~>file_content: str<~>tuple[str, str, str, str]<~>Analyzes Python code content using ast.NodeVisitor to extract classes,
+general_utils/<~>repo_analyzer.py<~>get_api_headers<~>pat: str | None<~>dict[str, str]<~>N/A (Missing Docstring)
+general_utils/<~>repo_analyzer.py<~>fetch_file_commit_details<~>owner: str, repo: str, file_path: str, pat: str | None<~>tuple[str, str]<~>N/A (Missing Docstring)
+general_utils/<~>repo_analyzer.py<~>traverse_github_repo<~>url: str, branch: str, pat: str | None, exclude_types: list[str], target_dir: str<~>list[dict]<~>N/A (Missing Docstring)
+general_utils/<~>repo_analyzer.py<~>traverse_local_dir<~>root_path: str, exclude_types: list[str]<~>list[dict]<~>N/A (Missing Docstring)
+general_utils/<~>repo_analyzer.py<~>write_structured_output<~>scan_results: list[dict], output_file: str, file_format: str<~>None (Inferred/Missing)<~>Writes results to the specified format (txt or json).
+general_utils/<~>repo_analyzer.py<~>main<~><~>None (Inferred/Missing)<~>Parses command-line arguments and runs the appropriate traversal/output logic.
+general_utils/<~>repo_analyzer_v2.py<~>analyze_python_file<~>file_content: str<~>tuple[str, str, str, str]<~>Analyzes Python code content using ast.NodeVisitor to extract classes,
+general_utils/<~>repo_analyzer_v2.py<~>get_api_headers<~>pat: str | None<~>dict[str, str]<~>N/A (Missing Docstring)
+general_utils/<~>repo_analyzer_v2.py<~>fetch_file_commit_details<~>owner: str, repo: str, file_path: str, pat: str | None<~>tuple[str, str]<~>N/A (Missing Docstring)
+general_utils/<~>repo_analyzer_v2.py<~>traverse_github_repo<~>url: str, branch: str, pat: str | None, exclude_types: list[str], target_dir: str<~>list[dict]<~>N/A (Missing Docstring)
+general_utils/<~>repo_analyzer_v2.py<~>traverse_local_dir<~>root_path: str, exclude_types: list[str]<~>list[dict]<~>N/A (Missing Docstring)
+general_utils/<~>repo_analyzer_v2.py<~>write_structured_output<~>scan_results: list[dict], output_file: str, file_format: str<~>None (Inferred/Missing)<~>Writes results to the specified format (txt or json).
+general_utils/<~>repo_analyzer_v2.py<~>main<~><~>None (Inferred/Missing)<~>Parses command-line arguments and runs the appropriate traversal/output logic.
+general_utils/<~>split_large_batch.py<~>split_batch_file<~>input_file, max_size_kb<~>None (Inferred/Missing)<~>Split a batch file into smaller chunks based on file boundaries.
+scripts/<~>download_models.py<~>download_file<~>url: str, destination: Path<~>None (Inferred/Missing)<~>Download file with progress bar.
+scripts/<~>setup_environment.py<~>print_header<~>message: str<~>None (Inferred/Missing)<~>Print formatted header.
+scripts/<~>setup_environment.py<~>check_python_version<~><~>None (Inferred/Missing)<~>Check Python version.
+scripts/<~>setup_environment.py<~>create_directories<~><~>None (Inferred/Missing)<~>Create required directories.
+scripts/<~>setup_environment.py<~>install_dependencies<~><~>None (Inferred/Missing)<~>Install Python dependencies.
+scripts/<~>setup_environment.py<~>setup_configuration<~><~>None (Inferred/Missing)<~>Setup configuration files.
+scripts/<~>setup_environment.py<~>setup_environment_variables<~><~>None (Inferred/Missing)<~>Guide user through environment variable setup.
+scripts/<~>setup_environment.py<~>download_models_prompt<~><~>None (Inferred/Missing)<~>Prompt user to download models.
+scripts/<~>setup_environment.py<~>run_tests<~><~>None (Inferred/Missing)<~>Run test suite.
+scripts/<~>setup_environment.py<~>print_summary<~><~>None (Inferred/Missing)<~>Print setup summary.
+scripts/<~>setup_environment.py<~>main<~><~>None (Inferred/Missing)<~>Run complete setup.
+scripts/<~>validate_installation.py<~>check_python_version<~><~>None (Inferred/Missing)<~>Check Python version.
+scripts/<~>validate_installation.py<~>check_dependencies<~><~>None (Inferred/Missing)<~>Check required packages.
+scripts/<~>validate_installation.py<~>check_structure<~><~>None (Inferred/Missing)<~>Check directory structure.
+tests_old/<~>conftest.py<~>test_config<~><~>None (Inferred/Missing)<~>Create test configuration.
+tests_old/<~>conftest.py<~>temp_dir<~><~>None (Inferred/Missing)<~>Create temporary directory for test.
+tests_old/<~>conftest.py<~>test_db<~>temp_dir<~>None (Inferred/Missing)<~>Create test database.
+tests_old/<~>conftest.py<~>sample_image<~><~>None (Inferred/Missing)<~>Create sample test image.
+tests_old/<~>conftest.py<~>sample_bbox<~><~>None (Inferred/Missing)<~>Create sample bounding box.
+tests_old/<~>conftest.py<~>sample_text_block<~><~>None (Inferred/Missing)<~>Create sample text block.
+tests_old/<~>conftest.py<~>sample_entity<~><~>None (Inferred/Missing)<~>Create sample entity.
+tests_old/<~>conftest.py<~>sample_detection<~><~>None (Inferred/Missing)<~>Create sample detection.
+tests_old/<~>conftest.py<~>sample_association<~><~>None (Inferred/Missing)<~>Create sample association.
+tests_old/<~>conftest.py<~>sample_processing_result<~><~>None (Inferred/Missing)<~>Create sample processing result.
+tests_old/<~>conftest.py<~>mock_llm_gateway<~><~>None (Inferred/Missing)<~>Create mock LLM gateway for testing.
+tests_old/<~>conftest.py<~>reset_test_environment<~>temp_dir<~>None (Inferred/Missing)<~>Reset test environment before each test.
+tests_old/<~>conftest.py<~>pytest_configure<~>config<~>None (Inferred/Missing)<~>Configure custom pytest markers.
+tests_old/<~>test_model_registry.py<~>test_get_model<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+tests_old/<~>test_model_registry.py<~>test_cost_calculation<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+general_utils\code_check/<~>call_graph_analyzer.py<~>load_symbol_table<~>symbol_table_path: str<~>Dict[str, Any]<~>Load and validate the symbol table from JSON file.
+general_utils\code_check/<~>call_graph_analyzer.py<~>run_analysis<~>project_root: str, symbol_table_path: str, output_path: str, output_format: str, status_filter: Optional[str], verbose: bool, quiet: bool<~>List[CallInfo]<~>Run complete call graph analysis on a Python project.
+general_utils\code_check/<~>call_graph_analyzer.py<~>print_summary<~>calls: List[CallInfo], is_filtered: bool<~>None<~>Print analysis summary statistics.
+general_utils\code_check/<~>call_graph_analyzer.py<~>parse_arguments<~><~>argparse.Namespace<~>Parse command line arguments.
+general_utils\code_check/<~>call_graph_analyzer.py<~>main<~><~>int<~>Main entry point for the call graph analyzer.
+general_utils\code_check/<~>code_analyzer.py<~>write_results<~>symbol_table: Dict[str, Any], imports: List[ImportInfo], calls: List[CallInfo], output_dir: str, output_format: str, import_filter: Optional[str], call_filter: Optional[str], save_symbols: bool<~>None<~>Write analysis results to files.
+general_utils\code_check/<~>code_analyzer.py<~>print_summary<~>symbol_table: Dict[str, Any], imports: List[ImportInfo], calls: List[CallInfo], import_filter: bool, call_filter: bool<~>None<~>Print analysis summary.
+general_utils\code_check/<~>code_analyzer.py<~>run_analysis<~>project_root: str, excluded_dirs: Set[str], output_dir: str, output_format: str, import_filter: Optional[str], call_filter: Optional[str], include_private: bool, save_symbols: bool, verbose: bool, quiet: bool<~>Tuple[Dict[str, Any], List[ImportInfo], List[CallInfo]]<~>Run complete project analysis.
+general_utils\code_check/<~>code_analyzer.py<~>parse_arguments<~><~>argparse.Namespace<~>Parse command line arguments.
+general_utils\code_check/<~>code_analyzer.py<~>main<~><~>int<~>Main entry point.
+general_utils\code_check/<~>code_analyzer_html.py<~>load_gitignore_patterns<~>project_root: Path<~>Set[str]<~>Load exclusion patterns from .gitignore if it exists.
+general_utils\code_check/<~>code_analyzer_html.py<~>load_config<~>project_root: Path<~>Dict[str, Any]<~>Load configuration from .projectanalyzer.json if it exists.
+general_utils\code_check/<~>code_analyzer_html.py<~>generate_html_report<~>symbol_table: Dict[str, Any], imports: List[ImportInfo], calls: List[CallInfo], variables: List[VariableInfo], output_path: Path<~>None<~>Generate an HTML report of the analysis.
+general_utils\code_check/<~>code_analyzer_html.py<~>write_results<~>symbol_table: Dict[str, Any], imports: List[ImportInfo], calls: List[CallInfo], variables: List[VariableInfo], output_dir: str, output_format: str, import_filter: Optional[str], call_filter: Optional[str], save_symbols: bool, html_report: bool<~>None<~>Write analysis results to files.
+general_utils\code_check/<~>code_analyzer_html.py<~>print_summary<~>symbol_table: Dict[str, Any], imports: List[ImportInfo], calls: List[CallInfo], variables: List[VariableInfo], import_filter: bool, call_filter: bool<~>None<~>Print analysis summary.
+general_utils\code_check/<~>code_analyzer_html.py<~>run_analysis<~>project_root: str, excluded_dirs: Set[str], output_dir: str, output_format: str, import_filter: Optional[str], call_filter: Optional[str], include_private: bool, save_symbols: bool, verbose: bool, quiet: bool, detect_unused: bool, html_report: bool<~>Tuple[Dict[str, Any], List[ImportInfo], List[CallInfo], List[VariableInfo]]<~>Run complete project analysis.
+general_utils\code_check/<~>code_analyzer_html.py<~>parse_arguments<~><~>argparse.Namespace<~>Parse command line arguments.
+general_utils\code_check/<~>code_analyzer_html.py<~>main<~><~>int<~>Main entry point.
+general_utils\code_check/<~>import_validator.py<~>load_symbol_table<~>symbol_table_path: str<~>Dict[str, Any]<~>Load the symbol table from JSON file.
+general_utils\code_check/<~>import_validator.py<~>run_validation<~>project_root: str, symbol_table_path: str, output_path: str, output_format: str, status_filter: Optional[str], verbose: bool, quiet: bool<~>List[ImportInfo]<~>Run complete import validation on a Python project.
+general_utils\code_check/<~>import_validator.py<~>print_summary<~>imports: List[ImportInfo], is_filtered: bool<~>None<~>Print validation summary statistics.
+general_utils\code_check/<~>import_validator.py<~>parse_arguments<~><~>argparse.Namespace<~>Parse command line arguments.
+general_utils\code_check/<~>import_validator.py<~>main<~><~>int<~>Main entry point for the import validator.
+general_utils\code_check/<~>symbol_table_builder.py<~>get_module_path<~>base_path: Path, file_path: Path<~>str<~>Convert a file system path to a Python module import path.
+general_utils\code_check/<~>symbol_table_builder.py<~>process_file<~>file_path: Path, project_root: Path, include_private: bool, verbose: bool<~>Optional[Dict[str, Any]]<~>Process a single Python file and extract symbols.
+general_utils\code_check/<~>symbol_table_builder.py<~>build_symbol_table<~>project_root: str, excluded_dirs: set, include_private: bool, verbose: bool, quiet: bool<~>Dict[str, Any]<~>Scan a Python project and catalog all top-level definitions.
+general_utils\code_check/<~>symbol_table_builder.py<~>print_summary<~>symbol_table: Dict[str, Any], quiet: bool<~>None<~>Print a summary of the extracted symbols.
+general_utils\code_check/<~>symbol_table_builder.py<~>parse_arguments<~><~>argparse.Namespace<~>Parse command line arguments.
+general_utils\code_check/<~>symbol_table_builder.py<~>main<~><~>int<~>Main entry point for the symbol table builder.
+src\drawing_intelligence\cli/<~>config_validator.py<~>validate_openai_key<~>api_key: str<~>Tuple[bool, str]<~>Validate OpenAI API key format.
+src\drawing_intelligence\cli/<~>config_validator.py<~>validate_anthropic_key<~>api_key: str<~>Tuple[bool, str]<~>Validate Anthropic API key format.
+src\drawing_intelligence\cli/<~>config_validator.py<~>validate_google_key<~>api_key: str<~>Tuple[bool, str]<~>Validate Google API key format.
+src\drawing_intelligence\cli/<~>config_validator.py<~>validate_config<~>config: 'SystemConfig', profile: str, print_report: bool, json_output: bool<~>ValidationResult<~>Convenience function to validate configuration.
+src\drawing_intelligence\cli/<~>config_validator.py<~>decorator<~>func: Callable[[str], Tuple[bool, str]]<~>Callable<~>N/A (Missing Docstring)
+src\drawing_intelligence\cli/<~>main.py<~>setup_logging<~>log_level: str<~>None<~>Configure logging for the CLI application.
+src\drawing_intelligence\cli/<~>main.py<~>get_database_manager<~>config_path: str<~>Annotated (Check Docstring)<~>Context manager for database connections.
+src\drawing_intelligence\cli/<~>main.py<~>initialize_components<~>config, db: DatabaseManager<~>Annotated (Check Docstring)<~>Initialize core system components.
+src\drawing_intelligence\cli/<~>main.py<~>validate_path<~>path: Path, must_exist: bool<~>None<~>Validate file or directory path.
+src\drawing_intelligence\cli/<~>main.py<~>ensure_output_directory<~>path: Path<~>None<~>Create output directory if it doesn't exist.
+src\drawing_intelligence\cli/<~>main.py<~>handle_error<~>context: str, error: Exception<~>int<~>Centralized error handling for commands.
+src\drawing_intelligence\cli/<~>main.py<~>main<~><~>int<~>Execute the main CLI entry point.
+src\drawing_intelligence\cli/<~>main.py<~>command_process<~>args: argparse.Namespace<~>int<~>Process a single PDF drawing through the extraction pipeline.
+src\drawing_intelligence\cli/<~>main.py<~>command_batch<~>args: argparse.Namespace<~>int<~>Process multiple PDF drawings in batch mode with parallel workers.
+src\drawing_intelligence\cli/<~>main.py<~>command_export<~>args: argparse.Namespace<~>int<~>Export results for a previously processed drawing.
+src\drawing_intelligence\cli/<~>main.py<~>command_cost_report<~>args: argparse.Namespace<~>int<~>Generate LLM cost analysis report for a date range.
+src\drawing_intelligence\cli/<~>main.py<~>command_validate_config<~>args: argparse.Namespace<~>int<~>Validate system configuration file for correctness and completeness.
+src\drawing_intelligence\cli/<~>main.py<~>command_list_drawings<~>args: argparse.Namespace<~>int<~>Query and display processed drawings from the database.
+src\drawing_intelligence\cli/<~>main.py<~>handle_export<~>db: DatabaseManager, drawing_id: str, export_format: str, output: Optional[str]<~>str<~>Handle export operations for a single drawing.
+src\drawing_intelligence\cli/<~>main.py<~>handle_batch_export<~>db: DatabaseManager, batch_result, export_format: str, output: Optional[str], report_path: Optional[str]<~>None<~>Handle export operations for batch results.
+src\drawing_intelligence\cli/<~>main.py<~>setup_argument_parser<~><~>argparse.ArgumentParser<~>Configure the argument parser with all CLI commands and options.
+src\drawing_intelligence\cli/<~>main.py<~>print_batch_summary<~>batch_result<~>None<~>Print formatted summary of batch processing results.
+src\drawing_intelligence\cli/<~>main.py<~>print_result_summary<~>result: ProcessingResult<~>None<~>Print a formatted summary of drawing processing results to console.
+src\drawing_intelligence\export/<~>csv_exporter.py<~>row_generator<~><~>Generator[Dict[str, Any], None, None]<~>N/A (Missing Docstring)
+src\drawing_intelligence\export/<~>csv_exporter.py<~>entity_row_extractor<~>record: DrawingRecord<~>Generator[Dict[str, Any], None, None]<~>Extract entity rows from a drawing record.
+src\drawing_intelligence\export/<~>csv_exporter.py<~>detection_row_extractor<~>record: DrawingRecord<~>Generator[Dict[str, Any], None, None]<~>Extract detection rows from a drawing record.
+src\drawing_intelligence\export/<~>csv_exporter.py<~>association_row_extractor<~>record: DrawingRecord<~>Generator[Dict[str, Any], None, None]<~>Extract association rows from a drawing record.
+src\drawing_intelligence\export/<~>csv_exporter.py<~>row_generator<~><~>Generator[Dict[str, Any], None, None]<~>N/A (Missing Docstring)
+src\drawing_intelligence\orchestration/<~>checkpoint_manager.py<~>_validate_identifier<~>identifier: str, name: str<~>None<~>Validate that an identifier is safe (no path traversal).
+src\drawing_intelligence\orchestration/<~>checkpoint_manager.py<~>_compute_checksum<~>data: str<~>str<~>Compute SHA256 checksum of data.
+src\drawing_intelligence\orchestration/<~>checkpoint_manager.py<~>_validate_json_structure<~>data: Dict[str, Any], required_fields: List[str]<~>None<~>Validate that JSON data has required fields.
+src\drawing_intelligence\orchestration/<~>checkpoint_manager.py<~>_save<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+src\drawing_intelligence\orchestration/<~>checkpoint_manager.py<~>_load<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+src\drawing_intelligence\orchestration/<~>checkpoint_manager.py<~>_save<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+src\drawing_intelligence\orchestration/<~>checkpoint_manager.py<~>_load<~><~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+src\drawing_intelligence\orchestration/<~>checkpoint_manager.py<~>_extract_metadata<~>file_path: Path, is_batch: bool<~>Dict[str, Any]<~>Extract metadata from checkpoint filename.
+src\drawing_intelligence\orchestration/<~>routing_engine.py<~>dataclass_replace<~>obj, **changes<~>Annotated (Check Docstring)<~>Helper function to replace fields in frozen dataclass.
+src\drawing_intelligence\processing/<~>hierarchy_builder.py<~>build_node<~>node_id: str, visited: Set[str], depth: int<~>HierarchyNode<~>Recursively builds tree node with cycle and depth protection.
+src\drawing_intelligence\processing/<~>hierarchy_builder.py<~>search_node<~>node: HierarchyNode, target_id: str<~>Optional[List[HierarchyNode]]<~>N/A (Missing Docstring)
+src\drawing_intelligence\processing/<~>hierarchy_builder.py<~>search_node<~>node: HierarchyNode, target_id: str<~>Optional[HierarchyNode]<~>N/A (Missing Docstring)
+src\drawing_intelligence\processing/<~>hierarchy_builder.py<~>search_path<~>node: HierarchyNode, target_id: str, current_path: List[str]<~>Optional[List[str]]<~>N/A (Missing Docstring)
+src\drawing_intelligence\processing/<~>hierarchy_builder.py<~>traverse<~>node: HierarchyNode<~>None<~>N/A (Missing Docstring)
+src\drawing_intelligence\processing/<~>hierarchy_builder.py<~>traverse<~>node: HierarchyNode, parent_id: Optional[str]<~>None<~>N/A (Missing Docstring)
+src\drawing_intelligence\processing/<~>pdf_processor.py<~>_demo_usage<~><~>None (Inferred/Missing)<~>Demonstrate basic usage of PDFProcessor for manual testing.
+src\drawing_intelligence\processing/<~>pdf_processor.py<~>progress<~>current, total<~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+src\drawing_intelligence\processing/<~>pdf_processor.py<~>batch_progress<~>filename, current, total<~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+src\drawing_intelligence\utils/<~>error_handlers.py<~>handle_processing_error<~>error: Exception, context: Dict[str, Any], logger: Optional[logging.Logger]<~>Tuple[bool, str]<~>Handle processing errors with logging and recovery decision.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>log_error_with_context<~>error: Exception, logger: logging.Logger, context: Dict[str, Any]<~>None<~>Log error with comprehensive context information for debugging.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>create_error_report<~>error: Exception, processing_result: Optional[Any], timestamp: Optional[datetime]<~>Dict[str, Any]<~>Create a structured error report for storage and analysis.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>wrap_with_error_handling<~>func: Callable<~>Callable<~>Decorator to add standardized error handling to functions.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>is_retriable_error<~>error: Exception<~>bool<~>Determine if an error should trigger a retry attempt.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>get_retry_delay<~>attempt: int, base_delay: float<~>float<~>Calculate retry delay using exponential backoff with cap.
+src\drawing_intelligence\utils/<~>error_handlers.py<~>wrapper<~>*args, **kwargs<~>Any<~>N/A (Missing Docstring)
+src\drawing_intelligence\utils/<~>file_utils.py<~>ensure_directory<~>path: str<~>None<~>Create directory if it doesn't exist, including parent directories.
+src\drawing_intelligence\utils/<~>file_utils.py<~>get_file_hash<~>file_path: str, algorithm: str<~>str<~>Calculate hash of file contents.
+src\drawing_intelligence\utils/<~>file_utils.py<~>get_file_size_mb<~>file_path: str<~>float<~>Get file size in megabytes.
+src\drawing_intelligence\utils/<~>file_utils.py<~>list_files<~>directory: str, extension: Optional[str], recursive: bool<~>List[str]<~>List files in directory with optional filtering.
+src\drawing_intelligence\utils/<~>file_utils.py<~>safe_filename<~>filename: str, max_length: int<~>str<~>Sanitize filename for safe filesystem use.
+src\drawing_intelligence\utils/<~>file_utils.py<~>generate_unique_id<~>prefix: str<~>str<~>Generate unique ID with optional prefix.
+src\drawing_intelligence\utils/<~>file_utils.py<~>copy_file_with_backup<~>source: str, destination: str<~>None<~>Copy file, backing up destination if it exists.
+src\drawing_intelligence\utils/<~>file_utils.py<~>get_relative_path<~>path: str, base_dir: str<~>str<~>Get path relative to base directory.
+src\drawing_intelligence\utils/<~>file_utils.py<~>split_path_components<~>path: str<~>Tuple[str, str, str]<~>Split path into directory, filename, and extension.
+src\drawing_intelligence\utils/<~>file_utils.py<~>ensure_file_extension<~>filename: str, extension: str<~>str<~>Ensure filename has the correct extension.
+src\drawing_intelligence\utils/<~>file_utils.py<~>is_path_safe<~>path: str, base_dir: str<~>bool<~>Check if path is safe (doesn't escape base directory).
+src\drawing_intelligence\utils/<~>file_utils.py<~>atomic_write<~>file_path: str, content: str, encoding: str<~>None<~>Write file atomically using temporary file and rename.
+src\drawing_intelligence\utils/<~>file_utils.py<~>get_available_disk_space<~>path: str<~>float<~>Get available disk space in GB for the filesystem containing path.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>calculate_iou<~>bbox1: BoundingBox, bbox2: BoundingBox<~>float<~>Calculate Intersection over Union between two bounding boxes.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>calculate_distance<~>point1: Tuple[int, int], point2: Tuple[int, int]<~>float<~>Calculate Euclidean distance between two points.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>bbox_contains<~>outer: BoundingBox, inner: BoundingBox<~>bool<~>Check if inner bounding box is completely inside outer bounding box.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>bbox_overlaps<~>bbox1: BoundingBox, bbox2: BoundingBox<~>bool<~>Check if two bounding boxes overlap.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>expand_bbox<~>bbox: BoundingBox, pixels: int, max_width: Optional[int], max_height: Optional[int]<~>BoundingBox<~>Expand bounding box by N pixels in all directions.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>merge_bboxes<~>bboxes: List[BoundingBox]<~>BoundingBox<~>Merge multiple bounding boxes into single bounding box.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>normalize_bbox<~>bbox: BoundingBox, image_width: int, image_height: int<~>NormalizedBBox<~>Normalize bounding box to [0, 1] coordinates relative to image size.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>denormalize_bbox<~>norm_bbox: NormalizedBBox, image_width: int, image_height: int<~>BoundingBox<~>Convert normalized bounding box back to pixel coordinates.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>clip_bbox_to_image<~>bbox: BoundingBox, image_width: int, image_height: int<~>BoundingBox<~>Clip bounding box to image boundaries.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>bbox_intersection<~>bbox1: BoundingBox, bbox2: BoundingBox<~>BoundingBox<~>Calculate intersection rectangle of two bounding boxes.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>calculate_aspect_ratio<~>bbox: BoundingBox<~>float<~>Calculate aspect ratio of bounding box.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>point_in_bbox<~>point: Tuple[int, int], bbox: BoundingBox<~>bool<~>Check if a point is inside a bounding box.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>bbox_distance<~>bbox1: BoundingBox, bbox2: BoundingBox<~>float<~>Calculate minimum edge-to-edge distance between two bounding boxes.
+src\drawing_intelligence\utils/<~>geometry_utils.py<~>scale_bbox<~>bbox: BoundingBox, scale_factor: float<~>BoundingBox<~>Scale bounding box by a factor around its center.
+src\drawing_intelligence\utils/<~>image_utils.py<~>encode_image_base64<~>image: np.ndarray, format: str<~>str<~>Encode numpy image to base64 string.
+src\drawing_intelligence\utils/<~>image_utils.py<~>decode_image_base64<~>base64_string: str<~>np.ndarray<~>Decode base64 string to numpy image.
+src\drawing_intelligence\utils/<~>image_utils.py<~>resize_image<~>image: np.ndarray, max_width: int, max_height: int, maintain_aspect: bool<~>np.ndarray<~>Resize image to fit within dimensions.
+src\drawing_intelligence\utils/<~>image_utils.py<~>crop_image<~>image: np.ndarray, bbox: 'BoundingBox'<~>np.ndarray<~>Crop image using bounding box.
+src\drawing_intelligence\utils/<~>image_utils.py<~>draw_bboxes<~>image: np.ndarray, bboxes: List['BoundingBox'], labels: Optional[List[str]], colors: Optional[List[Tuple[int, int, int]]], thickness: int, font_scale: float<~>np.ndarray<~>Draw bounding boxes on image for visualization.
+src\drawing_intelligence\utils/<~>image_utils.py<~>calculate_image_hash<~>image: np.ndarray, hash_size: int<~>str<~>Calculate perceptual hash of image (average hash algorithm).
+src\drawing_intelligence\utils/<~>image_utils.py<~>images_are_similar<~>image1: np.ndarray, image2: np.ndarray, threshold: float<~>bool<~>Check if two images are similar using perceptual hashing.
+src\drawing_intelligence\utils/<~>image_utils.py<~>calculate_md5_hash<~>image: np.ndarray<~>str<~>Calculate MD5 hash of image data (exact match, not perceptual).
+src\drawing_intelligence\utils/<~>image_utils.py<~>pad_image<~>image: np.ndarray, target_width: int, target_height: int, pad_value: int<~>np.ndarray<~>Pad image to target size with specified value.
+src\drawing_intelligence\utils/<~>image_utils.py<~>create_thumbnail<~>image: np.ndarray, max_size: int<~>np.ndarray<~>Create thumbnail of image with max dimension.
+src\drawing_intelligence\utils/<~>image_utils.py<~>concatenate_images<~>images: List[np.ndarray], orientation: str, spacing: int, background_color: Tuple[int, int, int]<~>np.ndarray<~>Concatenate multiple images with spacing.
+src\drawing_intelligence\utils/<~>pdf_utils.py<~>convert_rgb_to_bgr<~>image: NDArray[np.uint8]<~>NDArray[np.uint8]<~>Convert RGB image to BGR format for OpenCV compatibility.
+src\drawing_intelligence\utils/<~>pdf_utils.py<~>convert_pdf_points_to_pixels<~>points: Tuple[float, float, float, float], dpi: int<~>Tuple[int, int, int, int]<~>Convert PDF point coordinates to pixel coordinates at specified DPI.
+src\drawing_intelligence\utils/<~>pdf_utils.py<~>normalize_bbox<~>bbox: Tuple[int, int, int, int], image_width: int, image_height: int<~>Tuple[float, float, float, float]<~>Normalize bounding box coordinates to 0-1 range.
+src\drawing_intelligence\utils/<~>pdf_utils.py<~>calculate_bbox_area<~>bbox: Tuple[int, int, int, int]<~>int<~>Calculate area of a bounding box in square pixels.
+src\drawing_intelligence\utils/<~>pdf_utils.py<~>bbox_iou<~>bbox1: Tuple[int, int, int, int], bbox2: Tuple[int, int, int, int]<~>float<~>Calculate Intersection over Union (IoU) between two bounding boxes.
+src\drawing_intelligence\utils/<~>pdf_utils.py<~>validate_bbox<~>bbox: Tuple[int, int, int, int], max_width: int, max_height: int<~>bool<~>Validate that bounding box is within image bounds and well-formed.
+src\drawing_intelligence\utils/<~>pdf_utils.py<~>clip_bbox_to_image<~>bbox: Tuple[int, int, int, int], image_width: int, image_height: int<~>Tuple[int, int, int, int]<~>Clip bounding box coordinates to image boundaries.
+src\drawing_intelligence\utils/<~>text_utils.py<~>normalize_whitespace<~>text: str<~>str<~>Normalize multiple spaces, tabs, newlines to single space.
+src\drawing_intelligence\utils/<~>text_utils.py<~>remove_special_characters<~>text: str, keep: Optional[str]<~>str<~>Remove special characters, optionally keeping some.
+src\drawing_intelligence\utils/<~>text_utils.py<~>extract_numbers<~>text: str<~>List[float]<~>Extract all numeric values from text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>detect_measurement_unit<~>text: str<~>Optional[str]<~>Detect measurement unit in text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>convert_unit<~>value: float, from_unit: str, to_unit: str<~>float<~>Convert between measurement units.
+src\drawing_intelligence\utils/<~>text_utils.py<~>fuzzy_match<~>text1: str, text2: str, threshold: float<~>bool<~>Fuzzy string matching using sequence matcher.
+src\drawing_intelligence\utils/<~>text_utils.py<~>extract_pattern<~>text: str, pattern: str<~>Optional[str]<~>Extract first match of regex pattern from text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>normalize_technical_symbols<~>text: str<~>str<~>Normalize technical symbols to readable text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>extract_dimension_value<~>text: str<~>Optional[Dict[str, any]]<~>Extract dimension value with tolerance and unit from text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>split_camel_case<~>text: str<~>str<~>Split camelCase or PascalCase text into words.
+src\drawing_intelligence\utils/<~>text_utils.py<~>remove_duplicate_spaces<~>text: str<~>str<~>Remove duplicate spaces while preserving single spaces.
+src\drawing_intelligence\utils/<~>text_utils.py<~>truncate_text<~>text: str, max_length: int, suffix: str<~>str<~>Truncate text to maximum length with suffix.
+src\drawing_intelligence\utils/<~>text_utils.py<~>extract_part_number_candidates<~>text: str<~>List[str]<~>Extract potential part numbers from text.
+src\drawing_intelligence\utils/<~>text_utils.py<~>clean_ocr_text<~>text: str<~>str<~>Clean common OCR errors and artifacts.
+src\drawing_intelligence\utils/<~>text_utils.py<~>extract_words<~>text: str, min_length: int<~>List[str]<~>Extract words from text, filtering by minimum length.
+src\drawing_intelligence\utils/<~>text_utils.py<~>is_numeric_text<~>text: str<~>bool<~>Check if text is primarily numeric.
+src\drawing_intelligence\utils/<~>text_utils.py<~>normalize_line_endings<~>text: str<~>str<~>Normalize line endings to Unix style (LF).
+src\drawing_intelligence\utils/<~>text_utils.py<~>capitalize_first_letter<~>text: str<~>str<~>Capitalize first letter of text, leaving rest unchanged.
+src\drawing_intelligence\utils/<~>text_utils.py<~>count_words<~>text: str<~>int<~>Count number of words in text.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_pdf_file<~>file_path: str<~>Tuple[bool, str]<~>Validate PDF file exists and is readable.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_image_array<~>image: np.ndarray<~>Tuple[bool, str]<~>Validate numpy array is a valid image.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_bbox<~>bbox: 'BoundingBox', image_width: int, image_height: int<~>bool<~>Validate bounding box is within image bounds and has positive dimensions.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_confidence_score<~>score: float<~>bool<~>Validate confidence score is in valid range [0.0, 1.0].
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_entity_type<~>entity_type: str<~>bool<~>Validate entity type is recognized.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_api_key<~>provider: str, api_key: str<~>Tuple[bool, str]<~>Validate API key format for provider.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_drawing_id<~>drawing_id: str<~>bool<~>Validate drawing ID format.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_file_size<~>file_path: str, max_size_mb: float<~>Tuple[bool, str]<~>Validate file size is within limit.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_directory_writable<~>directory: str<~>Tuple[bool, str]<~>Validate directory exists and is writable.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_model_path<~>model_path: str<~>Tuple[bool, str]<~>Validate model file exists and has correct extension.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_coordinate<~>x: int, y: int, max_x: int, max_y: int<~>bool<~>Validate coordinate is within bounds.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_percentage<~>value: float<~>bool<~>Validate value is a valid percentage (0-100).
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_email<~>email: str<~>bool<~>Validate email address format.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_url<~>url: str<~>bool<~>Validate URL format.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_color<~>color: Tuple[int, int, int]<~>bool<~>Validate BGR color tuple.
+src\drawing_intelligence\utils/<~>validation_utils.py<~>validate_json_serializable<~>obj: any<~>Tuple[bool, str]<~>Validate object is JSON serializable.
+tests\manual/<~>manual_test_pdf_processor.py<~>create_test_pdf<~>output_path: Path<~>None<~>Create a simple test PDF using reportlab if available.
+tests\manual/<~>manual_test_pdf_processor.py<~>test_basic_functionality<~><~>None (Inferred/Missing)<~>Test basic PDF processor functionality.
+tests\manual/<~>manual_test_pdf_processor.py<~>test_config_validation<~><~>None (Inferred/Missing)<~>Test configuration validation.
+tests\manual/<~>manual_test_pdf_processor.py<~>test_error_handling<~><~>None (Inferred/Missing)<~>Test error handling.
+tests\manual/<~>manual_test_pdf_processor.py<~>test_progress_callback<~><~>None (Inferred/Missing)<~>Test progress callback functionality.
+tests\manual/<~>manual_test_pdf_processor.py<~>test_config_overrides<~><~>None (Inferred/Missing)<~>Test configuration override functionality.
+tests\manual/<~>manual_test_pdf_processor.py<~>test_generator_extraction<~><~>None (Inferred/Missing)<~>Test generator-based extraction for memory efficiency.
+tests\manual/<~>manual_test_pdf_processor.py<~>main<~><~>None (Inferred/Missing)<~>Run all manual tests.
+tests\manual/<~>manual_test_pdf_processor.py<~>track_progress<~>current, total<~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+tests\unit\processing/<~>test_pdf_processor.py<~>default_config<~><~>None (Inferred/Missing)<~>Provide default PDFConfig for tests.
+tests\unit\processing/<~>test_pdf_processor.py<~>processor<~>default_config<~>None (Inferred/Missing)<~>Provide PDFProcessor instance with default config.
+tests\unit\processing/<~>test_pdf_processor.py<~>mock_pdf_document<~><~>None (Inferred/Missing)<~>Create a mock fitz.Document for testing.
+tests\unit\processing/<~>test_pdf_processor.py<~>mock_pdf_page<~><~>None (Inferred/Missing)<~>Create a mock fitz.Page for testing.
+tests\unit\processing/<~>test_pdf_processor.py<~>sample_pdf_path<~>tmp_path<~>None (Inferred/Missing)<~>Create a temporary PDF file for testing.
+tests\unit\processing/<~>test_pdf_processor.py<~>progress_callback<~>current, total<~>None (Inferred/Missing)<~>N/A (Missing Docstring)
+tests_old\fixtures/<~>generate_fixtures.py<~>generate_test_image<~>output_path: str, size<~>None (Inferred/Missing)<~>Generate a test engineering drawing image with text and shapes.
+tests_old\fixtures/<~>generate_fixtures.py<~>generate_test_pdf<~>output_path: str<~>None (Inferred/Missing)<~>Generate a test engineering drawing PDF.
+tests_old\fixtures/<~>generate_fixtures.py<~>generate_all_fixtures<~><~>None (Inferred/Missing)<~>Generate all test fixtures.
+tests_old\performance/<~>benchmark_pipeline.py<~>run_full_benchmark<~><~>None (Inferred/Missing)<~>Run complete benchmark suite.
+tests_old\unit/<~>test_data_associator.py<~>associator_config<~><~>None (Inferred/Missing)<~>Create test configuration.
+tests_old\unit/<~>test_data_associator.py<~>associator<~>associator_config<~>None (Inferred/Missing)<~>Create DataAssociator instance.
+tests_old\unit/<~>test_data_associator.py<~>sample_text_blocks<~><~>None (Inferred/Missing)<~>Create sample text blocks.
+tests_old\unit/<~>test_data_associator.py<~>sample_detections<~><~>None (Inferred/Missing)<~>Create sample detections.
+tests_old\unit/<~>test_entity_extractor.py<~>entity_config<~><~>None (Inferred/Missing)<~>Create test configuration.
+tests_old\unit/<~>test_entity_extractor.py<~>entity_extractor<~>entity_config<~>None (Inferred/Missing)<~>Create EntityExtractor instance.
+tests_old\unit/<~>test_entity_extractor.py<~>sample_ocr_result<~><~>None (Inferred/Missing)<~>Create sample OCR result.
+tests_old\unit/<~>test_export_manager.py<~>export_config<~><~>None (Inferred/Missing)<~>Create export configuration.
+tests_old\unit/<~>test_export_manager.py<~>test_db<~>tmp_path<~>None (Inferred/Missing)<~>Create test database.
+tests_old\unit/<~>test_export_manager.py<~>export_manager<~>test_db, export_config<~>None (Inferred/Missing)<~>Create ExportManager instance.
+tests_old\unit/<~>test_file_utils.py<~>tmp_path<~>tmpdir<~>None (Inferred/Missing)<~>Provide temporary directory for tests.
+tests_old\unit/<~>test_ocr_pipeline.py<~>ocr_config<~><~>None (Inferred/Missing)<~>Create test OCR configuration.
+tests_old\unit/<~>test_ocr_pipeline.py<~>test_image<~><~>None (Inferred/Missing)<~>Create test image with text.
+tests_old\unit/<~>test_ocr_pipeline.py<~>mock_paddleocr<~><~>None (Inferred/Missing)<~>Create mock PaddleOCR engine.
+tests_old\unit/<~>test_ocr_pipeline.py<~>mock_easyocr<~><~>None (Inferred/Missing)<~>Create mock EasyOCR engine.
+tests_old\unit/<~>test_pdf_processor.py<~>pdf_config<~><~>None (Inferred/Missing)<~>Create test PDF configuration.
+tests_old\unit/<~>test_pdf_processor.py<~>pdf_processor<~>pdf_config<~>None (Inferred/Missing)<~>Create PDF processor instance.
+tests_old\unit/<~>test_quality_scorer.py<~>quality_config<~><~>None (Inferred/Missing)<~>Create test quality configuration.
+tests_old\unit/<~>test_quality_scorer.py<~>quality_scorer<~>quality_config<~>None (Inferred/Missing)<~>Create quality scorer instance.
+tests_old\unit/<~>test_quality_scorer.py<~>sample_processing_result<~><~>None (Inferred/Missing)<~>Create sample processing result for testing.
+tests_old\unit/<~>test_shape_detector.py<~>detection_config<~>tmp_path<~>None (Inferred/Missing)<~>Create test detection configuration.
+tests_old\unit/<~>test_shape_detector.py<~>test_image<~><~>None (Inferred/Missing)<~>Create test image.
+tests_old\unit/<~>test_shape_detector.py<~>mock_yolo<~><~>None (Inferred/Missing)<~>Create mock YOLO model.
+tests_old\utils/<~>test_helpers.py<~>setup_test_database<~><~>DatabaseManager<~>Create temporary test database.
+tests_old\utils/<~>test_helpers.py<~>cleanup_test_database<~>db: DatabaseManager<~>None<~>Clean up test database.
+tests_old\utils/<~>test_helpers.py<~>create_test_config<~><~>Config<~>Create test configuration.
+tests_old\utils/<~>test_helpers.py<~>assert_bbox_equal<~>bbox1: BoundingBox, bbox2: BoundingBox, tolerance: int<~>None<~>Assert two bounding boxes are equal within tolerance.
+tests_old\utils/<~>test_helpers.py<~>assert_confidence_in_range<~>confidence: float, min_val: float, max_val: float<~>None<~>Assert confidence score is in valid range.
+tests_old\utils/<~>test_helpers.py<~>load_test_image<~>filename: str<~>np.ndarray<~>Load test image from fixtures directory.
+tests_old\utils/<~>test_helpers.py<~>load_test_pdf<~>filename: str<~>str<~>Load test PDF from fixtures directory.
+tests_old\utils/<~>test_helpers.py<~>compare_images_similar<~>img1: np.ndarray, img2: np.ndarray, threshold: float<~>bool<~>Compare if two images are similar.
+tests_old\utils/<~>test_helpers.py<~>create_temp_directory<~><~>str<~>Create temporary directory for testing.
+tests_old\utils/<~>test_helpers.py<~>cleanup_temp_directory<~>temp_dir: str<~>None<~>Remove temporary directory.
+tests_old\utils/<~>test_helpers.py<~>assert_processing_result_valid<~>result<~>None<~>Assert processing result has valid structure.
+tests_old\utils/<~>test_helpers.py<~>mock_ocr_response<~>confidence: float<~>dict<~>Create mock OCR response.
+tests_old\utils/<~>test_helpers.py<~>mock_detection_response<~>class_name: str, confidence: float<~>dict<~>Create mock detection response.
+tests_old\utils/<~>test_helpers.py<~>skip_if_no_gpu<~><~>None (Inferred/Missing)<~>Skip test if GPU not available.
+tests_old\utils/<~>test_helpers.py<~>skip_if_no_llm<~><~>None (Inferred/Missing)<~>Skip test if LLM not configured.
